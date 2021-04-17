@@ -10,7 +10,7 @@ class SkillInterface;
 class Missile : public GameNode
 {
 public:
-	enum SKILLTYPE { NormalSkillTYPE, ZigzagSkillTYPE};
+	enum SKILLTYPE { NormalSkillTYPE, ZigzagSkillTYPE,TornadoSkillTYPE};
 
 protected:
 	// ¿ÃπÃ¡ˆ

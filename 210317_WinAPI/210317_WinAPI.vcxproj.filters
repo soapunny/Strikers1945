@@ -49,6 +49,15 @@
     <Filter Include="MainGame\Move_Manage\BHS">
       <UniqueIdentifier>{dee02fcb-5b15-484e-a384-208d63bcb9f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Move_Manage\PGM">
+      <UniqueIdentifier>{32e9d62f-68a3-46f6-9c61-4e85fad44ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skill_Manage\PGM">
+      <UniqueIdentifier>{b7e42431-60d2-4d6a-8c76-2fbf00f0f5ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Fire_Manage\PGM">
+      <UniqueIdentifier>{607d2400-b677-4689-87d9-a11030532108}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +128,21 @@
     </ClCompile>
     <ClCompile Include="LeftDownMove.cpp">
       <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="RightSideMove.cpp">
+      <Filter>MainGame\Move_Manage\PGM</Filter>
+    </ClCompile>
+    <ClCompile Include="ZigzagMove.cpp">
+      <Filter>MainGame\Move_Manage\PGM</Filter>
+    </ClCompile>
+    <ClCompile Include="ZigzagFire.cpp">
+      <Filter>MainGame\Fire_Manage\PGM</Filter>
+    </ClCompile>
+    <ClCompile Include="ZigzagSkill.cpp">
+      <Filter>Skill_Manage\PGM</Filter>
+    </ClCompile>
+    <ClCompile Include="TornadoSkill.cpp">
+      <Filter>Skill_Manage\PGM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +241,21 @@
     </ClInclude>
     <ClInclude Include="LeftDownMove.h">
       <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="RightSideMove.h">
+      <Filter>MainGame\Move_Manage\PGM</Filter>
+    </ClInclude>
+    <ClInclude Include="ZigzagMove.h">
+      <Filter>MainGame\Move_Manage\PGM</Filter>
+    </ClInclude>
+    <ClInclude Include="ZigzagFire.h">
+      <Filter>MainGame\Fire_Manage\PGM</Filter>
+    </ClInclude>
+    <ClInclude Include="ZigzagSkill.h">
+      <Filter>Skill_Manage\PGM</Filter>
+    </ClInclude>
+    <ClInclude Include="TornadoSkill.h">
+      <Filter>Skill_Manage\PGM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

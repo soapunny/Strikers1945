@@ -2,6 +2,7 @@
 #include "MissileManager.h"
 #include "Missile.h"
 #include "NormalFire.h"
+#include "ZigzagFire.h"
 
 HRESULT MissileManager::Init(FPOINT pos)
 {
@@ -22,7 +23,8 @@ HRESULT MissileManager::Init(FPOINT pos)
 
     //어떤 미사일을 장전 시킬 것인가
     fireManager = new FireManager();
-    fireManager->ChangeMove(new NormalFire());
+    //fireManager->ChangeMove(new NormalFire());
+    fireManager->ChangeMove(new ZigzagFire());
 
     return S_OK;
 }
@@ -62,6 +64,9 @@ void MissileManager::Fire(FIRETYPE fireType)
     switch (fireType)
     {
     case FIRETYPE::NormalFIRE:
+        fireManager->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::ZigzagFIRE:
         fireManager->DoFire(&vMissiles);
         break;
     default:

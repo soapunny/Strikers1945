@@ -29,14 +29,56 @@ void Barrel::Release()
 
 void Barrel::Update()
 {
+    
     // 포신 각도에 따른 좌표 계산
-    barrelEnd.x = barrelStart.x + cosf(barrelAngle) * barrelSize;
-    barrelEnd.y = barrelStart.y - (sinf(barrelAngle) * barrelSize);
+   
+    // barrelEnd.x = barrelStart.x + cosf(barrelAngle) * barrelSize;
+    // barrelEnd.y = barrelStart.y - sinf(barrelAngle) * barrelSize;
+    
+    
+ 
+    myMissile->SetPos(barrelEnd);
+    if (myMissile)
+    {
+       myMissile->Update();
+
+        if (KeyManager::GetSingleton()->IsStayKeyDown('W')) 
+        {
+            fireCount++;
+            if (fireCount % 20 == 0)
+            {
+                myMissile->Fire(MissileManager::FIRETYPE::NormalFIRE);
+                fireCount = 0;
+            }
+        }
+        if (KeyManager::GetSingleton()->IsStayKeyDown('Q'))
+        {
+            fireCount++;
+            if (fireCount % 20 == 0)
+            {
+                myMissile->Fire(MissileManager::FIRETYPE::ZigzagFIRE);
+                fireCount = 0;
+            }
+        }
+        if (KeyManager::GetSingleton()->IsStayKeyDown('E'))
+        {
+            fireCount++;
+            if (fireCount % 20 == 0)
+            {
+                myMissile->Fire(MissileManager::FIRETYPE::NormalFIRE);
+                fireCount = 0;
+            }
+        }
+        
+    }
+
+   
 }
 
 void Barrel::Render(HDC hdc)
 {
     // 포신
+    myMissile->Render(hdc);
     MoveToEx(hdc, barrelStart.x, barrelStart.y, NULL);
     LineTo(hdc, barrelEnd.x, barrelEnd.y );
 }

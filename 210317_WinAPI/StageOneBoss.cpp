@@ -4,7 +4,8 @@
 #include "Barrel.h"
 #include "NormalMove.h"
 #include "LeftDownMove.h"
-
+#include "RightSideMove.h"
+#include "ZigzagMove.h"
 HRESULT StageOneBoss::Init()
 {
     // 보스1 이미지
@@ -18,14 +19,14 @@ HRESULT StageOneBoss::Init()
     updateCount = 0;
 
     //보스 
-    pos.x = 0;          //위치
+    pos.x = 200;          //위치
     pos.y = WINSIZE_Y / 2;
     size = 100;                     //크기
     moveSpeed = 3.3f;               //이동 속도
     angle = 0;
     //보스 이동 방법 정의
     moveManager = new MoveManager();
-    moveManager->ChangeMove(new LeftDownMove());
+    moveManager->ChangeMove(new ZigzagMove());
     moveManager->DoMove(&pos, &angle);
 
     //생존여부

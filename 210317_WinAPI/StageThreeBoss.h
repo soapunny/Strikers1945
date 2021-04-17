@@ -4,6 +4,11 @@
 
 class StageThreeBoss : public Boss
 {
+private:
+	float MoveElapesdTimer;
+	float MoveTimer;
+	FPOINT BerralEnd;
+	int BossHp; //아마 나중에 보스에다 선언할듯
 public:
 	virtual HRESULT Init();
 	virtual void Release();
@@ -12,6 +17,6 @@ public:
 
 	virtual void Attack();
 	virtual void Move();
-	virtual void RotateBarrel(float angle);
+	virtual void RotateBarrel(Barrel* barrel, int barrelNum);
 	virtual void OnDead();
 };
