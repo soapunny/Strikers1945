@@ -36,14 +36,14 @@ void ZigzagSkill::UseSkill(FPOINT* pos, float* angle, float moveSpeed, float mov
 	}*/
 	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
 	missileTimer += elapsedTime;
-	if (missileTimer  <1 ) //내일 미사일 타임에 대해 연구한다음에 하자
-	{
-		(*angle) = DegToRad (-45);
-	}
-	if (missileTimer  > 1)
-	{
-		(*angle) = DegToRad(-135);
-	}
+	//if (missileTimer  <1 ) //내일 미사일 타임에 대해 연구한다음에 하자
+	//{
+	//	(*angle) = DegToRad (-45);
+	//}
+	//if (missileTimer  > 1)
+	//{
+	//	(*angle) = DegToRad(-135);
+	//}
 
 	(*pos).x += cos(*angle) * moveSpeed * elapsedTime / moveTime;
 	(*pos).y -= sin(*angle) * moveSpeed * elapsedTime / moveTime;

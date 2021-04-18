@@ -136,7 +136,8 @@ void StageThreeBoss::Move()
     MoveTimer += MoveElapesdTimer;
     if (MoveTimer > 1)
     { 
-        moveManager->ChangeMove(new ZigzagMove());
+        //moveManager->ChangeMove(new ZigzagMove());
+        moveManager->ChangeMove(new NormalMove());
        // moveManager->DoMove(&pos, &angle);
     }
 
