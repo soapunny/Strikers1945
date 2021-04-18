@@ -67,20 +67,20 @@ void EnemyManager::Release()
 
 void EnemyManager::Update()
 {
-    vector<Enemy*>::iterator myIt;
+    /*vector<Enemy*>::iterator myIt;
     for (myIt = vEnemys.begin(); myIt != vEnemys.end(); myIt++)
     {
         (*myIt)->Update();
-    }
+    }*/
 }
 
 void EnemyManager::Render(HDC hdc)
 {
-    vector<Enemy*>::iterator myIt;
+   /* vector<Enemy*>::iterator myIt;
     for (myIt = vEnemys.begin(); myIt != vEnemys.end(); myIt++)
     {
         (*myIt)->Render(hdc);
-    }
+    }*/
 }
 
 void EnemyManager::AddEnemy(int size)

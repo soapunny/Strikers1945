@@ -10,7 +10,7 @@ class PlayerShip;
 class MissileManager : public GameNode
 {
 public:
-	enum class FIRETYPE { NormalFIRE };
+	enum class FIRETYPE { NormalFIRE, MeteorFIRE, WormFIRE, TwoFIRE, NotFIRE	};
 
 private:
 	vector<Missile*> vMissiles;

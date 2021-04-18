@@ -1,11 +1,15 @@
 #include "Missile.h"
 #include "Enemy.h"
+#include "Barrel.h"
 #include "CommonFunction.h"
 #include "Image.h"
 #include <math.h>
 #include "SkillManager.h"
 #include "NormalSkill.h"
-
+#include "MeteorSkill.h"
+#include "WormSkill.h"
+#include "TwoSkill.h"
+#include "NotSkill.h"
 HRESULT Missile::Init(FPOINT position)
 {
 	startPos = position;
@@ -51,6 +55,22 @@ void Missile::Update()
 		{
 		case SKILLTYPE::NormalSkillTYPE:
 			skillManager->ChangeSkill(new NormalSkill());
+			skillManager->UseSkill(&pos, &angle, moveSpeed, moveTime);
+			break;
+		case SKILLTYPE::MeteorSkillTYPE:
+			skillManager->ChangeSkill(new MeteorSkill());
+			skillManager->UseSkill(&pos, &angle, moveSpeed, moveTime);
+			break;
+		case SKILLTYPE::WormSKillTYPE:
+			skillManager->ChangeSkill(new WormSkill());
+			skillManager->UseSkill(&pos, &angle, moveSpeed, moveTime);
+			break;
+		case SKILLTYPE::TwoSKillTYPE:
+			skillManager->ChangeSkill(new TwoSkill());
+			skillManager->UseSkill(&pos, &angle, moveSpeed, moveTime);
+			break;
+		case SKILLTYPE::NotSkillTYPE:
+			skillManager->ChangeSkill(new NotSkill());
 			skillManager->UseSkill(&pos, &angle, moveSpeed, moveTime);
 			break;
 		default:

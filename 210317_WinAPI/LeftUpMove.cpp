@@ -1,11 +1,11 @@
-#include "LeftDownMove.h"
+#include "LeftUpMove.h"
 
-void LeftDownMove::DoMove(FPOINT* pos, float* angle)
+void LeftUpMove::DoMove(FPOINT* pos, float* angle)
 {
 	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
-	
-	*angle = DegToRad(-45);
+
+	*angle = DegToRad(45);
 	pos->x += cos(*angle) * moveSpeed * elapsedTime;
 	pos->y -= sin(*angle) * moveSpeed * elapsedTime;
-	
+
 }

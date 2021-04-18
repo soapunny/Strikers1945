@@ -26,7 +26,7 @@ HRESULT StageThreeBoss::Init()
     for (int i = 0; i < 6; i++)
     {
         vBarrels[i] = new Barrel();
-        vBarrels[i]->Init(pos);
+        vBarrels[i]->Init(pos.x, pos.y);
     }
 
     return S_OK;

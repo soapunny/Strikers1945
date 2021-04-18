@@ -2,10 +2,13 @@
 #include "MissileManager.h"
 #include "Missile.h"
 #include "NormalFire.h"
-
+#include "MeteorFire.h"
+#include "WormFire.h"
+#include "TwoFire.h"
+#include "NotFire.h"
 HRESULT MissileManager::Init(FPOINT pos)
 {
-    totalMissileNum = 500;
+    totalMissileNum = 2000;
     vMissiles.resize(totalMissileNum);
     vector<Missile*>::iterator myIt;
     for (myIt = vMissiles.begin(); myIt != vMissiles.end(); myIt++)
@@ -23,6 +26,10 @@ HRESULT MissileManager::Init(FPOINT pos)
     //어떤 미사일을 장전 시킬 것인가
     fireManager = new FireManager();
     fireManager->ChangeMove(new NormalFire());
+    fireManager->ChangeMove(new MeteorFire());
+    fireManager->ChangeMove(new WormFire());
+    fireManager->ChangeMove(new TwoFire());
+    fireManager->ChangeMove(new NotFire());
 
     return S_OK;
 }
@@ -61,7 +68,25 @@ void MissileManager::Fire(FIRETYPE fireType)
     //어떤 미사일을 발사 할 것인지 알려주기
     switch (fireType)
     {
+        //체인지 무브 안해줘서 해줬음
     case FIRETYPE::NormalFIRE:
+        fireManager->ChangeMove(new NormalFire());
+        fireManager->DoFire(&vMissiles);
+        break; 
+    case FIRETYPE::MeteorFIRE:
+        fireManager->ChangeMove(new MeteorFire());
+        fireManager->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::WormFIRE:
+        fireManager->ChangeMove(new WormFire());
+        fireManager->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::TwoFIRE:
+        fireManager->ChangeMove(new TwoFire());
+        fireManager->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::NotFIRE:
+        fireManager->ChangeMove(new NotFire());
         fireManager->DoFire(&vMissiles);
         break;
     default:

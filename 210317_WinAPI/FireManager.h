@@ -9,14 +9,14 @@ private:
 	FireInterface* fireInterface;
 
 public:
-	void ChangeMove(FireInterface* changeFire)
+	virtual	void ChangeMove(FireInterface* changeFire)
 	{
 		if (fireInterface)
 			delete fireInterface;
 		fireInterface = changeFire;
 	}
 
-	void DoFire(vector<Missile*>* vMissiles)
+	virtual void DoFire(vector<Missile*>* vMissiles)
 	{
 		if (fireInterface)
 			fireInterface->DoFire(vMissiles);

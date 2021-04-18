@@ -15,7 +15,7 @@ HRESULT MainGame::Init()
 	//이미지를 미리 로드 해두자
 	ImageManager::GetSingleton()->AddImage("Enemy","Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("EnemyMissile","Image/구슬.bmp", 20, 20, true, RGB(255, 0, 255));
-
+	ImageManager::GetSingleton()->AddImage("Boss_change", "Image/Boss_change.bmp", 382, 294,1,1, true, RGB(255, 255, 255));
 	// 메인게임의 초기화 함수
 	//hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 
