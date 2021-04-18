@@ -7,6 +7,7 @@ void WormFire::DoFire(vector<Missile*>* vMissiles)
     //작아지면서 해당 위치에 쏘기 그리고 사라짐
     srand(time(NULL));
 
+    
     for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
     {
         if ((*myIt)->GetIsFired() == false)
@@ -15,7 +16,7 @@ void WormFire::DoFire(vector<Missile*>* vMissiles)
             (*myIt)->SetType(Missile::SKILLTYPE::WormSKillTYPE);
             (*myIt)->SetIsFired(true);
             (*myIt)->SetAngle((k * 3.14f * 2.0f / 36.0f));
-           // break;
+            break;
         }
         k++;
     }

@@ -3,6 +3,8 @@
 
 class StageOneBoss : public Boss
 {
+private:
+
 public:
 	virtual HRESULT Init();
 	virtual void Release();

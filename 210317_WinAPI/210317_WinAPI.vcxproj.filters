@@ -55,6 +55,15 @@
     <Filter Include="Skill_Manage\BHS">
       <UniqueIdentifier>{1bc4fadd-0a4b-40cc-808a-039348792c74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Move_Manage\Move">
+      <UniqueIdentifier>{dee02fcb-5b15-484e-a384-208d63bcb9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Fire_Manage\Fire">
+      <UniqueIdentifier>{5a7845ea-82da-4c76-8955-50314417a29c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skill_Manage\Skill">
+      <UniqueIdentifier>{dfe97ea3-1a08-485e-88d4-baee4333a8d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -114,65 +123,80 @@
     <ClCompile Include="StageThreeBoss.cpp">
       <Filter>MainGame\Boss_Manage</Filter>
     </ClCompile>
-    <ClCompile Include="NormalMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
+    <ClCompile Include="LeftDownMove.cpp">
+      <Filter>MainGame\Move_Manage\Move</Filter>
     </ClCompile>
     <ClCompile Include="NormalFire.cpp">
-      <Filter>MainGame\Fire_Manage</Filter>
+      <Filter>MainGame\Fire_Manage\Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalMove.cpp">
+      <Filter>MainGame\Move_Manage\Move</Filter>
     </ClCompile>
     <ClCompile Include="NormalSkill.cpp">
-      <Filter>Skill_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="LeftDownMove.cpp">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClCompile>
-    <ClCompile Include="RightDownMove.cpp">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClCompile>
-    <ClCompile Include="RightUpMove.cpp">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
+      <Filter>Skill_Manage\Skill</Filter>
     </ClCompile>
     <ClCompile Include="LeftUpMove.cpp">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
+      <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MeteorFire.cpp">
-      <Filter>MainGame\Fire_Manage\BHS</Filter>
+    <ClCompile Include="TornadoSkill.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MeteorSkill.cpp">
+    <ClCompile Include="ZigzagFire.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ZigzagMove.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ZigzagSkill.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\MeteorSkill.cpp">
       <Filter>Skill_Manage\BHS</Filter>
     </ClCompile>
-    <ClCompile Include="ComeAndGoMove.cpp">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClCompile>
-    <ClCompile Include="LeftMove.cpp">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClCompile>
-    <ClCompile Include="RightMove.cpp">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClCompile>
-    <ClCompile Include="CenterMove.cpp">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClCompile>
-    <ClCompile Include="PhaseChangeMove.cpp">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClCompile>
-    <ClCompile Include="WormSkill.cpp">
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\NotSkill.cpp">
       <Filter>Skill_Manage\BHS</Filter>
     </ClCompile>
-    <ClCompile Include="WormFire.cpp">
-      <Filter>MainGame\Fire_Manage\BHS</Filter>
-    </ClCompile>
-    <ClCompile Include="TwoSkill.cpp">
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\TwoSkill.cpp">
       <Filter>Skill_Manage\BHS</Filter>
     </ClCompile>
-    <ClCompile Include="TwoFire.cpp">
-      <Filter>MainGame\Fire_Manage\BHS</Filter>
-    </ClCompile>
-    <ClCompile Include="NotSkill.cpp">
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\WormSkill.cpp">
       <Filter>Skill_Manage\BHS</Filter>
     </ClCompile>
-    <ClCompile Include="NotFire.cpp">
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\MeteorFire.cpp">
       <Filter>MainGame\Fire_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\NotFire.cpp">
+      <Filter>MainGame\Fire_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\TwoFire.cpp">
+      <Filter>MainGame\Fire_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\WormFire.cpp">
+      <Filter>MainGame\Fire_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\CenterMove.cpp">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\LeftDownMove.cpp">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\LeftMove.cpp">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\LeftUpMove.cpp">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\PhaseChangeMove.cpp">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\RightDownMove.cpp">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\RightMove.cpp">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\RightUpMove.cpp">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,16 +272,10 @@
     <ClInclude Include="MoveInterface.h">
       <Filter>MainGame\Move_Manage</Filter>
     </ClInclude>
-    <ClInclude Include="NormalMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
     <ClInclude Include="FireManager.h">
       <Filter>MainGame\Fire_Manage</Filter>
     </ClInclude>
     <ClInclude Include="FireInterface.h">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalFire.h">
       <Filter>MainGame\Fire_Manage</Filter>
     </ClInclude>
     <ClInclude Include="SkillManager.h">
@@ -266,59 +284,80 @@
     <ClInclude Include="SkillInterface.h">
       <Filter>Skill_Manage</Filter>
     </ClInclude>
-    <ClInclude Include="NormalSkill.h">
-      <Filter>Skill_Manage</Filter>
-    </ClInclude>
     <ClInclude Include="LeftDownMove.h">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
+      <Filter>MainGame\Move_Manage\Move</Filter>
     </ClInclude>
-    <ClInclude Include="RightDownMove.h">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
+    <ClInclude Include="NormalFire.h">
+      <Filter>MainGame\Fire_Manage\Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalMove.h">
+      <Filter>MainGame\Move_Manage\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalSkill.h">
+      <Filter>Skill_Manage\Skill</Filter>
     </ClInclude>
     <ClInclude Include="LeftUpMove.h">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
+      <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="RightUpMove.h">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
+    <ClInclude Include="TornadoSkill.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MeteorFire.h">
-      <Filter>MainGame\Fire_Manage\BHS</Filter>
+    <ClInclude Include="ZigzagFire.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MeteorSkill.h">
+    <ClInclude Include="ZigzagMove.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ZigzagSkill.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\MeteorSkill.h">
       <Filter>Skill_Manage\BHS</Filter>
     </ClInclude>
-    <ClInclude Include="ComeAndGoMove.h">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClInclude>
-    <ClInclude Include="RightMove.h">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClInclude>
-    <ClInclude Include="LeftMove.h">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClInclude>
-    <ClInclude Include="CenterMove.h">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClInclude>
-    <ClInclude Include="PhaseChangeMove.h">
-      <Filter>MainGame\Move_Manage\BHS</Filter>
-    </ClInclude>
-    <ClInclude Include="WormSkill.h">
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\NotSkill.h">
       <Filter>Skill_Manage\BHS</Filter>
     </ClInclude>
-    <ClInclude Include="WormFire.h">
-      <Filter>MainGame\Fire_Manage\BHS</Filter>
-    </ClInclude>
-    <ClInclude Include="TwoSkill.h">
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\TwoSkill.h">
       <Filter>Skill_Manage\BHS</Filter>
     </ClInclude>
-    <ClInclude Include="TwoFire.h">
-      <Filter>MainGame\Fire_Manage\BHS</Filter>
-    </ClInclude>
-    <ClInclude Include="NotSkill.h">
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\WormSkill.h">
       <Filter>Skill_Manage\BHS</Filter>
     </ClInclude>
-    <ClInclude Include="NotFire.h">
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\MeteorFire.h">
       <Filter>MainGame\Fire_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\NotFire.h">
+      <Filter>MainGame\Fire_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\TwoFire.h">
+      <Filter>MainGame\Fire_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\WormFire.h">
+      <Filter>MainGame\Fire_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\CenterMove.h">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\LeftDownMove.h">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\LeftMove.h">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\LeftUpMove.h">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\PhaseChangeMove.h">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\RightDownMove.h">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\RightMove.h">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\RightUpMove.h">
+      <Filter>MainGame\Move_Manage\BHS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

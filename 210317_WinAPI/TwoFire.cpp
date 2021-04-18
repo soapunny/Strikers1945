@@ -7,6 +7,7 @@ void TwoFire::DoFire(vector<Missile*>* vMissiles)
     //작아지면서 해당 위치에 쏘기 그리고 사라짐
     srand(time(NULL));
 
+    int i = 0;
     for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
     {
         if ((*myIt)->GetIsFired() == false)
@@ -15,7 +16,10 @@ void TwoFire::DoFire(vector<Missile*>* vMissiles)
             (*myIt)->SetType(Missile::SKILLTYPE::TwoSKillTYPE);
             (*myIt)->SetIsFired(true);            
             (*myIt)->SetAngle(DegToRad(k));
-            // break;
+            
+            i++;
+            if(i >= 2)
+                break;
             
         }
 

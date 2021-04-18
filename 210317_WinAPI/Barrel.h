@@ -1,15 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "GameNode.h"
 
-class Tank;
 class MissileManager;
-
-
 class Barrel
 {
 private:
-
-	// Æ÷½Å(Æ÷½ÅÀÇ ½ÃÀÛÁ¡, ³¡Á¡)	µ¿Àû ÇÊ¿ä
+	// ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½)	ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 	FPOINT barrelStart;
 	FPOINT barrelEnd;
 	int barrelSize;
@@ -18,7 +14,6 @@ private:
 	int updateCount;
 	int missileType;
 	FPOINT pos;
-	int size;
 	string name;
 	RECT shape;
 	float moveSpeed;
@@ -26,11 +21,10 @@ private:
 	float angle;
 	enum MISSILETYPE{NOT,NORMAL, TWO, WORM, METEOR};
 	MISSILETYPE typeMissile;
-	Tank* target;
 	int dir;
 
-	// ¹Ì»çÀÏ
-	MissileManager* myMissile; //µ¿Àû ÇÊ¿ä
+	// ï¿½Ì»ï¿½ï¿½ï¿½
+	MissileManager* myMissile; //ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 	int fireCount;
 public:
 	HRESULT Init(int posX = 0, int posY = 0);
@@ -45,10 +39,14 @@ public:
 	inline void SetBarrelPos(FPOINT pos) { this->barrelStart = pos; }
 	inline void SetPos(FPOINT pos) { this->pos = pos; }
 	inline FPOINT GetPos() { return this->pos; }
-	inline void SetTarget(Tank* target) { this->target = target; }
-	inline int GetSize() { return this->size; }
 	inline void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
 	inline bool GetIsAlive() { return this->isAlive; }
 	inline void SetMissileType(int type) { this->missileType = type; }
+	inline void SetbarrelEnd( FPOINT barrelEnd) { this->barrelEnd = barrelEnd; }
+
+	inline FPOINT GetstartPos() {return barrelStart;}//í¬ì‹ ì„ ë³´ìŠ¤ì—ì„œ ëŒë ¤ì¤„ë ¤ê³  ê°€ì ¸ì˜´
+	inline float GetAngle() { return barrelAngle; }
+	inline int GetSize() { return barrelSize; }
+	//inline void SetPos(FPOINT pos) { this->barrelStart = pos; }
 };
 

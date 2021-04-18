@@ -10,6 +10,8 @@
 #include "WormSkill.h"
 #include "TwoSkill.h"
 #include "NotSkill.h"
+#include "ZigzagSkill.h"
+
 HRESULT Missile::Init(FPOINT position)
 {
 	startPos = position;
@@ -24,7 +26,7 @@ HRESULT Missile::Init(FPOINT position)
 	damage = 5000;
 	angle = 0.0f;
 	isFired = false;
-	missileType = SKILLTYPE::NormalSkillTYPE;
+	missileType = SKILLTYPE::ZigzagSkillTYPE;
 	fireStep = 0;
 	target = nullptr;
 	destAngle = 0.0f;
@@ -71,6 +73,12 @@ void Missile::Update()
 			break;
 		case SKILLTYPE::NotSkillTYPE:
 			skillManager->ChangeSkill(new NotSkill());
+		case SKILLTYPE::ZigzagSkillTYPE:
+			skillManager->ChangeSkill(new ZigzagSkill());
+			skillManager->UseSkill(&pos, &angle, moveSpeed, moveTime);
+			break;
+		case SKILLTYPE::TornadoSkillTYPE:
+			skillManager->ChangeSkill(new ZigzagSkill());
 			skillManager->UseSkill(&pos, &angle, moveSpeed, moveTime);
 			break;
 		default:

@@ -11,7 +11,7 @@ class SkillInterface;
 class Missile : public GameNode
 {
 public:
-	enum SKILLTYPE { NormalSkillTYPE, ZigzagSkillTYPE, MeteorSkillTYPE, WormSKillTYPE, TwoSKillTYPE, NotSkillTYPE };
+	enum SKILLTYPE { NormalSkillTYPE, ZigzagSkillTYPE, MeteorSkillTYPE, WormSKillTYPE, TwoSKillTYPE, NotSkillTYPE, TornadoSkillTYPE};
 
 protected:
 	// ¿ÃπÃ¡ˆ

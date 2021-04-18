@@ -7,7 +7,8 @@
 #include "LeftUpMove.h"
 #include "RightDownMove.h"
 #include "RightUpMove.h"
-
+#include "RightSideMove.h"
+#include "ZigzagMove.h"
 HRESULT StageOneBoss::Init()
 {
     // 보스1 이미지
@@ -29,6 +30,7 @@ HRESULT StageOneBoss::Init()
     //보스 이동 방법 정의
     moveManager = new MoveManager();
     moveManager->ChangeMove(new RightUpMove());
+    //moveManager->ChangeMove(new ZigzagMove());
     moveManager->DoMove(&pos, &angle);
 
     //생존여부

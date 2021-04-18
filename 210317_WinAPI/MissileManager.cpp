@@ -6,6 +6,8 @@
 #include "WormFire.h"
 #include "TwoFire.h"
 #include "NotFire.h"
+#include "ZigzagFire.h"
+
 HRESULT MissileManager::Init(FPOINT pos)
 {
     totalMissileNum = 2000;
@@ -30,6 +32,8 @@ HRESULT MissileManager::Init(FPOINT pos)
     fireManager->ChangeMove(new WormFire());
     fireManager->ChangeMove(new TwoFire());
     fireManager->ChangeMove(new NotFire());
+    //fireManager->ChangeMove(new NormalFire());
+    fireManager->ChangeMove(new ZigzagFire());
 
     return S_OK;
 }
@@ -87,6 +91,9 @@ void MissileManager::Fire(FIRETYPE fireType)
         break;
     case FIRETYPE::NotFIRE:
         fireManager->ChangeMove(new NotFire());
+        fireManager->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::ZigzagFIRE:
         fireManager->DoFire(&vMissiles);
         break;
     default:

@@ -1,6 +1,7 @@
 #pragma once
 #include "FireInterface.h"
-class MeteorFire :	public FireInterface
+
+class MeteorFire : public FireInterface
 {
 private:
 	int currTime = 0;
