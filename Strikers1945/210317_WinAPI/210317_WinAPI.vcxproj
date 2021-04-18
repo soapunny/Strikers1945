@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{e631e540-4d9f-4e91-a426-f433723bec2f}</ProjectGuid>
+    <RootNamespace>My210317WinAPI</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\CenterMove.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\LeftDownMove.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\LeftMove.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\LeftUpMove.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\MeteorFire.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\MeteorSkill.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\NotFire.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\NotSkill.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\PhaseChangeMove.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\RightDownMove.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\RightMove.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\RightUpMove.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\TwoFire.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\TwoSkill.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\WormFire.cpp" />
+    <ClCompile Include="..\..\..\Strikers1945\210317_WinAPI\WormSkill.cpp" />
+    <ClCompile Include="Barrel.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossManager.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="ImageManager.cpp" />
+    <ClCompile Include="KeyManager.cpp" />
+    <ClCompile Include="LeftDownMove.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="MissileManager.cpp" />
+    <ClCompile Include="NormalFire.cpp" />
+    <ClCompile Include="NormalMove.cpp" />
+    <ClCompile Include="LeftUpMove.cpp" />
+    <ClCompile Include="NormalSkill.cpp" />
+    <ClCompile Include="PlayerShip.cpp" />
+    <ClCompile Include="StageOneBoss.cpp" />
+    <ClCompile Include="StageThreeBoss.cpp" />
+    <ClCompile Include="StageTwoBoss.cpp" />
+    <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TimerManager.cpp" />
+    <ClCompile Include="TornadoSkill.cpp" />
+    <ClCompile Include="ZigzagFire.cpp" />
+    <ClCompile Include="ZigzagMove.cpp" />
+    <ClCompile Include="ZigzagSkill.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\CenterMove.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\LeftDownMove.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\LeftMove.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\LeftUpMove.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\MeteorFire.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\MeteorSkill.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\NotFire.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\NotSkill.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\PhaseChangeMove.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\RightDownMove.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\RightMove.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\RightUpMove.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\TwoFire.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\TwoSkill.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\WormFire.h" />
+    <ClInclude Include="..\..\..\Strikers1945\210317_WinAPI\WormSkill.h" />
+    <ClInclude Include="Barrel.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossManager.h" />
+    <ClInclude Include="CommonFunction.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="ImageManager.h" />
+    <ClInclude Include="FireInterface.h" />
+    <ClInclude Include="FireManager.h" />
+    <ClInclude Include="GameNode.h" />
+    <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="LeftDownMove.h" />
+    <ClInclude Include="MainGame.h" />
+    <ClInclude Include="Missile.h" />
+    <ClInclude Include="MissileManager.h" />
+    <ClInclude Include="MoveInterface.h" />
+    <ClInclude Include="MoveManager.h" />
+    <ClInclude Include="NormalFire.h" />
+    <ClInclude Include="NormalMove.h" />
+    <ClInclude Include="LeftUpMove.h" />
+    <ClInclude Include="NormalSkill.h" />
+    <ClInclude Include="PlayerShip.h" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SkillInterface.h" />
+    <ClInclude Include="SkillManager.h" />
+    <ClInclude Include="StageOneBoss.h" />
+    <ClInclude Include="StageThreeBoss.h" />
+    <ClInclude Include="StageTwoBoss.h" />
+    <ClInclude Include="Tank.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="TimerManager.h" />
+    <ClInclude Include="TornadoSkill.h" />
+    <ClInclude Include="ZigzagFire.h" />
+    <ClInclude Include="ZigzagMove.h" />
+    <ClInclude Include="ZigzagSkill.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

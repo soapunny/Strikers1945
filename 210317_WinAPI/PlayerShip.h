@@ -12,19 +12,23 @@ private:
 	float moveSpeed;	//초당 이동거리
 	bool isDying;
 	bool isAlive;
+	bool canMove;
+
+	int currFrameX;
 
 	int size;
 	float attackValue;
 
-	int barrelSize;
-	FPOINT barrelEnd;
-	FPOINT barrelEnd2;
-	FPOINT barrelEnd3;
-	float barrelAngle;
-	float barrelAngle2;
-	float barrelAngle3;
+	char szText[128];
+	int playerLife;
 
-	MissileManager* myMissile[3];
+	FPOINT collisionSize;
+
+	int barrelSize;
+	FPOINT barrelEnd[4];
+	float barrelAngle[4];
+
+	MissileManager* myMissile[4];
 	int fireCount;
 
 public:

@@ -8,6 +8,12 @@
 #include "RightSinMove.h"
 #include "SpearMove.h"
 #include "BilliardsMove.h"
+#include "PointMove.h"
+#include "LeftUpMove.h"
+#include "RightDownMove.h"
+#include "RightUpMove.h"
+#include "RightSideMove.h"
+#include "ZigzagMove.h"
 
 HRESULT StageOneBoss::Init()
 {
@@ -27,6 +33,13 @@ HRESULT StageOneBoss::Init()
     size = 200;                     //크기
     moveSpeed = 100.0f;               //이동 속도
     angle = PI/3;
+
+    //pos.x = WINSIZE_X+50;          //위치
+    //pos.y = WINSIZE_Y / 2;
+    //size = 100;                     //크기
+    //moveSpeed = 100.0f;               //이동 속도
+    //angle = 0;
+
     //보스 이동 방법 정의
     vMoveInterfaces.resize(4);
     vMoveInterfaces[0] = new RightSinMove;
@@ -35,6 +48,7 @@ HRESULT StageOneBoss::Init()
     vMoveInterfaces[3] = new BilliardsMove;
 
     moveManager = new MoveManager();
+
     moveManager->ChangeMove(vMoveInterfaces[0]);
     for(int i =0;i<vMoveInterfaces.size();i++)
         vMoveInterfaces[i]->SetMoveSpeed(moveSpeed);
@@ -45,6 +59,11 @@ HRESULT StageOneBoss::Init()
     life = 100;
     time = 0.0f;
 
+    ////moveManager->ChangeMove(new PointMove());
+    //moveManager->ChangeMove(new RightUpMove());
+    ////moveManager->ChangeMove(new ZigzagMove());
+    //moveManager->DoMove(&pos, &angle);
+
     //생존여부
     isAlive = true;
 
@@ -53,7 +72,7 @@ HRESULT StageOneBoss::Init()
     for (int i = 0; i < 6; i++)
     {
         vBarrels[i] = new Barrel();
-        vBarrels[i]->Init(pos);
+        vBarrels[i]->Init(pos.x, pos.y);
         vBarrels[i]->SetAngle(i * PI/3 - PI*2/3);
     }
 

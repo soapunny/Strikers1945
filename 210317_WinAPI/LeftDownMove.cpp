@@ -1,15 +1,13 @@
-
 #include "LeftDownMove.h"
 
 void LeftDownMove::DoMove(FPOINT* pos, float* angle)
 {
 	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
-	//if (pos->x < -400)
-	{
-		*angle = DegToRad(45);
-		pos->x += cos(*angle) * moveSpeed * elapsedTime*10;
-		pos->y -= sin(*angle) * moveSpeed * elapsedTime*10;
-	}
+	
+	*angle = DegToRad(-45);
+	pos->x += cos(*angle) * moveSpeed * elapsedTime;
+	pos->y -= sin(*angle) * moveSpeed * elapsedTime;
+	
 }
 
 void LeftDownMove::Renew()

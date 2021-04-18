@@ -10,7 +10,7 @@ class PlayerShip;
 class MissileManager : public GameNode
 {
 public:
-	enum class FIRETYPE { NormalFIRE, FallingKnivesFire, FIREWORKFIRE };
+	enum class FIRETYPE { NormalFIRE, FallingKnivesFire, FIREWORKFIRE, GuidedFIRE, PlayerFIRE, ZigzagFIRE, MeteorFIRE, WormFIRE, TwoFIRE, NotFIRE	};
 
 private:
 	vector<Missile*> vMissiles;
@@ -19,10 +19,10 @@ private:
 	FPOINT missilePos;	//미사일 시작점
 	float missileAngle;	//미사일 각도
 
-	int angle_1, angle_2;	//꽃모양 미사일 변수
-	int angle_3;			//원 정지 미사일 변수
-
 	FireManager* fireManager;
+	FPOINT playerPos;
+
+	FIRETYPE fireType;
 
 public:
 	HRESULT Init(FPOINT pos);		// 오버라이딩 : 다형성
@@ -34,9 +34,9 @@ public:
 
 	void Fire(FIRETYPE fireType);
 
+	inline void SetPlayerPos(FPOINT pos) { this->playerPos = pos; }
 	inline void GetPos() { this->missilePos; }
 	inline void SetPos(FPOINT pos) { this->missilePos = pos; }
 	inline void SetAngle(float angle) { this->missileAngle = angle; }
-	inline void SetAngle_3() { this->angle_3 = 0; }
 };
 

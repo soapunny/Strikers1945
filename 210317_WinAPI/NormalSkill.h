@@ -1,5 +1,6 @@
 #pragma once
 #include "SkillInterface.h"
+#include "Missile.h"
 
 class NormalSkill : public SkillInterface
 {

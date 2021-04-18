@@ -46,6 +46,9 @@
     <Filter Include="MainGame\Tank_Manage%28Player%29">
       <UniqueIdentifier>{a01034b0-7b9c-4dd4-9ebd-c3111f5f425d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Skill_Manage\BHS">
+      <UniqueIdentifier>{1bc4fadd-0a4b-40cc-808a-039348792c74}</UniqueIdentifier>
+    </Filter>
     <Filter Include="MainGame\Move_Manage\Move">
       <UniqueIdentifier>{dee02fcb-5b15-484e-a384-208d63bcb9f4}</UniqueIdentifier>
     </Filter>
@@ -149,6 +152,92 @@
     </ClCompile>
     <ClCompile Include="FireworkSkill.cpp">
       <Filter>Skill_Manage\Skill</Filter>
+    <ClCompile Include="NormalFire.cpp">
+      <Filter>MainGame\Fire_Manage\Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalMove.cpp">
+      <Filter>MainGame\Move_Manage\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalSkill.cpp">
+      <Filter>Skill_Manage\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="TornadoSkill.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ZigzagFire.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ZigzagMove.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ZigzagSkill.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MeteorFire.cpp">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="TwoFire.cpp">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="WormFire.cpp">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="CenterMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="LeftDownMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="LeftMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="LeftUpMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="RightDownMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="RightMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="RightSideMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="RightUpMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="PhaseChangeMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="MeteorSkill.cpp">
+      <Filter>Skill_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="NotFire.cpp">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="NotSkill.cpp">
+      <Filter>Skill_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="TwoSkill.cpp">
+      <Filter>Skill_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="WormSkill.cpp">
+      <Filter>Skill_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularSkill.cpp">
+      <Filter>Skill_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="GuidedFire.cpp">
+      <Filter>MainGame\Fire_Manage\Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="GuidedSkill.cpp">
+      <Filter>Skill_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFire.cpp">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSkill.cpp">
+      <Filter>Skill_Manage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +360,86 @@
     </ClInclude>
     <ClInclude Include="FireworkSkill.h">
       <Filter>헤더 파일</Filter>
+    <ClInclude Include="NormalFire.h">
+      <Filter>MainGame\Fire_Manage\Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalMove.h">
+      <Filter>MainGame\Move_Manage\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalSkill.h">
+      <Filter>Skill_Manage\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="TornadoSkill.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ZigzagFire.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ZigzagMove.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ZigzagSkill.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MeteorFire.h">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="TwoFire.h">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="WormFire.h">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="CenterMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="LeftDownMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="LeftMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="LeftUpMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="RightDownMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="RightMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="RightSideMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="RightUpMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="PhaseChangeMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="MeteorSkill.h">
+      <Filter>Skill_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="NotFire.h">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="NotSkill.h">
+      <Filter>Skill_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="TwoSkill.h">
+      <Filter>Skill_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="WormSkill.h">
+      <Filter>Skill_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="GuidedSkill.h">
+      <Filter>Skill_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerFire.h">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSkill.h">
+      <Filter>Skill_Manage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

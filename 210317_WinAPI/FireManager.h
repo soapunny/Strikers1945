@@ -9,7 +9,7 @@ private:
 	FireInterface* fireInterface;
 
 public:
-	void ChangeMove(FireInterface* changeFire)
+	virtual	void ChangeMove(FireInterface* changeFire)
 	{
 		/*if (fireInterface)
 			delete fireInterface;*/

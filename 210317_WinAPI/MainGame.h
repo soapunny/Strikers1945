@@ -20,6 +20,8 @@ private:
 
 	Image* backBuffer;
 	Image* backGround;
+	FPOINT backGroundPos;
+	Image* backCloud;
 
 	Tank* tank;
 

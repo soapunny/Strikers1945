@@ -1,6 +1,7 @@
 #pragma once
 #include "config.h"
 #include "SkillInterface.h"
+#include "Missile.h"
 
 class SkillManager
 {
@@ -10,8 +11,8 @@ private:
 public:
 	void ChangeSkill(SkillInterface* changeSkill)
 	{
-		if (skillInterface)
-			delete skillInterface;
+		/*if (skillInterface)
+			delete skillInterface;*/
 		skillInterface = changeSkill;
 	}
 
