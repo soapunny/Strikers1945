@@ -76,7 +76,16 @@ void Enemy::Update()
                 fireCount++;
                 if (fireCount % 20 == 0)
                 {
-                    myMissile->Fire(MissileManager::FIRETYPE::NormalFIRE);
+                    myMissile->Fire(MissileManager::FIRETYPE::ZigzagFIRE);
+                    fireCount = 0;
+                }
+            }
+            if (KeyManager::GetSingleton()->IsStayKeyDown('Q'))
+            {
+                fireCount++;
+                if (fireCount % 20 == 0)
+                {
+                    myMissile->Fire(MissileManager::FIRETYPE::MeteorFIRE);
                     fireCount = 0;
                 }
             }

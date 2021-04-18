@@ -1,25 +1,52 @@
-#pragma once
+ï»¿#pragma once
 #include "GameNode.h"
 
 class MissileManager;
 class Barrel
 {
 private:
-	// Æ÷½Å(Æ÷½ÅÀÇ ½ÃÀÛÁ¡, ³¡Á¡)	µ¿Àû ÇÊ¿ä
+	// ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½)	ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 	FPOINT barrelStart;
 	FPOINT barrelEnd;
 	int barrelSize;
 	float barrelAngle;
+	int currFrameX;
+	int updateCount;
+	int missileType;
+	FPOINT pos;
+	string name;
+	RECT shape;
+	float moveSpeed;
+	bool isAlive;
+	float angle;
+	enum MISSILETYPE{NOT,NORMAL, TWO, WORM, METEOR};
+	MISSILETYPE typeMissile;
+	int dir;
 
-	// ¹Ì»çÀÏ
-	MissileManager* myMissile; //µ¿Àû ÇÊ¿ä
+	// ï¿½Ì»ï¿½ï¿½ï¿½
+	MissileManager* myMissile; //ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 	int fireCount;
 public:
-	HRESULT Init(FPOINT pos);
+	HRESULT Init(int posX = 0, int posY = 0);
+	virtual HRESULT Init() { return E_FAIL; };
 	void Release();
 	void Update();
 	void Render(HDC hdc);
 
-	inline void SetPos(FPOINT pos) { this->barrelStart = pos; }
+	void Move();
+	void HorizonMove();	
+
+	inline void SetBarrelPos(FPOINT pos) { this->barrelStart = pos; }
+	inline void SetPos(FPOINT pos) { this->pos = pos; }
+	inline FPOINT GetPos() { return this->pos; }
+	inline void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
+	inline bool GetIsAlive() { return this->isAlive; }
+	inline void SetMissileType(int type) { this->missileType = type; }
+	inline void SetbarrelEnd( FPOINT barrelEnd) { this->barrelEnd = barrelEnd; }
+
+	inline FPOINT GetstartPos() {return barrelStart;}//í¬ì‹ ì„ ë³´ìŠ¤ì—ì„œ ëŒë ¤ì¤„ë ¤ê³  ê°€ì ¸ì˜´
+	inline float GetAngle() { return barrelAngle; }
+	inline int GetSize() { return barrelSize; }
+	//inline void SetPos(FPOINT pos) { this->barrelStart = pos; }
 };
 

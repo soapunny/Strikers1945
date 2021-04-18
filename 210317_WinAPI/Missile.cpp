@@ -1,5 +1,6 @@
 #include "Missile.h"
 #include "Enemy.h"
+#include "Barrel.h"
 #include "CommonFunction.h"
 #include "Image.h"
 #include <math.h>
@@ -8,6 +9,11 @@
 #include "CircularSkill.h"
 #include "GuidedSkill.h"
 #include "PlayerSkill.h"
+#include "MeteorSkill.h"
+#include "WormSkill.h"
+#include "TwoSkill.h"
+#include "NotSkill.h"
+#include "ZigzagSkill.h"
 
 HRESULT Missile::Init(FPOINT position)
 {
@@ -22,7 +28,7 @@ HRESULT Missile::Init(FPOINT position)
 	shape = { 0, 0, 0, 0 };
 	damage = 5000;
 	isFired = false;
-	missileType = SKILLTYPE::NormalSkillTYPE;
+	missileType = SKILLTYPE::ZigzagSkillTYPE;
 	fireStep = 0;
 
 	// ÀÌ¹ÌÁö
@@ -63,6 +69,28 @@ void Missile::Update()
 			break;
 		case SKILLTYPE::PlayerSkillTYPE:
 			skillManager->ChangeSkill(new PlayerSkill());
+			skillManager->UseSkill(this);
+			break;
+		case SKILLTYPE::MeteorSkillTYPE:
+			skillManager->ChangeSkill(new MeteorSkill());
+			skillManager->UseSkill(this);
+			break;
+		case SKILLTYPE::WormSKillTYPE:
+			skillManager->ChangeSkill(new WormSkill());
+			skillManager->UseSkill(this);
+			break;
+		case SKILLTYPE::TwoSKillTYPE:
+			skillManager->ChangeSkill(new TwoSkill());
+			skillManager->UseSkill(this);
+			break;
+		case SKILLTYPE::NotSkillTYPE:
+			skillManager->ChangeSkill(new NotSkill());
+		case SKILLTYPE::ZigzagSkillTYPE:
+			skillManager->ChangeSkill(new ZigzagSkill());
+			skillManager->UseSkill(this);
+			break;
+		case SKILLTYPE::TornadoSkillTYPE:
+			skillManager->ChangeSkill(new ZigzagSkill());
 			skillManager->UseSkill(this);
 			break;
 		default:

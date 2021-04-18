@@ -3,6 +3,7 @@
 
 class Image;
 class Enemy;
+class Barrel;
 class PlayerShip;
 class SkillManager;
 class SkillInterface;
@@ -10,7 +11,7 @@ class SkillInterface;
 class Missile : public GameNode
 {
 public:
-	enum SKILLTYPE { NormalSkillTYPE, ZigzagSkillTYPE, CircularSkillTYPE, GuidedSkillTYPE, PlayerSkillTYPE};
+	enum SKILLTYPE { NormalSkillTYPE, ZigzagSkillTYPE, CircularSkillTYPE, GuidedSkillTYPE, PlayerSkillTYPE, MeteorSkillTYPE, WormSKillTYPE, TwoSKillTYPE, NotSkillTYPE, TornadoSkillTYPE};
 
 protected:
 	// ÀÌ¹ÌÁö
@@ -27,7 +28,7 @@ protected:
 	float angle;
 	bool isFired;
 	SKILLTYPE missileType;
-	//int fireIndex;
+	int fireIndex;
 	int fireStep;
 
 	SkillManager* skillManager;
@@ -61,6 +62,8 @@ public:
 	inline void SetAngle(float angle) { this->angle = angle; }
 	inline float GetAngle() { return this->angle; }
 	//inline void SetFireIndex(int fireIndex) { this->fireIndex = fireIndex; }
+	inline void SetFireIndex(int fireIndex) { this->fireIndex = fireIndex; }
+	//inline POINT GetTarget(POINT target) { return target; }
 
 	inline int GetSize() { return this->size; }
 };

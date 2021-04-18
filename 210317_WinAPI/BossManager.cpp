@@ -31,20 +31,24 @@ void BossManager::Release()
 
 void BossManager::Update()
 {
-    vector<Boss*>::iterator myIt;
+    vBoss[1]->GetAlive();
+    vBoss[1]->Update();
+    /*vector<Boss*>::iterator myIt;
     for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
     {
         if((*myIt)->GetAlive())
             (*myIt)->Update();
-    }
+    }*/
 }
 
 void BossManager::Render(HDC hdc)
 {
-    vector<Boss*>::iterator myIt;
+    vBoss[1]->GetAlive();
+    vBoss[1]->Render(hdc);
+    /*vector<Boss*>::iterator myIt;
     for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
     {
         if ((*myIt)->GetAlive())
             (*myIt)->Render(hdc);
-    }
+    }*/
 }

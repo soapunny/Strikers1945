@@ -4,10 +4,15 @@
 #include "NormalFire.h"
 #include "GuidedFire.h"
 #include "PlayerFire.h"
+#include "MeteorFire.h"
+#include "WormFire.h"
+#include "TwoFire.h"
+#include "NotFire.h"
+#include "ZigzagFire.h"
 
 HRESULT MissileManager::Init(FPOINT pos)
 {
-    totalMissileNum = 500;
+    totalMissileNum = 2000;
     vMissiles.resize(totalMissileNum);
     vector<Missile*>::iterator myIt;
     for (myIt = vMissiles.begin(); myIt != vMissiles.end(); myIt++)
@@ -25,6 +30,15 @@ HRESULT MissileManager::Init(FPOINT pos)
     fireManager[1]->ChangeMove(new GuidedFire());
     fireManager[2] = new FireManager();
     fireManager[2]->ChangeMove(new PlayerFire());
+    //fireManager = new FireManager();
+    //fireManager->ChangeMove(new NormalFire());
+    //fireManager->ChangeMove(new MeteorFire());
+    //fireManager->ChangeMove(new WormFire());
+    //fireManager->ChangeMove(new TwoFire());
+    //fireManager->ChangeMove(new NotFire());
+    ////fireManager->ChangeMove(new NormalFire());
+    //fireManager->ChangeMove(new ZigzagFire());
+
     return S_OK;
 }
 
@@ -65,6 +79,7 @@ void MissileManager::Fire(FIRETYPE fireType)
     //어떤 미사일을 발사 할 것인지 알려주기
     switch (fireType)
     {
+        //체인지 무브 안해줘서 해줬음
     case FIRETYPE::NormalFIRE:
         this->fireType = FIRETYPE::NormalFIRE;
         fireManager[0]->DoFire(&vMissiles);
@@ -76,6 +91,25 @@ void MissileManager::Fire(FIRETYPE fireType)
     case FIRETYPE::PlayerFIRE:
         this->fireType = FIRETYPE::PlayerFIRE;
         fireManager[2]->DoFire(&vMissiles);
+        break; 
+   /* case FIRETYPE::MeteorFIRE:
+        fireManager->ChangeMove(new MeteorFire());
+        fireManager->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::WormFIRE:
+        fireManager->ChangeMove(new WormFire());
+        fireManager->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::TwoFIRE:
+        fireManager->ChangeMove(new TwoFire());
+        fireManager->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::NotFIRE:
+        fireManager->ChangeMove(new NotFire());
+        fireManager->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::ZigzagFIRE:
+        fireManager->DoFire(&vMissiles);*/
         break;
     default:
         break;

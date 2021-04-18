@@ -5,7 +5,11 @@
 #include "NormalMove.h"
 #include "LeftDownMove.h"
 #include "PointMove.h"
-
+#include "LeftUpMove.h"
+#include "RightDownMove.h"
+#include "RightUpMove.h"
+#include "RightSideMove.h"
+#include "ZigzagMove.h"
 HRESULT StageOneBoss::Init()
 {
     // 보스1 이미지
@@ -19,14 +23,16 @@ HRESULT StageOneBoss::Init()
     updateCount = 0;
 
     //보스 
-    pos.x = 100;          //위치
-    pos.y = 0;
+    pos.x = WINSIZE_X+50;          //위치
+    pos.y = WINSIZE_Y / 2;
     size = 100;                     //크기
-    moveSpeed = 3.3f;               //이동 속도
+    moveSpeed = 100.0f;               //이동 속도
     angle = 0;
     //보스 이동 방법 정의
     moveManager = new MoveManager();
     //moveManager->ChangeMove(new PointMove());
+    moveManager->ChangeMove(new RightUpMove());
+    //moveManager->ChangeMove(new ZigzagMove());
     moveManager->DoMove(&pos, &angle);
 
     //생존여부
@@ -37,7 +43,7 @@ HRESULT StageOneBoss::Init()
     for (int i = 0; i < 6; i++)
     {
         vBarrels[i] = new Barrel();
-        vBarrels[i]->Init(pos);
+        vBarrels[i]->Init(pos.x, pos.y);
     }
 
     return S_OK;

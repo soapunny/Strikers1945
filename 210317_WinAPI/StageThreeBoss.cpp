@@ -2,6 +2,9 @@
 #include "CommonFunction.h"
 #include "Image.h"
 #include "Barrel.h"
+#include "ZigzagMove.h"
+#include "NormalMove.h"
+#include "MissileManager.h"
 
 HRESULT StageThreeBoss::Init()
 {
@@ -15,19 +18,32 @@ HRESULT StageThreeBoss::Init()
     currFrameX = 0;
     updateCount = 0;
 
-    pos.x = WINSIZE_X / 2 + 300;
-    pos.y = -500;
-    size = 100;
-
-    moveSpeed = 3.3f;
+    pos.x = WINSIZE_X / 2 ;
+    pos.y = 0;
+    size = 150;
+    BossHp = 100;
+    moveSpeed = 1.0f;
     isAlive = true;
+   
+    //이동방향설정
+    moveManager = new MoveManager();
+    moveManager->ChangeMove(new NormalMove());
+    moveManager->SetMoveSpeed(moveSpeed);
 
+    
+    
     vBarrels.resize(6);
     for (int i = 0; i < 6; i++)
     {
         vBarrels[i] = new Barrel();
-        vBarrels[i]->Init(pos);
+        vBarrels[i]->Init(pos.x, pos.y);
+        //vBarrels[i]->Init(pos);
+
+        //RotateBarrel(vBarrels[i] , i);
+       // vBarrels[i]->SetbarrelEnd();
     }
+
+  
 
     return S_OK;
 }
@@ -52,8 +68,14 @@ void StageThreeBoss::Update()
         if (vBarrels[i])
         {
             vBarrels[i]->SetPos(pos);
+            RotateBarrel(vBarrels[i], i); //포신의 끝점을 설정
+            //vBarrels[i]->SetPos(pos);
         }
     }
+
+  
+    Move();
+    
 
     //미사일 발사
     Attack();
@@ -99,20 +121,57 @@ void StageThreeBoss::Attack()
         //미사일 발사
         for (int i = 0; i < 6; i++)
         {
-            if (vBarrels[i])
+            
+            if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
             {
                 vBarrels[i]->Update();
             }
         }
     }
+
+    //myMissile->SetPos(pos);
 }
 
 void StageThreeBoss::Move()
 {
+    MoveElapesdTimer =TimerManager::GetSingleton()->getElapsedTime();
+    MoveTimer += MoveElapesdTimer;
+    if (MoveTimer > 1)
+    { 
+        //moveManager->ChangeMove(new ZigzagMove());
+        moveManager->ChangeMove(new NormalMove());
+       // moveManager->DoMove(&pos, &angle);
+    }
+
+    if(MoveTimer>3 && MoveTimer<25) //시간에따라 움직임 혹은 체력에 따라로 변할수도 있음
+    {
+       
+        //moveManager->DoMove(&pos, &angle);
+        moveSpeed += 0.001;
+        moveManager->SetMoveSpeed(moveSpeed);
+    } 
+    else
+    {
+
+        //moveManager->DoMove(&pos, &angle);
+        moveSpeed -= 0.001;
+        moveManager->SetMoveSpeed(moveSpeed);
+    }
+    moveManager->DoMove(&pos, &angle);
+    
 }
 
-void StageThreeBoss::RotateBarrel(float angle)
+void StageThreeBoss::RotateBarrel(Barrel* barrel,int barrelNum) //가상함수인데 매개변수바뀌어도 되나?
 {
+   /* barrel->GetAngle();
+    barrel->GetstartPos().x;
+    barrel->GetSize();*/
+    //barrel->SetbarrelEnd()
+    
+    BerralEnd.x = pos.x + cosf(45* barrelNum) * 100; //숫자 말고 함수화 시키고싶긴하네..
+    BerralEnd.y = pos.y - sinf(45* barrelNum) * 100;
+    
+    barrel->SetbarrelEnd(BerralEnd);
 }
 
 void StageThreeBoss::OnDead()
