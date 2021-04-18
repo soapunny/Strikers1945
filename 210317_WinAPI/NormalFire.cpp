@@ -1,7 +1,7 @@
 #include "NormalFire.h"
 #include "Missile.h"
 
-void NormalFire::DoFire(vector<Missile*>* vMissiles)
+void NormalFire::DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
     vector<Missile*>::iterator myIt;
     for (int j = 0; j < 5; j++)

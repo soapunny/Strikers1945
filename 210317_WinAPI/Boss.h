@@ -18,6 +18,7 @@ protected:
 	int size;		//보스 크기
 	float moveSpeed;
 	bool isAlive;
+	int life;
 
 	vector<Barrel*> vBarrels;
 
@@ -30,8 +31,8 @@ public:
 	virtual void Render(HDC hdc);
 
 	virtual void Attack();
-	virtual void Move();
-	virtual void RotateBarrel(float angle);
+	/*virtual void Move();
+	virtual void RotateBarrel(float angle);*/
 	virtual void OnDead();
 
 	inline void SetPos(FPOINT pos) { this->pos = pos; }

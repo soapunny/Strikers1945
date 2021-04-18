@@ -142,14 +142,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Barrel.cpp" />
+    <ClCompile Include="BilliardsMove.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BossManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="FallingKnivesSkill.cpp" />
+    <ClCompile Include="FallingKnivesFire.cpp" />
+    <ClCompile Include="FireworkFire.cpp" />
+    <ClCompile Include="FireworkSkill.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="LeftDownMove.cpp" />
+    <ClCompile Include="LeftSinMove.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Missile.cpp" />
@@ -158,6 +164,8 @@
     <ClCompile Include="NormalMove.cpp" />
     <ClCompile Include="NormalSkill.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
+    <ClCompile Include="RightSinMove.cpp" />
+    <ClCompile Include="SpearMove.cpp" />
     <ClCompile Include="StageOneBoss.cpp" />
     <ClCompile Include="StageThreeBoss.cpp" />
     <ClCompile Include="StageTwoBoss.cpp" />
@@ -167,19 +175,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barrel.h" />
+    <ClInclude Include="BilliardsMove.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BossManager.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="FallingKnivesSkill.h" />
+    <ClInclude Include="FallingKnivesFire.h" />
     <ClInclude Include="FireInterface.h" />
     <ClInclude Include="FireManager.h" />
+    <ClInclude Include="FireworkFire.h" />
+    <ClInclude Include="FireworkSkill.h" />
     <ClInclude Include="GameNode.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LeftDownMove.h" />
+    <ClInclude Include="LeftSinMove.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="MissileManager.h" />
@@ -189,9 +203,11 @@
     <ClInclude Include="NormalMove.h" />
     <ClInclude Include="NormalSkill.h" />
     <ClInclude Include="PlayerShip.h" />
+    <ClInclude Include="RightSinMove.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SkillInterface.h" />
     <ClInclude Include="SkillManager.h" />
+    <ClInclude Include="SpearMove.h" />
     <ClInclude Include="StageOneBoss.h" />
     <ClInclude Include="StageThreeBoss.h" />
     <ClInclude Include="StageTwoBoss.h" />

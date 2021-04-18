@@ -24,13 +24,13 @@ void Boss::Render(HDC hdc)
 {
 }
 
-void Boss::Move()
-{
-}
-
-void Boss::RotateBarrel(float angle)
-{
-}
+//void Boss::Move()
+//{
+//}
+//
+//void Boss::RotateBarrel(float angle)
+//{
+//}
 
 void Boss::OnDead()
 {

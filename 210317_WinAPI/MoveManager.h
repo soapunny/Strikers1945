@@ -9,8 +9,8 @@ private:
 public:
 	void ChangeMove(MoveInterface* changeMove)
 	{
-		if (moveInterface)
-			delete moveInterface;
+		/*if (moveInterface)
+			delete moveInterface;*/
 		moveInterface = changeMove;
 	}
 
@@ -26,6 +26,11 @@ public:
 			moveInterface->SetMoveSpeed(moveSpeed);
 	}
 
+	virtual void Renew()
+	{
+		moveInterface->Renew();
+	}
+
 	MoveManager() : moveInterface(nullptr) {};
-	~MoveManager() { if (moveInterface) delete moveInterface; moveInterface = nullptr; };
+	~MoveManager() { /*if (moveInterface) delete moveInterface; moveInterface = nullptr;*/ };
 };

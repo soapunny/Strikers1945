@@ -69,7 +69,7 @@ void Enemy::Update()
                 fireCount++;
                 if (fireCount % 20 == 0)
                 {
-                    myMissile->Fire(MissileManager::FIRETYPE::NormalFIRE);
+                    myMissile->Fire(MissileManager::FIRETYPE::FallingKnivesFire);
                     fireCount = 0;
                 }
             }

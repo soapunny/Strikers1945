@@ -11,3 +11,8 @@ void LeftDownMove::DoMove(FPOINT* pos, float* angle)
 		pos->y -= sin(*angle) * moveSpeed * elapsedTime*10;
 	}
 }
+
+void LeftDownMove::Renew()
+{
+	time = 0.0f;
+}

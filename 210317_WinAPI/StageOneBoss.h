@@ -1,8 +1,12 @@
-#include "GameNode.h"
 #include "Boss.h"
+#include "MoveInterface.h"
 
 class StageOneBoss : public Boss
 {
+private:
+	vector<MoveInterface*> vMoveInterfaces;
+	float time;
+
 public:
 	virtual HRESULT Init();
 	virtual void Release();
@@ -10,7 +14,6 @@ public:
 	virtual void Render(HDC hdc);
 
 	virtual void Attack();
-	virtual void Move();
-	virtual void RotateBarrel(float angle);
 	virtual void OnDead();
+	void Move();
 };

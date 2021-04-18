@@ -1,9 +1,14 @@
 #include "NormalSkill.h"
+#include "Missile.h"
 
-void NormalSkill::UseSkill(FPOINT* pos, float* angle, float moveSpeed, float moveTime)
+void NormalSkill::UseSkill(Missile* missile, FPOINT* lpTargetPos)
 {
-	//일직선 아래로 향하는 미사일 발사
 	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
-	(*pos).x += cos(*angle) * moveSpeed * elapsedTime / moveTime;
-	(*pos).y -= sin(*angle) * moveSpeed * elapsedTime / moveTime;
+	//일직선 아래로 향하는 미사일 발사
+	missile->SetPos(
+		FPOINT{
+			(missile->GetPos().x + cosf(missile->GetAngle()) * (missile->GetMoveSpeed()) * elapsedTime / missile->GetMoveTime()),
+			(missile->GetPos().y - sinf(missile->GetAngle()) * (missile->GetMoveSpeed()) * elapsedTime / missile->GetMoveTime())
+		}
+	);
 }

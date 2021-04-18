@@ -5,6 +5,8 @@
 #include <math.h>
 #include "SkillManager.h"
 #include "NormalSkill.h"
+#include "FallingKnivesSkill.h"
+#include "FireworkSkill.h"
 
 HRESULT Missile::Init(FPOINT position)
 {
@@ -20,10 +22,11 @@ HRESULT Missile::Init(FPOINT position)
 	damage = 5000;
 	angle = 0.0f;
 	isFired = false;
-	missileType = SKILLTYPE::NormalSkillTYPE;
+	missileType = SKILLTYPE::FIREWORKTYPE;
 	fireStep = 0;
 	target = nullptr;
 	destAngle = 0.0f;
+
 
 	// ÀÌ¹ÌÁö
 	img = ImageManager::GetSingleton()->FindImage("EnemyMissile");
@@ -34,6 +37,7 @@ HRESULT Missile::Init(FPOINT position)
 	}
 
 	skillManager = new SkillManager();
+	skillManager->ChangeSkill(new FireworkSkill());
 
     return S_OK;
 }
@@ -50,15 +54,23 @@ void Missile::Update()
 		switch (missileType)
 		{
 		case SKILLTYPE::NormalSkillTYPE:
-			skillManager->ChangeSkill(new NormalSkill());
-			skillManager->UseSkill(&pos, &angle, moveSpeed, moveTime);
+			//skillManager->ChangeSkill(new NormalSkill());
+			break;
+
+		case SKILLTYPE::FallingKnivesTYPE:
+			break;
+
+		case SKILLTYPE::FIREWORKTYPE:
 			break;
 		default:
 			break;
 		}
+		skillManager->UseSkill(this, lpTargetPos);
 
 		if (pos.x < 0 || pos.y < 0 || pos.x > WINSIZE_X || pos.y > WINSIZE_Y)
 		{
+			moveSpeed = 500.0f;
+			skillManager->Renew();
 			isFired = false;
 			fireStep = 0;
 		}

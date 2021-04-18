@@ -11,17 +11,22 @@ private:
 public:
 	void ChangeMove(FireInterface* changeFire)
 	{
-		if (fireInterface)
-			delete fireInterface;
+		/*if (fireInterface)
+			delete fireInterface;*/
 		fireInterface = changeFire;
 	}
 
-	void DoFire(vector<Missile*>* vMissiles)
+	void DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
 	{
 		if (fireInterface)
-			fireInterface->DoFire(vMissiles);
+			fireInterface->DoFire(vMissiles, targetPos);
+	}
+
+	inline virtual void Renew() 
+	{
+		fireInterface->Renew();
 	}
 
 	FireManager() : fireInterface(nullptr) {};
-	~FireManager() { if (fireInterface) delete fireInterface; fireInterface = nullptr; };
+	~FireManager() { /*if (fireInterface) delete fireInterface; fireInterface = nullptr;*/ };
 };

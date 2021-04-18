@@ -15,10 +15,14 @@ public:
 		skillInterface = changeSkill;
 	}
 
-	void UseSkill(FPOINT* pos, float* angle, float moveSpeed, float moveTime)
+	void UseSkill(Missile* missile, FPOINT* lpTargetPos)
 	{
 		if (skillInterface)
-			skillInterface->UseSkill(pos, angle, moveSpeed, moveTime);
+			skillInterface->UseSkill(missile, lpTargetPos);
+	}
+
+	void Renew() {
+		skillInterface->Renew();
 	}
 
 	SkillManager() : skillInterface(nullptr) {};

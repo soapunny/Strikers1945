@@ -1,7 +1,7 @@
 #pragma once
 #include "SkillInterface.h"
 
-class NormalSkill : public SkillInterface
+class FallingKnivesSkill: public SkillInterface
 {
 public:
 	virtual void UseSkill(Missile* missile, FPOINT* lpTargetPos);

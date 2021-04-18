@@ -2,6 +2,8 @@
 #include "MissileManager.h"
 #include "Missile.h"
 #include "NormalFire.h"
+#include "FallingKnivesFire.h"
+#include "FireworkFire.h"
 
 HRESULT MissileManager::Init(FPOINT pos)
 {
@@ -22,7 +24,10 @@ HRESULT MissileManager::Init(FPOINT pos)
 
     //어떤 미사일을 장전 시킬 것인가
     fireManager = new FireManager();
-    fireManager->ChangeMove(new NormalFire());
+    //fireManager->ChangeMove(new NormalFire());
+    //fireManager->ChangeMove(new FallingKnivesFire());
+    fireManager->ChangeMove(new FallingKnivesFire);
+
 
     return S_OK;
 }
@@ -37,6 +42,8 @@ void MissileManager::Release()
         (*myIt) = nullptr;
     }
     vMissiles.clear();
+
+
 }
 
 void MissileManager::Update()
@@ -62,7 +69,13 @@ void MissileManager::Fire(FIRETYPE fireType)
     switch (fireType)
     {
     case FIRETYPE::NormalFIRE:
-        fireManager->DoFire(&vMissiles);
+        fireManager->DoFire(&vMissiles, nullptr);
+        break;
+    case FIRETYPE::FallingKnivesFire:
+        fireManager->DoFire(&vMissiles, nullptr);
+        break;
+    case FIRETYPE::FIREWORKFIRE:
+        fireManager->DoFire(&vMissiles, nullptr);
         break;
     default:
         break;
