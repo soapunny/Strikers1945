@@ -30,7 +30,7 @@ void TimerManager::Render(HDC hdc)
 		TextOut(hdc, WINSIZE_X-150, 20, szText, strlen(szText));
 
 		wsprintf(szText, "경과 시간: %d",timer->getGameSecond());
-		TextOut(hdc, 200, 20, szText, strlen(szText));
+		TextOut(hdc, WINSIZE_X - 150, 50, szText, strlen(szText));
 	}
 }
 

@@ -14,7 +14,9 @@ HRESULT MainGame::Init()
 
 	//이미지를 미리 로드 해두자
 	ImageManager::GetSingleton()->AddImage("Enemy","Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
-	ImageManager::GetSingleton()->AddImage("EnemyMissile","Image/구슬.bmp", 20, 20, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("미사일","Image/bullet(2).bmp", 25, 25, true, RGB(248, 0, 248));
+	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/playerJet.bmp", 489/2, 131/2, 3, 1, true, RGB(248, 0, 248));
+	ImageManager::GetSingleton()->AddImage("구름", "Image/cloud.bmp", WINSIZE_X, 1360, true, RGB(246, 246, 246));
 
 	// 메인게임의 초기화 함수
 	//hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
@@ -25,7 +27,11 @@ HRESULT MainGame::Init()
 
 	//배경 이미지
 	backGround = new Image();
-	backGround->Init("Image/background.bmp", WINSIZE_X, WINSIZE_Y);
+	backGround->Init("Image/Strikers_backGround.bmp", WINSIZE_X, 1360);
+	backGroundPos.x = 0;
+	backGroundPos.y = -1360 + WINSIZE_Y;
+	backCloud = new Image();
+	backCloud = ImageManager::GetSingleton()->FindImage("구름");
 
 	//탱크
 	tank = new Tank();
@@ -68,6 +74,9 @@ void MainGame::Release()
 
 void MainGame::Update()
 {
+	//배경 이동
+	backGroundPos.y += 0.05f;
+
 	//탱크(플레이어)
 	if (tank)
 	{
@@ -77,6 +86,7 @@ void MainGame::Update()
 	//적
 	if (enemyManager)
 	{
+		enemyManager->SetPlayerPos(playerShip->GetPos());
 		enemyManager->Update();
 	}
 
@@ -102,9 +112,17 @@ void MainGame::Render()
 {
 	HDC hBackDC = backBuffer->GetMemDC();
 
+	//배경
 	if (backGround)
 	{
-		backGround->Render(hBackDC);
+		backGround->Render(hBackDC, backGroundPos.x, backGroundPos.y);
+	}
+	if (backCloud)
+	{
+		//backCloud->AlphaRender(hBackDC, backGroundPos.x, backGroundPos.y);
+
+		//BLENDFUNCTION* blendFunc = backCloud->GetBlendFunc();
+		//blendFunc->SourceConstantAlpha = 100;
 	}
 
 	// 마우스 좌표

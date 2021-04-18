@@ -1,9 +1,10 @@
 #pragma once
 #include "SkillInterface.h"
+#include "Missile.h"
 
 class NormalSkill : public SkillInterface
 {
 public:
-	virtual void UseSkill(FPOINT* pos, float* angle, float moveSpeed, float moveTime);
+	virtual void UseSkill(Missile* missile);
 };
 

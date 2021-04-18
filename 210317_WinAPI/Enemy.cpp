@@ -48,7 +48,13 @@ void Enemy::Release()
 
 void Enemy::Update()
 {
-    myMissile->SetPos(pos);
+    if (myMissile)
+    {
+        myMissile->SetPlayerPos(playerPos);
+        myMissile->SetPos(pos);
+        myMissile->SetAngle(DegToRad(-90));
+    }
+
     if (isAlive)
     {
         //애니메이션
@@ -64,12 +70,24 @@ void Enemy::Update()
         {
             myMissile->Update();
             
+            //일직선 아래로
             if (KeyManager::GetSingleton()->IsStayKeyDown('W'))
             {
                 fireCount++;
                 if (fireCount % 20 == 0)
                 {
                     myMissile->Fire(MissileManager::FIRETYPE::NormalFIRE);
+                    fireCount = 0;
+                }
+            }
+
+            //유도탄
+            if (KeyManager::GetSingleton()->IsStayKeyDown('E'))
+            {
+                fireCount++;
+                if (fireCount % 20 == 0)
+                {
+                    myMissile->Fire(MissileManager::FIRETYPE::GuidedFIRE);
                     fireCount = 0;
                 }
             }

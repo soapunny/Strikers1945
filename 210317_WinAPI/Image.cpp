@@ -243,18 +243,18 @@ void Image::AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring)
     );
     
     // BlendDC를 원본DC(hdc)에 그려주는 과정에서 알파블랜드 적용시키기
-    /*AlphaBlend(
+    AlphaBlend(
         hdc, 
         x, y,
         imageInfo->width, imageInfo->height, 
         imageInfo->hBlendDC,
         0, 0, 
         imageInfo->width, imageInfo->height, 
-        blendFunc);  //BLENDFUNCTION()*/
+        blendFunc);  //BLENDFUNCTION()
     
 
     //sin
-    BitBlt(
+    /*BitBlt(
         imageInfo->hTempDC,
         0, 0,
         imageInfo->width*2, imageInfo->height,
@@ -298,7 +298,7 @@ void Image::AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring)
         imageInfo->hTempDC,
         0, 0,
         SRCCOPY
-    );
+    );*/
   
 }
 

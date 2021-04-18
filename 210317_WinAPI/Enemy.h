@@ -13,6 +13,7 @@ private:
 	int currFrameX;
 	int updateCount;
 
+	FPOINT playerPos;
 	FPOINT pos;
 	int size;
 	string name;
@@ -39,6 +40,7 @@ public:
 	void Move();
 	void HorizonMove();
 
+	inline void SetPlayerPos(FPOINT pos) { this->playerPos = pos; }
 	inline void SetPos(FPOINT pos) { this->pos = pos; }
 	inline FPOINT GetPos() { return this->pos; }
 	inline void SetTarget(Tank* target) { this->target = target; }

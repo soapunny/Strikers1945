@@ -2,6 +2,8 @@
 #include "MissileManager.h"
 #include "Missile.h"
 #include "NormalFire.h"
+#include "GuidedFire.h"
+#include "PlayerFire.h"
 
 HRESULT MissileManager::Init(FPOINT pos)
 {
@@ -16,14 +18,13 @@ HRESULT MissileManager::Init(FPOINT pos)
         (*myIt)->SetStartPos(pos);
     }
 
-    angle_1 = 0;
-    angle_2 = 0;
-    angle_3 = 0;
-
     //어떤 미사일을 장전 시킬 것인가
-    fireManager = new FireManager();
-    fireManager->ChangeMove(new NormalFire());
-
+    fireManager[0] = new FireManager();
+    fireManager[0]->ChangeMove(new NormalFire());
+    fireManager[1] = new FireManager();
+    fireManager[1]->ChangeMove(new GuidedFire());
+    fireManager[2] = new FireManager();
+    fireManager[2]->ChangeMove(new PlayerFire());
     return S_OK;
 }
 
@@ -43,7 +44,10 @@ void MissileManager::Update()
 {
     for (int i = 0; i < vMissiles.size(); i++)
     {
+        vMissiles[i]->SetPlayerPos(this->playerPos);
         vMissiles[i]->SetStartPos(this->missilePos);
+        if(this->fireType == FIRETYPE::PlayerFIRE)
+         vMissiles[i]->SetAngle(this->missileAngle);
         vMissiles[i]->Update();
     }
 }
@@ -62,7 +66,16 @@ void MissileManager::Fire(FIRETYPE fireType)
     switch (fireType)
     {
     case FIRETYPE::NormalFIRE:
-        fireManager->DoFire(&vMissiles);
+        this->fireType = FIRETYPE::NormalFIRE;
+        fireManager[0]->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::GuidedFIRE:
+        this->fireType = FIRETYPE::GuidedFIRE;
+        fireManager[1]->DoFire(&vMissiles);
+        break;
+    case FIRETYPE::PlayerFIRE:
+        this->fireType = FIRETYPE::PlayerFIRE;
+        fireManager[2]->DoFire(&vMissiles);
         break;
     default:
         break;

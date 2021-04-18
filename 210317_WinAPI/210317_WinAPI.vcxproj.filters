@@ -40,14 +40,14 @@
     <Filter Include="MainGame\Fire_Manage">
       <UniqueIdentifier>{eb9bfc80-1c7e-499e-a113-d8889ae5416b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Skill_Manage">
-      <UniqueIdentifier>{f4339f2a-9f4d-48b8-914f-bd2c161304f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\Tank_Manage%28Player%29">
       <UniqueIdentifier>{a01034b0-7b9c-4dd4-9ebd-c3111f5f425d}</UniqueIdentifier>
     </Filter>
     <Filter Include="MainGame\Move_Manage\BHS">
       <UniqueIdentifier>{dee02fcb-5b15-484e-a384-208d63bcb9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Skill_Manage">
+      <UniqueIdentifier>{f4339f2a-9f4d-48b8-914f-bd2c161304f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,10 +115,28 @@
       <Filter>MainGame\Fire_Manage</Filter>
     </ClCompile>
     <ClCompile Include="NormalSkill.cpp">
-      <Filter>Skill_Manage</Filter>
+      <Filter>MainGame\Skill_Manage</Filter>
     </ClCompile>
     <ClCompile Include="LeftDownMove.cpp">
       <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClCompile>
+    <ClCompile Include="GuidedFire.cpp">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularSkill.cpp">
+      <Filter>MainGame\Skill_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="PointMove.cpp">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSkill.cpp">
+      <Filter>MainGame\Skill_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFire.cpp">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClCompile>
+    <ClCompile Include="GuidedSkill.cpp">
+      <Filter>MainGame\Skill_Manage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -207,16 +225,34 @@
       <Filter>MainGame\Fire_Manage</Filter>
     </ClInclude>
     <ClInclude Include="SkillManager.h">
-      <Filter>Skill_Manage</Filter>
+      <Filter>MainGame\Skill_Manage</Filter>
     </ClInclude>
     <ClInclude Include="SkillInterface.h">
-      <Filter>Skill_Manage</Filter>
+      <Filter>MainGame\Skill_Manage</Filter>
     </ClInclude>
     <ClInclude Include="NormalSkill.h">
-      <Filter>Skill_Manage</Filter>
+      <Filter>MainGame\Skill_Manage</Filter>
     </ClInclude>
     <ClInclude Include="LeftDownMove.h">
       <Filter>MainGame\Move_Manage\BHS</Filter>
+    </ClInclude>
+    <ClInclude Include="GuidedFire.h">
+      <Filter>MainGame\Fire_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="GuidedSkill.h">
+      <Filter>MainGame\Skill_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularSkill.h">
+      <Filter>MainGame\Skill_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="PointMove.h">
+      <Filter>MainGame\Move_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSkill.h">
+      <Filter>MainGame\Skill_Manage</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerFire.h">
+      <Filter>MainGame\Fire_Manage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

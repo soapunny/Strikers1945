@@ -71,6 +71,7 @@ void EnemyManager::Update()
     for (myIt = vEnemys.begin(); myIt != vEnemys.end(); myIt++)
     {
         (*myIt)->Update();
+        (*myIt)->SetPlayerPos(this->playerPos);
     }
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "config.h"
 #include "SkillInterface.h"
+#include "Missile.h"
 
 class SkillManager
 {
@@ -15,10 +16,10 @@ public:
 		skillInterface = changeSkill;
 	}
 
-	void UseSkill(FPOINT* pos, float* angle, float moveSpeed, float moveTime)
+	void UseSkill(Missile* missile)
 	{
 		if (skillInterface)
-			skillInterface->UseSkill(pos, angle, moveSpeed, moveTime);
+			skillInterface->UseSkill(missile);
 	}
 
 	SkillManager() : skillInterface(nullptr) {};

@@ -5,6 +5,9 @@
 #include <math.h>
 #include "SkillManager.h"
 #include "NormalSkill.h"
+#include "CircularSkill.h"
+#include "GuidedSkill.h"
+#include "PlayerSkill.h"
 
 HRESULT Missile::Init(FPOINT position)
 {
@@ -18,18 +21,15 @@ HRESULT Missile::Init(FPOINT position)
 	size = 25;
 	shape = { 0, 0, 0, 0 };
 	damage = 5000;
-	angle = 0.0f;
 	isFired = false;
 	missileType = SKILLTYPE::NormalSkillTYPE;
 	fireStep = 0;
-	target = nullptr;
-	destAngle = 0.0f;
 
 	// 이미지
-	img = ImageManager::GetSingleton()->FindImage("EnemyMissile");
+	img = ImageManager::GetSingleton()->FindImage("미사일");
 	if (img == nullptr)
 	{
-		MessageBox(g_hWnd, "enemy missile 에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
+		MessageBox(g_hWnd, "미사일에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
 		return E_FAIL;
 	}
 
@@ -51,7 +51,19 @@ void Missile::Update()
 		{
 		case SKILLTYPE::NormalSkillTYPE:
 			skillManager->ChangeSkill(new NormalSkill());
-			skillManager->UseSkill(&pos, &angle, moveSpeed, moveTime);
+			skillManager->UseSkill(this);
+			break;
+		case SKILLTYPE::CircularSkillTYPE:
+			skillManager->ChangeSkill(new CircularSkill());
+			skillManager->UseSkill(this);
+			break;
+		case SKILLTYPE::GuidedSkillTYPE:
+			skillManager->ChangeSkill(new GuidedSkill());
+			skillManager->UseSkill(this);
+			break;
+		case SKILLTYPE::PlayerSkillTYPE:
+			skillManager->ChangeSkill(new PlayerSkill());
+			skillManager->UseSkill(this);
 			break;
 		default:
 			break;
@@ -61,6 +73,12 @@ void Missile::Update()
 		{
 			isFired = false;
 			fireStep = 0;
+		}
+
+		if (missileType == SKILLTYPE::PlayerSkillTYPE)
+		{
+			if( pos.y > GetStartPos().y)
+				isFired = false;
 		}
 	}
 
@@ -75,8 +93,6 @@ void Missile::Render(HDC hdc)
 	if (isFired)
 	{
 		img->Render(hdc, pos.x, pos.y, true);
-		//img->Render(hdc, pos.x - (size / 2), pos.y - (size / 2));
-		//Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
 	}
 }
 
