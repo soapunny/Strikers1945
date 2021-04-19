@@ -6,6 +6,7 @@ class BossManager;
 class EnemyManager;
 class Image;
 class PlayerShip;
+class CollisionCheck;
 
 class MainGame : public GameNode
 {
@@ -32,6 +33,8 @@ private:
 	PlayerShip* playerShip;
 
 	BossManager* bossManager;
+
+	CollisionCheck* collisionCheck;
 
 public:
 	virtual HRESULT Init();		// 오버라이딩 : 다형성

@@ -27,8 +27,10 @@ HRESULT PlayerShip::Init()
 	collisionSize.x = 35;
 	collisionSize.y = 50;
 
+	playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
+
 	// 테스트 용 포신 //
-	barrelSize = 10;
+	barrelSize = 2;
 	barrelEnd[0] = { (pos.x - 10.0f) ,  pos.y - barrelSize * 2 };
 	barrelEnd[1] = { (pos.x + 10.0f) ,  pos.y - barrelSize * 2 };
 	barrelEnd[2] = { (pos.x + cosf(DegToRad(barrelAngle[2])) * barrelSize) ,  pos.y - barrelSize * 2 };
@@ -65,6 +67,8 @@ void PlayerShip::Release()
 
 void PlayerShip::Update()
 {
+	playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
+	
 	//첫 등장 (아래에서 위로)
 	if (!canMove)
 	{
@@ -122,7 +126,7 @@ void PlayerShip::Update()
 void PlayerShip::Render(HDC hdc)
 {
 	//충돌 박스
-	RenderRectToCenter(hdc, pos.x, pos.y, collisionSize.x, collisionSize.y);
+	 //playerRect = RenderRectToCenter(hdc, pos.x, pos.y, collisionSize.x, collisionSize.y);
 
 	//life 표시
 	wsprintf(szText, "LIFE: %d",playerLife);

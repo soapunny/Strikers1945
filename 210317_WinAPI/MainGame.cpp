@@ -4,6 +4,7 @@
 #include "Image.h"
 #include "PlayerShip.h"
 #include "BossManager.h"
+#include "CollisionCheck.h"
 
 HRESULT MainGame::Init()
 {
@@ -14,7 +15,7 @@ HRESULT MainGame::Init()
 
 	//이미지를 미리 로드 해두자
 	ImageManager::GetSingleton()->AddImage("Enemy","Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
-	ImageManager::GetSingleton()->AddImage("미사일","Image/bullet(2).bmp", 25, 25, true, RGB(248, 0, 248));
+	ImageManager::GetSingleton()->AddImage("미사일","Image/bullet(4).bmp", 20, 20, true, RGB(0, 65, 126));
 	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/playerJet.bmp", 489/2, 131/2, 3, 1, true, RGB(248, 0, 248));
 	ImageManager::GetSingleton()->AddImage("구름", "Image/cloud.bmp", WINSIZE_X, 1360, true, RGB(246, 246, 246));
 	ImageManager::GetSingleton()->AddImage("EnemyMissile","Image/구슬.bmp", 20, 20, true, RGB(255, 0, 255));
@@ -28,9 +29,10 @@ HRESULT MainGame::Init()
 
 	//배경 이미지
 	backGround = new Image();
-	backGround->Init("Image/Strikers_backGround.bmp", WINSIZE_X, 1360);
+	backGround->Init("Image/Strikers_backGround.bmp", WINSIZE_X, 2694);
+	//backGround->Init("Image/Strikers_backGround(2).bmp", WINSIZE_X, 3604);
 	backGroundPos.x = 0;
-	backGroundPos.y = -1360 + WINSIZE_Y;
+	backGroundPos.y = -2694 + WINSIZE_Y;
 	backCloud = new Image();
 	backCloud = ImageManager::GetSingleton()->FindImage("구름");
 
@@ -50,6 +52,10 @@ HRESULT MainGame::Init()
 	bossManager = new BossManager();
 	bossManager->Init();
 
+	//충돌
+	collisionCheck = new CollisionCheck();
+	collisionCheck->Init();
+
 	//초기화 확인
 	isInited = true;
 
@@ -67,6 +73,7 @@ void MainGame::Release()
 	SAFE_RELEASE(enemyManager);
 	SAFE_RELEASE(playerShip);
 	SAFE_RELEASE(bossManager);
+	SAFE_RELEASE(collisionCheck);
 
 	ReleaseDC(g_hWnd, hdc);
 
@@ -104,7 +111,13 @@ void MainGame::Update()
 	}
 
 	//적 플레이어 충돌 검사
-	CheckCollision();
+	if (collisionCheck)
+	{
+		collisionCheck->SetPlayerRect(playerShip->GetPlayerRect());
+		collisionCheck->Update();
+		CheckCollision();
+	}
+
 
 	//InvalidateRect(g_hWnd, NULL, false); //화면갱신
 }
@@ -130,6 +143,12 @@ void MainGame::Render()
 
 	//FPS
 	TimerManager::GetSingleton()->Render(hBackDC);
+
+	//collsion
+	if (collisionCheck)
+	{
+		collisionCheck->Render(hBackDC);
+	}
 
 	//tank
 	if (tank)
@@ -160,48 +179,19 @@ void MainGame::Render()
 
 void MainGame::CheckCollision()
 {
-	/*
-	// 적 <-> 탱크 미사일 
-	float distance;
-	FPOINT enemyPos;
-	FPOINT missilePos;
-	float x, y;
-	int r1, r2;
-
-	for (int i = 0; i < enemyCount; i++)
+	//플레이어와 에너미 미사일이 출동했다면
+	if (collisionCheck->GetPlayerCollision())
 	{
-		if (enemy[i].GetIsAlive() == false)	continue;
-
-		for (int j = 0; j < tank->GetMissileCount(); j++)
-		{
-			if (missileArray[j].GetIsFired() == false)	continue;
-
-			enemyPos = enemy[i].GetPos();
-			missilePos = missileArray[j].GetPos();
-
-			x = enemyPos.x - missilePos.x;
-			y = enemyPos.y - missilePos.y;
-
-			distance = sqrtf(x * x + y * y);
-
-			r1 = enemy[i].GetSize() / 2;
-			r2 = missileArray[j].GetSize() / 2;
-
-			if (distance <= r1 + r2)
-			{
-				enemy[i].SetIsAlive(false);
-				missileArray[j].SetIsFired(false);
-				break;
-			}
-		}
+		playerShip->SetPlayerLife();				//플레이어 목숨 하나 줄이기
+		collisionCheck->SetPlayerCollision(false);
 	}
 
-	// 적 <-> 탱크
-
-	// 적 미사일 <-> 탱크
-
-	// 적 미사일 <-> 탱크 미사일
-	*/
+	//플레이어 미사일과 에너미 미사일이 출동했다면
+	if (collisionCheck->GetEnemyCollision())
+	{
+		//에너미 목숨 줄이자
+		collisionCheck->SetEnemyCollision(false);
+	}
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)

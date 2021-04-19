@@ -31,6 +31,8 @@ private:
 	MissileManager* myMissile[4];
 	int fireCount;
 
+	RECT playerRect;
+
 public:
 	HRESULT Init();
 	void Release();
@@ -43,5 +45,11 @@ public:
 	void Attack(int i);
 
 	FPOINT GetPos() { return this->pos; }
+
+	inline int GetPlayerLife() { return playerLife; }
+	inline void SetPlayerLife() { this->playerLife -= 1; }
+
+	inline RECT GetPlayerRect() { return playerRect; }
+	inline void SetPlayerRect(int life) { this->playerLife = life; }
 };
 

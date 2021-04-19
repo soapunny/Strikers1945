@@ -147,6 +147,7 @@
     <ClCompile Include="BossManager.cpp" />
     <ClCompile Include="CenterMove.cpp" />
     <ClCompile Include="CircularSkill.cpp" />
+    <ClCompile Include="CollisionCheck.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="FallingKnivesSkill.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BossManager.h" />
     <ClInclude Include="CenterMove.h" />
+    <ClInclude Include="CollisionCheck.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="Enemy.h" />
