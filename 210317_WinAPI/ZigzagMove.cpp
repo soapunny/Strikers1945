@@ -14,3 +14,8 @@ void ZigzagMove::DoMove(FPOINT* pos, float* angle)
 		
 	
 }
+
+void ZigzagMove::Renew()
+{
+	time = 0.0f;
+}

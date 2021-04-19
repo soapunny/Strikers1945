@@ -103,7 +103,7 @@ void StageTwoBoss::Update()
     {
         if (vBarrels[i]->GetFireType() == FIRETYPE::NormalFIRE)   vBarrels[i]->SetMaxFireCount(200);
         if (vBarrels[i]->GetFireType() == FIRETYPE::TwoFIRE)      vBarrels[i]->SetMaxFireCount(200);
-        if (vBarrels[i]->GetFireType() == FIRETYPE::WormFIRE)     vBarrels[i]->SetMaxFireCount(50);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::WormFIRE)     vBarrels[i]->SetMaxFireCount(10);
         if (vBarrels[i]->GetFireType() == FIRETYPE::MeteorFIRE)   vBarrels[i]->SetMaxFireCount(300);
     }
     
@@ -153,6 +153,7 @@ void StageTwoBoss::Attack()
             if (vBarrels[i])
             {
                 vBarrels[i]->Update();
+                vBarrels[i]->Attack();
             }
         }
     }

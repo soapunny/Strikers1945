@@ -66,42 +66,42 @@ void Enemy::Update()
         }
 
         //미사일 발사
-        if (myMissile)
-        {
-            myMissile->Update();
-            
-            //일직선 아래로
-            if (KeyManager::GetSingleton()->IsStayKeyDown('W'))
-            {
-                fireCount++;
-                if (fireCount % 20 == 0)
-                {
-                    myMissile->Fire(FIRETYPE::FallingKnivesFIRE);
-                    //myMissile->Fire(MissileManager::FIRETYPE::ZigzagFIRE);
-                    fireCount = 0;
-                }
-            }
-            if (KeyManager::GetSingleton()->IsStayKeyDown('Q'))
-            {
-                fireCount++;
-                if (fireCount % 20 == 0)
-                {
-                    myMissile->Fire(FIRETYPE::MeteorFIRE);
-                    fireCount = 0;
-                }
-            }
+        //if (myMissile)
+        //{
+        //    myMissile->Update();
+        //    
+        //    //일직선 아래로
+        //    if (KeyManager::GetSingleton()->IsStayKeyDown('W'))
+        //    {
+        //        fireCount++;
+        //        if (fireCount % 20 == 0)
+        //        {
+        //            myMissile->Fire(FIRETYPE::FallingKnivesFIRE);
+        //            //myMissile->Fire(MissileManager::FIRETYPE::ZigzagFIRE);
+        //            fireCount = 0;
+        //        }
+        //    }
+        //    if (KeyManager::GetSingleton()->IsStayKeyDown('Q'))
+        //    {
+        //        fireCount++;
+        //        if (fireCount % 20 == 0)
+        //        {
+        //            myMissile->Fire(FIRETYPE::MeteorFIRE);
+        //            fireCount = 0;
+        //        }
+        //    }
 
-            //유도탄
-            if (KeyManager::GetSingleton()->IsStayKeyDown('E'))
-            {
-                fireCount++;
-                if (fireCount % 20 == 0)
-                {
-                    myMissile->Fire(FIRETYPE::GuidedFIRE);
-                    fireCount = 0;
-                }
-            }
-        }
+        //    //유도탄
+        //    if (KeyManager::GetSingleton()->IsStayKeyDown('E'))
+        //    {
+        //        fireCount++;
+        //        if (fireCount % 20 == 0)
+        //        {
+        //            myMissile->Fire(FIRETYPE::GuidedFIRE);
+        //            fireCount = 0;
+        //        }
+        //    }
+        //}
     }
 }
 
