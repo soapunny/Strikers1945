@@ -93,7 +93,6 @@ void MissileManager::Render(HDC hdc)
 
 void MissileManager::Fire(FIRETYPE fireType)
 {
-
     //어떤 미사일을 발사 할 것인지 알려주기
     switch (fireType)
     {
@@ -101,51 +100,62 @@ void MissileManager::Fire(FIRETYPE fireType)
     case FIRETYPE::NormalFIRE:
         if(currFire != vFireInterfaces[FIRETYPE::NormalFIRE]){
             currFire = vFireInterfaces[FIRETYPE::NormalFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break;
     case FIRETYPE::FallingKnivesFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::FallingKnivesFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::FallingKnivesFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break;
     case FIRETYPE::FIREWORKFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::FIREWORKFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::FIREWORKFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break;
     case FIRETYPE::GuidedFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::GuidedFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::GuidedFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break;
     case FIRETYPE::PlayerFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::PlayerFIRE]) {
+            this->fireType = fireType;
             currFire = vFireInterfaces[FIRETYPE::PlayerFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break; 
     case FIRETYPE::MeteorFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::MeteorFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::MeteorFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break;
     case FIRETYPE::WormFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::WormFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::WormFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break;
     case FIRETYPE::TwoFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::TwoFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::TwoFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break;
     case FIRETYPE::NotFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::NotFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::NotFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break;
     case FIRETYPE::ZigzagFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::ZigzagFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::ZigzagFIRE];
+            fireManager->ChangeMove(currFire);
         }
         break;
     default:
