@@ -25,6 +25,8 @@ private:
 	MISSILETYPE typeMissile;
 	int dir;
 
+	int MaxFireCount;
+	FIRETYPE fireType;
 	// �̻���
 	MissileManager* myMissile; //���� �ʿ�
 	int fireCount;
@@ -49,6 +51,9 @@ public:
 	inline bool GetIsAlive() { return this->isAlive; }
 	inline void SetMissileType(int type) { this->missileType = type; }
 	inline void SetbarrelEnd( FPOINT barrelEnd) { this->barrelEnd = barrelEnd; }
+
+	inline void SetMaxFireCount(int MaxFireCount) { this->MaxFireCount = MaxFireCount; }
+	inline void SetfireType(FIRETYPE fireType) { this->fireType = fireType; }
 
 	inline FPOINT GetstartPos() {return barrelStart;}//포신을 보스에서 돌려줄려고 가져옴
 	inline float GetAngle() { return barrelAngle; }

@@ -5,11 +5,16 @@
 class StageThreeBoss : public Boss
 {
 private:
+	MoveInterface* currMoveInterface;
 	vector<MoveInterface*> vMoveInterfaces;
 	float MoveElapesdTimer;
+	float AttackElapesdTimer;
+	float AttackTimer;
 	float MoveTimer;
+	int zigzagFireCount;
 	FPOINT BerralEnd;
-	int BossHp; //아마 나중에 보스에다 선언할듯
+	int MaxBossHp; //아마 나중에 보스에다 선언할듯
+	int BossHp;
 	int status;
 public:
 	virtual HRESULT Init();

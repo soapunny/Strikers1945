@@ -9,27 +9,30 @@
 HRESULT StageThreeBoss::Init()
 {
     // 보스3 이미지
+     currMoveInterface = nullptr;
     image = ImageManager::GetSingleton()->FindImage("StageThreeBoss");
     if (image == nullptr)
     {
         MessageBox(g_hWnd, "enemy에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
         return E_FAIL;
     }
+    zigzagFireCount = 4;
     currFrameX = 0;
     updateCount = 0;
     status = 0;
     pos.x = WINSIZE_X / 2 ;
-    pos.y = 0;
+    pos.y = -150;
     size = 150;
     BossHp = 100;
-    moveSpeed = 10.0f;
+    moveSpeed = 100.0f;
     isAlive = true;
    
     //이동방향설정
     moveManager = new MoveManager();
     moveManager->ChangeMove(new NormalMove());
     moveManager->SetMoveSpeed(moveSpeed);
-
+    AttackElapesdTimer = 0.0f;
+    AttackTimer = 0.0f;
     vMoveInterfaces.resize(MOVETYPE::END_MOVE);
     vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE] = new ZigzagMove;
      vMoveInterfaces[MOVETYPE::NORMAL_MOVE] = new NormalMove;
@@ -54,15 +57,20 @@ HRESULT StageThreeBoss::Init()
 
 void StageThreeBoss::Release()
 {
+   
     for (int i = 0; i < 6; i++)
     {
         if (vBarrels[i])
-        {
-            vBarrels[i]->Release();
-            delete vBarrels[i];
-            vBarrels[i] = nullptr;
-        }
+            SAFE_RELEASE(vBarrels[i]);
     }
+    vBarrels.clear();
+
+    SAFE_DELETE(moveManager);
+    for (int i = 0; i < vMoveInterfaces.size(); i++) {
+        if (vMoveInterfaces[i])
+            SAFE_DELETE(vMoveInterfaces[i]);
+    }
+    vMoveInterfaces.clear();
 }
 
 void StageThreeBoss::Update()
@@ -71,8 +79,19 @@ void StageThreeBoss::Update()
     {
         if (vBarrels[i])
         {
-            vBarrels[i]->SetPos(pos);
-            RotateBarrel(vBarrels[i], i); //포신의 끝점을 설정
+           
+            if (i < 1)
+            {
+                vBarrels[i]->SetActivated(true);
+
+            }
+            else
+            {
+                vBarrels[i]->SetActivated(false);
+
+            }
+            vBarrels[i]->SetBarrelPos(pos);
+           // RotateBarrel(vBarrels[i], i); //포신의 끝점을 설정
             //vBarrels[i]->SetPos(pos);
         }
     }
@@ -104,6 +123,8 @@ void StageThreeBoss::Render(HDC hdc)
         {
             if (vBarrels[i])
             {
+            
+
                 vBarrels[i]->Render(hdc);
             }
         }
@@ -121,16 +142,27 @@ void StageThreeBoss::Attack()
             currFrameX = (currFrameX + 1) % 10;
             updateCount = 0;
         }
-
+        AttackElapesdTimer = TimerManager::GetSingleton()->getElapsedTime();
+        AttackTimer += AttackElapesdTimer;
         //미사일 발사
-        for (int i = 0; i < 6; i++)
+        if ((int)AttackTimer % 2 == 0)
         {
-            
-            if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
+            for (int i = 0; i < 1; i++)
             {
-                vBarrels[i]->Update();
+            
+                if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
+                {
+                    //if(BossHp/4*3>)
+
+                    vBarrels[i]->Attack();
+                    vBarrels[i]->SetMaxFireCount(zigzagFireCount);
+                    vBarrels[i]->SetfireType(FIRETYPE::ZigzagFIRE);
+                    vBarrels[i]->Update();
+                }
             }
         }
+
+        
     }
 
     //myMissile->SetPos(pos);
@@ -138,22 +170,28 @@ void StageThreeBoss::Attack()
 
 void StageThreeBoss::Move()
 {
-    MoveElapesdTimer =TimerManager::GetSingleton()->getElapsedTime();
+    
+    MoveElapesdTimer =TimerManager::GetSingleton()->getElapsedTime();//똑같은 속도로 나선형으로 도는방법 중심점만 밀어주면 되나?
     MoveTimer += MoveElapesdTimer;
     if (MoveTimer < 3)
     { 
         
         moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
-       
+       currMoveInterface = vMoveInterfaces[MOVETYPE::NORMAL_MOVE];
     }
-    if (status == 0)
-    {
-        moveManager->SetMoveSpeed
-    }
+
+    
 
     if(MoveTimer>3 && MoveTimer<25) //시간에따라 움직임 혹은 체력에 따라로 변할수도 있음
     {
-        moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE]);
+        if (status == 0)
+        {
+            moveSpeed = 2;
+            moveManager->SetMoveSpeed(moveSpeed);
+            status++;
+        }
+        //moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE]);
+        //currMoveInterface = vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE];
        
         moveSpeed += 0.001;
         moveManager->SetMoveSpeed(moveSpeed);
@@ -165,6 +203,7 @@ void StageThreeBoss::Move()
         moveSpeed -= 0.001;
         moveManager->SetMoveSpeed(moveSpeed);
     }
+
     moveManager->DoMove(&pos, &angle);
     
 }

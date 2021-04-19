@@ -21,8 +21,8 @@ HRESULT Barrel::Init(int posX, int posY)
     myMissile = new MissileManager();   //동적 필요
     myMissile->Init(pos);       //
     fireCount = 0;
-
-    isActivated = false;
+    MaxFireCount = 1;
+    isActivated = true;
 
     return S_OK;
 }
@@ -48,7 +48,7 @@ void Barrel::Update()
     {
         myMissile->Update();
     }
-    Attack();
+    //Attack();
 
     //myMissile->SetPos(barrelEnd);
     //if (isAlive)
@@ -160,8 +160,8 @@ void Barrel::Render(HDC hdc)
 {
     // 포신
     myMissile->Render(hdc);
-    MoveToEx(hdc, barrelStart.x, barrelStart.y, NULL);
-    LineTo(hdc, barrelEnd.x, barrelEnd.y );
+    //MoveToEx(hdc, barrelStart.x, barrelStart.y, NULL);
+    //LineTo(hdc, barrelEnd.x, barrelEnd.y );
 
     //미사일
     if (myMissile)
@@ -175,12 +175,12 @@ void Barrel::Attack()
     if (myMissile)
     {
         //myMissile->Update();
-
+         
         fireCount++;
         myMissile->SetPos(barrelEnd);
-        if (fireCount % 100 == 0 && isActivated)
+        if (fireCount % MaxFireCount == 0 && isActivated)
         {
-            myMissile->Fire(MissileManager::FIRETYPE::FIREWORKFIRE);
+            myMissile->Fire(fireType);//FIRETYPE::ZigzagFIRE
             fireCount = 0;
         }
     }
