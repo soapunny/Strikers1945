@@ -1,6 +1,6 @@
 #include "ZigzagFire.h"
 #include "Missile.h"
-void ZigzagFire::DoFire(vector<Missile*>* vMissiles)
+void ZigzagFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
     vector<Missile*>::iterator myIt;
  //   for (int j = 0; j < 5; j++)
@@ -10,7 +10,7 @@ void ZigzagFire::DoFire(vector<Missile*>* vMissiles)
         {
             if ((*myIt)->GetIsFired() == false)
             {
-                (*myIt)->SetType(Missile::SKILLTYPE::ZigzagSkillTYPE);
+                (*myIt)->SetType(Missile::SKILLTYPE::ZigzagSkill_TYPE);
                 (*myIt)->SetIsFired(true);
                 (*myIt)->SetAngle(DegToRad(a*10));//각각의 각도설정
                 break;

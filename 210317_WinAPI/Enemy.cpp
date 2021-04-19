@@ -76,7 +76,7 @@ void Enemy::Update()
                 fireCount++;
                 if (fireCount % 20 == 0)
                 {
-                    myMissile->Fire(MissileManager::FIRETYPE::FallingKnivesFire);
+                    myMissile->Fire(MissileManager::FIRETYPE::FallingKnivesFIRE);
                     //myMissile->Fire(MissileManager::FIRETYPE::ZigzagFIRE);
                     fireCount = 0;
                 }

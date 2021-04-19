@@ -16,7 +16,7 @@ void GuidedFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
                 {
                     if ((*myIt)->GetIsFired() == false)
                     {
-                        (*myIt)->SetType(Missile::SKILLTYPE::CircularSkillTYPE);
+                        (*myIt)->SetType(Missile::SKILLTYPE::CircularSkill_TYPE);
                         (*myIt)->SetIsFired(true);
                         //float angle = DegToRad(-135 + 10 * j);
                         (*myIt)->SetAngle(DegToRad(-135 + 10 * j));
@@ -31,9 +31,9 @@ void GuidedFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
         //Å¸°Ù µû¶ó
         for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
         {
-            if ((*myIt)->GetType() == Missile::SKILLTYPE::CircularSkillTYPE)
+            if ((*myIt)->GetType() == Missile::SKILLTYPE::CircularSkill_TYPE)
             {
-                (*myIt)->SetType(Missile::SKILLTYPE::GuidedSkillTYPE);
+                (*myIt)->SetType(Missile::SKILLTYPE::Guided_Skill_TYPE);
             }
         }
     }

@@ -11,7 +11,7 @@ void PlayerFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
         {
             if ((*myIt)->GetIsFired() == false)
             {
-                (*myIt)->SetType(Missile::SKILLTYPE::PlayerSkillTYPE);
+                (*myIt)->SetType(Missile::SKILLTYPE::PlayerSkill_TYPE);
                 (*myIt)->SetIsFired(true);
                 break;
             }

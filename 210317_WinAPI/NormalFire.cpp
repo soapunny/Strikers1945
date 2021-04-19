@@ -11,7 +11,7 @@ void NormalFire::DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
         {
             if ((*myIt)->GetIsFired() == false)
             {
-                (*myIt)->SetType(Missile::SKILLTYPE::NormalSkillTYPE);
+                (*myIt)->SetType(Missile::SKILLTYPE::NormalSkill_TYPE);
                 (*myIt)->SetIsFired(true);
                 (*myIt)->SetAngle(DegToRad(-90));
                 break;

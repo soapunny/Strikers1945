@@ -11,7 +11,11 @@ class SkillInterface;
 class Missile : public GameNode
 {
 public:
-	enum SKILLTYPE { NormalSkillTYPE, ZigzagSkillTYPE, FallingKnivesTYPE, FIREWORKTYPE, CircularSkillTYPE, GuidedSkillTYPE, PlayerSkillTYPE, MeteorSkillTYPE, WormSKillTYPE, TwoSKillTYPE, NotSkillTYPE, TornadoSkillTYPE};
+	enum SKILLTYPE { 
+		NormalSkill_TYPE, ZigzagSkill_TYPE, FallingKnives_TYPE, FIREWORK_TYPE
+		, CircularSkill_TYPE, Guided_Skill_TYPE, PlayerSkill_TYPE
+		, MeteorSkill_TYPE, WormSKill_TYPE, TwoSKill_TYPE, NotSkill_TYPE
+		, TornadoSkill_TYPE, END_TYPE};
 
 protected:
 	// ¿ÃπÃ¡ˆ
@@ -28,6 +32,7 @@ protected:
 	float angle;
 	bool isFired;
 	SKILLTYPE missileType;
+	SkillInterface* lpCurrSkill;
 	int fireIndex;
 	int fireStep;
 
@@ -36,6 +41,7 @@ protected:
 	float destAngle;
 
 	SkillManager* skillManager;
+	vector<SkillInterface*> vSkillInterfaces;
 
 public:
 	HRESULT Init(FPOINT position);

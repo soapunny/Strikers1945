@@ -1,5 +1,6 @@
 #include "WormFire.h"
-void WormFire::DoFire(vector<Missile*>* vMissiles)
+#include "Missile.h"
+void WormFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
     vector<Missile*>::iterator myIt;
 
@@ -13,7 +14,7 @@ void WormFire::DoFire(vector<Missile*>* vMissiles)
         if ((*myIt)->GetIsFired() == false)
         {
             randAngle = (rand() % 168 - 18) * 100;
-            (*myIt)->SetType(Missile::SKILLTYPE::WormSKillTYPE);
+            (*myIt)->SetType(Missile::SKILLTYPE::WormSKill_TYPE);
             (*myIt)->SetIsFired(true);
             (*myIt)->SetAngle((k * 3.14f * 2.0f / 36.0f));
             break;
@@ -21,3 +22,5 @@ void WormFire::DoFire(vector<Missile*>* vMissiles)
         k++;
     }
 }
+
+

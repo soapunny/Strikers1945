@@ -1,445 +1,127 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="MainGame">
-      <UniqueIdentifier>{77994adb-bb80-42e8-886b-851bb890958e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2D Framework">
-      <UniqueIdentifier>{fae288c9-1a89-4141-bbae-e4f3680953fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Enemy_Manage">
-      <UniqueIdentifier>{80179eda-c796-41f8-bb9f-fc8313138070}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Missile_Manage">
-      <UniqueIdentifier>{3b9c8fd3-f1a6-400b-95f8-e1a326da7f8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2D Framework\Manager">
-      <UniqueIdentifier>{d653d4d0-85d6-4511-9a40-98773ef03c33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2D Framework\Manager\Timer">
-      <UniqueIdentifier>{a8c0d818-a44b-4e4c-88bd-ba74b7b2630b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Boss_Manage">
-      <UniqueIdentifier>{bf3fa25e-8d3c-4091-9dd1-1f6e582b1d2c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="MainGame\Move_Manage">
-      <UniqueIdentifier>{fb63097f-9609-4d8e-92df-a75801445b89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Fire_Manage">
-      <UniqueIdentifier>{eb9bfc80-1c7e-499e-a113-d8889ae5416b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Skill_Manage">
-      <UniqueIdentifier>{f4339f2a-9f4d-48b8-914f-bd2c161304f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Tank_Manage%28Player%29">
-      <UniqueIdentifier>{a01034b0-7b9c-4dd4-9ebd-c3111f5f425d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Skill_Manage\BHS">
-      <UniqueIdentifier>{1bc4fadd-0a4b-40cc-808a-039348792c74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Move_Manage\Move">
-      <UniqueIdentifier>{dee02fcb-5b15-484e-a384-208d63bcb9f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Fire_Manage\Fire">
-      <UniqueIdentifier>{5a7845ea-82da-4c76-8955-50314417a29c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Skill_Manage\Skill">
-      <UniqueIdentifier>{dfe97ea3-1a08-485e-88d4-baee4333a8d9}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Barrel.cpp" />
+    <ClCompile Include="BilliardsMove.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossManager.cpp" />
+    <ClCompile Include="CenterMove.cpp" />
+    <ClCompile Include="CircularSkill.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="FallingKnivesSkill.cpp" />
+    <ClCompile Include="FireworkFire.cpp" />
+    <ClCompile Include="FireworkSkill.cpp" />
+    <ClCompile Include="GuidedFire.cpp" />
+    <ClCompile Include="GuidedSkill.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="ImageManager.cpp" />
+    <ClCompile Include="KeyManager.cpp" />
+    <ClCompile Include="LeftDownMove.cpp" />
+    <ClCompile Include="LeftSinMove.cpp" />
+    <ClCompile Include="LeftMove.cpp" />
+    <ClCompile Include="LeftUpMove.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="MeteorFire.cpp" />
+    <ClCompile Include="MeteorSkill.cpp" />
+    <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="MissileManager.cpp" />
+    <ClCompile Include="NormalFire.cpp" />
+    <ClCompile Include="NormalMove.cpp" />
+    <ClCompile Include="NormalSkill.cpp" />
+    <ClCompile Include="NotFire.cpp" />
+    <ClCompile Include="NotSkill.cpp" />
+    <ClCompile Include="PhaseChangeMove.cpp" />
+    <ClCompile Include="PlayerFire.cpp" />
+    <ClCompile Include="PlayerShip.cpp" />
+    <ClCompile Include="RightSinMove.cpp" />
+    <ClCompile Include="SpearMove.cpp" />
+    <ClCompile Include="PlayerSkill.cpp" />
+    <ClCompile Include="RightDownMove.cpp" />
+    <ClCompile Include="RightMove.cpp" />
+    <ClCompile Include="RightSideMove.cpp" />
+    <ClCompile Include="RightUpMove.cpp" />
+    <ClCompile Include="StageOneBoss.cpp" />
+    <ClCompile Include="StageThreeBoss.cpp" />
+    <ClCompile Include="StageTwoBoss.cpp" />
+    <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TimerManager.cpp" />
+    <ClCompile Include="TornadoSkill.cpp" />
+    <ClCompile Include="TwoFire.cpp" />
+    <ClCompile Include="TwoSkill.cpp" />
+    <ClCompile Include="WormFire.cpp" />
+    <ClCompile Include="WormSkill.cpp" />
+    <ClCompile Include="ZigzagFire.cpp" />
+    <ClCompile Include="ZigzagMove.cpp" />
+    <ClCompile Include="ZigzagSkill.cpp" />
+    <ClCompile Include="FireManager.cpp" />
+    <ClCompile Include="FallingKnivesFire.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame.cpp">
-      <Filter>MainGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cpp">
-      <Filter>2D Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
-      <Filter>MainGame\Enemy_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>MainGame\Enemy_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="Missile.cpp">
-      <Filter>MainGame\Missile_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="Tank.cpp">
-      <Filter>MainGame\Tank_Manage%28Player%29</Filter>
-    </ClCompile>
-    <ClCompile Include="MissileManager.cpp">
-      <Filter>MainGame\Missile_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyManager.cpp">
-      <Filter>2D Framework\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageManager.cpp">
-      <Filter>2D Framework\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>2D Framework\Manager\Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="TimerManager.cpp">
-      <Filter>2D Framework\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerShip.cpp">
-      <Filter>MainGame\Tank_Manage%28Player%29</Filter>
-    </ClCompile>
-    <ClCompile Include="BossManager.cpp">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss.cpp">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="Barrel.cpp">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="StageOneBoss.cpp">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="StageTwoBoss.cpp">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="StageThreeBoss.cpp">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="LeftDownMove.cpp">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClCompile>
-    <ClCompile Include="LeftSinMove.cpp">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClCompile>
-    <ClCompile Include="FallingKnivesFire.cpp">
-      <Filter>MainGame\Fire_Manage\Fire</Filter>
-    </ClCompile>
-    <ClCompile Include="NormalFire.cpp">
-      <Filter>MainGame\Fire_Manage\Fire</Filter>
-    </ClCompile>
-    <ClCompile Include="RightSinMove.cpp">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClCompile>
-    <ClCompile Include="SpearMove.cpp">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClCompile>
-    <ClCompile Include="NormalMove.cpp">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClCompile>
-    <ClCompile Include="BilliardsMove.cpp">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClCompile>
-    <ClCompile Include="FireworkFire.cpp">
-      <Filter>MainGame\Fire_Manage\Fire</Filter>
-    </ClCompile>
-    <ClCompile Include="FallingKnivesSkill.cpp">
-      <Filter>Skill_Manage\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="NormalSkill.cpp">
-      <Filter>Skill_Manage\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="FireworkSkill.cpp">
-      <Filter>Skill_Manage\Skill</Filter>
-    <ClCompile Include="NormalFire.cpp">
-      <Filter>MainGame\Fire_Manage\Fire</Filter>
-    </ClCompile>
-    <ClCompile Include="NormalMove.cpp">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClCompile>
-    <ClCompile Include="NormalSkill.cpp">
-      <Filter>Skill_Manage\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="TornadoSkill.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ZigzagFire.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ZigzagMove.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ZigzagSkill.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MeteorFire.cpp">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="TwoFire.cpp">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="WormFire.cpp">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="CenterMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="LeftDownMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="LeftMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="LeftUpMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="RightDownMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="RightMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="RightSideMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="RightUpMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="PhaseChangeMove.cpp">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="MeteorSkill.cpp">
-      <Filter>Skill_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="NotFire.cpp">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="NotSkill.cpp">
-      <Filter>Skill_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="TwoSkill.cpp">
-      <Filter>Skill_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="WormSkill.cpp">
-      <Filter>Skill_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="CircularSkill.cpp">
-      <Filter>Skill_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="GuidedFire.cpp">
-      <Filter>MainGame\Fire_Manage\Fire</Filter>
-    </ClCompile>
-    <ClCompile Include="GuidedSkill.cpp">
-      <Filter>Skill_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerFire.cpp">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerSkill.cpp">
-      <Filter>Skill_Manage</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CommonFunction.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="config.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame.h">
-      <Filter>MainGame</Filter>
-    </ClInclude>
-    <ClInclude Include="GameNode.h">
-      <Filter>2D Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>2D Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Image.h">
-      <Filter>2D Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyManager.h">
-      <Filter>MainGame\Enemy_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>MainGame\Enemy_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="Missile.h">
-      <Filter>MainGame\Missile_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="Tank.h">
-      <Filter>MainGame\Tank_Manage%28Player%29</Filter>
-    </ClInclude>
-    <ClInclude Include="MissileManager.h">
-      <Filter>MainGame\Missile_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyManager.h">
-      <Filter>2D Framework\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageManager.h">
-      <Filter>2D Framework\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>2D Framework\Manager\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="TimerManager.h">
-      <Filter>2D Framework\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerShip.h">
-      <Filter>MainGame\Tank_Manage%28Player%29</Filter>
-    </ClInclude>
-    <ClInclude Include="BossManager.h">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss.h">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="Barrel.h">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="StageOneBoss.h">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="StageTwoBoss.h">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="StageThreeBoss.h">
-      <Filter>MainGame\Boss_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveManager.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveInterface.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="FireManager.h">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="FireInterface.h">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="SkillManager.h">
-      <Filter>Skill_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="SkillInterface.h">
-      <Filter>Skill_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="LeftDownMove.h">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="LeftSinMove.h">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="FallingKnivesFire.h">
-      <Filter>MainGame\Fire_Manage\Fire</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalFire.h">
-      <Filter>MainGame\Fire_Manage\Fire</Filter>
-    </ClInclude>
-    <ClInclude Include="RightSinMove.h">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="SpearMove.h">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalMove.h">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="BilliardsMove.h">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="FireworkFire.h">
-      <Filter>MainGame\Fire_Manage\Fire</Filter>
-    </ClInclude>
-    <ClInclude Include="FallingKnivesSkill.h">
-      <Filter>Skill_Manage\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalSkill.h">
-      <Filter>Skill_Manage\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="FireworkSkill.h">
-      <Filter>헤더 파일</Filter>
-    <ClInclude Include="NormalFire.h">
-      <Filter>MainGame\Fire_Manage\Fire</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalMove.h">
-      <Filter>MainGame\Move_Manage\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="NormalSkill.h">
-      <Filter>Skill_Manage\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="TornadoSkill.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ZigzagFire.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ZigzagMove.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ZigzagSkill.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MeteorFire.h">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="TwoFire.h">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="WormFire.h">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="CenterMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="LeftDownMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="LeftMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="LeftUpMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="RightDownMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="RightMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="RightSideMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="RightUpMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="PhaseChangeMove.h">
-      <Filter>MainGame\Move_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="MeteorSkill.h">
-      <Filter>Skill_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="NotFire.h">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="NotSkill.h">
-      <Filter>Skill_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="TwoSkill.h">
-      <Filter>Skill_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="WormSkill.h">
-      <Filter>Skill_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="GuidedSkill.h">
-      <Filter>Skill_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerFire.h">
-      <Filter>MainGame\Fire_Manage</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerSkill.h">
-      <Filter>Skill_Manage</Filter>
-    </ClInclude>
+    <ClInclude Include="Barrel.h" />
+    <ClInclude Include="BilliardsMove.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossManager.h" />
+    <ClInclude Include="CenterMove.h" />
+    <ClInclude Include="CommonFunction.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="FallingKnivesSkill.h" />
+    <ClInclude Include="GuidedSkill.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="ImageManager.h" />
+    <ClInclude Include="FireInterface.h" />
+    <ClInclude Include="FireManager.h" />
+    <ClInclude Include="FireworkFire.h" />
+    <ClInclude Include="FireworkSkill.h" />
+    <ClInclude Include="GameNode.h" />
+    <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="LeftDownMove.h" />
+    <ClInclude Include="LeftSinMove.h" />
+    <ClInclude Include="LeftMove.h" />
+    <ClInclude Include="LeftUpMove.h" />
+    <ClInclude Include="MainGame.h" />
+    <ClInclude Include="MeteorFire.h" />
+    <ClInclude Include="MeteorSkill.h" />
+    <ClInclude Include="Missile.h" />
+    <ClInclude Include="MissileManager.h" />
+    <ClInclude Include="MoveInterface.h" />
+    <ClInclude Include="MoveManager.h" />
+    <ClInclude Include="NormalFire.h" />
+    <ClInclude Include="NormalMove.h" />
+    <ClInclude Include="NormalSkill.h" />
+    <ClInclude Include="NotFire.h" />
+    <ClInclude Include="NotSkill.h" />
+    <ClInclude Include="PhaseChangeMove.h" />
+    <ClInclude Include="PlayerFire.h" />
+    <ClInclude Include="PlayerShip.h" />
+    <ClInclude Include="RightSinMove.h" />
+    <ClInclude Include="PlayerSkill.h" />
+    <ClInclude Include="RightDownMove.h" />
+    <ClInclude Include="RightMove.h" />
+    <ClInclude Include="RightSideMove.h" />
+    <ClInclude Include="RightUpMove.h" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SkillInterface.h" />
+    <ClInclude Include="SkillManager.h" />
+    <ClInclude Include="SpearMove.h" />
+    <ClInclude Include="StageOneBoss.h" />
+    <ClInclude Include="StageThreeBoss.h" />
+    <ClInclude Include="StageTwoBoss.h" />
+    <ClInclude Include="Tank.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="TimerManager.h" />
+    <ClInclude Include="TornadoSkill.h" />
+    <ClInclude Include="TwoFire.h" />
+    <ClInclude Include="TwoSkill.h" />
+    <ClInclude Include="WormFire.h" />
+    <ClInclude Include="WormSkill.h" />
+    <ClInclude Include="ZigzagFire.h" />
+    <ClInclude Include="ZigzagMove.h" />
+    <ClInclude Include="ZigzagSkill.h" />
+    <ClInclude Include="FallingKnivesFire.h" />
   </ItemGroup>
 </Project>

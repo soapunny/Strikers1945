@@ -1,7 +1,7 @@
 #include "MeteorFire.h"
 #include "Missile.h"
 
-void MeteorFire::DoFire(vector<Missile*>* vMissiles)
+void MeteorFire::DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
     vector<Missile*>::iterator myIt;
 
@@ -14,7 +14,7 @@ void MeteorFire::DoFire(vector<Missile*>* vMissiles)
         if ((*myIt)->GetIsFired() == false)
         {   
             firedCount++;
-            (*myIt)->SetType(Missile::SKILLTYPE::MeteorSkillTYPE);
+            (*myIt)->SetType(Missile::SKILLTYPE::MeteorSkill_TYPE);
             (*myIt)->SetIsFired(true);            
             (*myIt)->SetAngle(DegToRad((firedCount * 3.14f * 2.0f / 36.0f)));
             

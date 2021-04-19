@@ -149,8 +149,9 @@
     <ClCompile Include="CircularSkill.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
-    <ClCompile Include="FallingKnivesSkill.cpp" />
     <ClCompile Include="FallingKnivesFire.cpp" />
+    <ClCompile Include="FallingKnivesSkill.cpp" />
+    <ClCompile Include="FireManager.cpp" />
     <ClCompile Include="FireworkFire.cpp" />
     <ClCompile Include="FireworkSkill.cpp" />
     <ClCompile Include="GuidedFire.cpp" />
@@ -208,8 +209,8 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />
-    <ClInclude Include="FallingKnivesSkill.h" />
     <ClInclude Include="FallingKnivesFire.h" />
+    <ClInclude Include="FallingKnivesSkill.h" />
     <ClInclude Include="GuidedSkill.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />

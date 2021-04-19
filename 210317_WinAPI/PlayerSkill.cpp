@@ -10,3 +10,4 @@ void PlayerSkill::UseSkill(Missile* missile, FPOINT* lpTargetPos)
 	mY -= sin(DegToRad(missile->GetAngle())) * 3 * (missile->GetMoveSpeed()) * elapsedTime / missile->GetMoveTime();
 	missile->SetPos({ mX, mY });
 }
+

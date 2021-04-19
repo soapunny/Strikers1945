@@ -1,4 +1,5 @@
 #include "FallingKnivesFire.h"
+#include "Missile.h"
 
 void FallingKnivesFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
@@ -10,7 +11,7 @@ void FallingKnivesFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
     {
         if ((*it)->GetIsFired() == false)
         {
-            (*it)->SetType(Missile::SKILLTYPE::FallingKnivesTYPE);
+            (*it)->SetType(Missile::SKILLTYPE::FallingKnives_TYPE);
             //(*it)->SetType(Missile::TYPE::Zigzag);
 
             //(*it)->SetPos(FPOINT{ owner->GetPos().x, owner->GetPos().y });

@@ -1,6 +1,5 @@
 #pragma once
 #include "GameNode.h"
-#include <vector>
 
 class Boss;
 class BossManager : public GameNode

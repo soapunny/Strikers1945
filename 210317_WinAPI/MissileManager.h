@@ -1,16 +1,16 @@
 #pragma once
 #include "GameNode.h"
-#include <vector>
-#include "FireManager.h"
 
 class Missile;
 class Enemy;
 class PlayerShip;
+class FireManager;
+class FireInterface;
 
 class MissileManager : public GameNode
 {
 public:
-	enum class FIRETYPE { NormalFIRE, FallingKnivesFire, FIREWORKFIRE, GuidedFIRE, PlayerFIRE, ZigzagFIRE, MeteorFIRE, WormFIRE, TwoFIRE, NotFIRE	};
+	enum FIRETYPE { NormalFIRE, FallingKnivesFIRE, FIREWORKFIRE, GuidedFIRE, PlayerFIRE, ZigzagFIRE, MeteorFIRE, WormFIRE, TwoFIRE, NotFIRE, END_FIRETYPE};
 
 private:
 	vector<Missile*> vMissiles;
@@ -20,6 +20,9 @@ private:
 	float missileAngle;	//미사일 각도
 
 	FireManager* fireManager;
+	vector<FireInterface*> vFireInterfaces;
+	FireInterface* currFire;
+
 	FPOINT playerPos;
 
 	FIRETYPE fireType;
