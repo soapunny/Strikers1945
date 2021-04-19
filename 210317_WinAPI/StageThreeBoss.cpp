@@ -9,7 +9,7 @@
 HRESULT StageThreeBoss::Init()
 {
     // 보스3 이미지
-    image = ImageManager::GetSingleton()->FindImage("Enemy");
+    image = ImageManager::GetSingleton()->FindImage("StageThreeBoss");
     if (image == nullptr)
     {
         MessageBox(g_hWnd, "enemy에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
@@ -17,12 +17,12 @@ HRESULT StageThreeBoss::Init()
     }
     currFrameX = 0;
     updateCount = 0;
-
+    status = 0;
     pos.x = WINSIZE_X / 2 ;
     pos.y = 0;
     size = 150;
     BossHp = 100;
-    moveSpeed = 1.0f;
+    moveSpeed = 10.0f;
     isAlive = true;
    
     //이동방향설정
@@ -30,7 +30,11 @@ HRESULT StageThreeBoss::Init()
     moveManager->ChangeMove(new NormalMove());
     moveManager->SetMoveSpeed(moveSpeed);
 
-    
+    vMoveInterfaces.resize(MOVETYPE::END_MOVE);
+    vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE] = new ZigzagMove;
+     vMoveInterfaces[MOVETYPE::NORMAL_MOVE] = new NormalMove;
+    /*  vMoveInterfaces[MOVETYPE::SPEAR_MOVE] = new SpearMove;
+    vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE] = new BilliardsMove;*/
     
     vBarrels.resize(6);
     for (int i = 0; i < 6; i++)
@@ -136,17 +140,21 @@ void StageThreeBoss::Move()
 {
     MoveElapesdTimer =TimerManager::GetSingleton()->getElapsedTime();
     MoveTimer += MoveElapesdTimer;
-    if (MoveTimer > 1)
+    if (MoveTimer < 3)
     { 
-        //moveManager->ChangeMove(new ZigzagMove());
-        moveManager->ChangeMove(new NormalMove());
-       // moveManager->DoMove(&pos, &angle);
+        
+        moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
+       
+    }
+    if (status == 0)
+    {
+        moveManager->SetMoveSpeed
     }
 
     if(MoveTimer>3 && MoveTimer<25) //시간에따라 움직임 혹은 체력에 따라로 변할수도 있음
     {
+        moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE]);
        
-        //moveManager->DoMove(&pos, &angle);
         moveSpeed += 0.001;
         moveManager->SetMoveSpeed(moveSpeed);
     } 

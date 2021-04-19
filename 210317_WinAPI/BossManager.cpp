@@ -31,8 +31,8 @@ void BossManager::Release()
 
 void BossManager::Update()
 {
-    vBoss[0]->GetAlive();
-    vBoss[0]->Update();
+    vBoss[2]->GetAlive();
+    vBoss[2]->Update();
     /*vector<Boss*>::iterator myIt;
     for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
     {
@@ -43,8 +43,8 @@ void BossManager::Update()
 
 void BossManager::Render(HDC hdc)
 {
-    vBoss[0]->GetAlive();
-    vBoss[0]->Render(hdc);
+    vBoss[2]->GetAlive();
+    vBoss[2]->Render(hdc);
     /*vector<Boss*>::iterator myIt;
     for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
     {

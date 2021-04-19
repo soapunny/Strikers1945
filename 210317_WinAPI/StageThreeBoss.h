@@ -5,10 +5,12 @@
 class StageThreeBoss : public Boss
 {
 private:
+	vector<MoveInterface*> vMoveInterfaces;
 	float MoveElapesdTimer;
 	float MoveTimer;
 	FPOINT BerralEnd;
 	int BossHp; //아마 나중에 보스에다 선언할듯
+	int status;
 public:
 	virtual HRESULT Init();
 	virtual void Release();
