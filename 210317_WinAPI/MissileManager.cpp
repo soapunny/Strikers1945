@@ -1,8 +1,9 @@
+#pragma once
 #include "CommonFunction.h"
 #include "MissileManager.h"
 #include "Missile.h"
+#include "FireManager.h"
 #include "NormalFire.h"
-#include "FallingKnivesFire.h"
 #include "FireworkFire.h"
 #include "GuidedFire.h"
 #include "PlayerFire.h"
@@ -11,6 +12,7 @@
 #include "TwoFire.h"
 #include "NotFire.h"
 #include "ZigzagFire.h"
+#include "FallingKnivesFire.h"
 
 HRESULT MissileManager::Init(FPOINT pos)
 {
@@ -25,22 +27,25 @@ HRESULT MissileManager::Init(FPOINT pos)
         (*myIt)->SetStartPos(pos);
     }
 
+    //FallingKnivesFire fkf;
+    
+    vFireInterfaces.resize(FIRETYPE::END_FIRETYPE);
+    vFireInterfaces[FIRETYPE::NormalFIRE] = new NormalFire();
+    vFireInterfaces[FIRETYPE::FallingKnivesFIRE] = new FallingKnivesFire();
+    vFireInterfaces[FIRETYPE::FIREWORKFIRE] = new FireworkFire();
+    vFireInterfaces[FIRETYPE::GuidedFIRE] = new GuidedFire();
+    vFireInterfaces[FIRETYPE::MeteorFIRE] = new MeteorFire();
+    vFireInterfaces[FIRETYPE::NotFIRE] = new NotFire();
+    vFireInterfaces[FIRETYPE::PlayerFIRE] = new PlayerFire();
+    vFireInterfaces[FIRETYPE::TwoFIRE] = new TwoFire();
+    vFireInterfaces[FIRETYPE::WormFIRE] = new WormFire();
+    vFireInterfaces[FIRETYPE::ZigzagFIRE] = new ZigzagFire();
+
+
     //어떤 미사일을 장전 시킬 것인가
     fireManager = new FireManager();
-    //fireManager->ChangeMove(new NormalFire());
-    //fireManager->ChangeMove(new FallingKnivesFire());
-    fireManager->ChangeMove(new FallingKnivesFire);
-    fireManager->ChangeMove(new NormalFire());
-    fireManager->ChangeMove(new GuidedFire());
-    fireManager->ChangeMove(new PlayerFire());
-    //fireManager = new FireManager();
-    //fireManager->ChangeMove(new NormalFire());
-    //fireManager->ChangeMove(new MeteorFire());
-    //fireManager->ChangeMove(new WormFire());
-    //fireManager->ChangeMove(new TwoFire());
-    //fireManager->ChangeMove(new NotFire());
-    ////fireManager->ChangeMove(new NormalFire());
-    //fireManager->ChangeMove(new ZigzagFire());
+    currFire = vFireInterfaces[FIRETYPE::NormalFIRE];
+    fireManager->ChangeMove(currFire);
 
     return S_OK;
 }
@@ -56,7 +61,14 @@ void MissileManager::Release()
     }
     vMissiles.clear();
 
-
+    SAFE_DELETE(fireManager);
+    for (int i = 0; i < vFireInterfaces.size(); i++) {
+        if (vFireInterfaces[i])
+        {
+            SAFE_DELETE(vFireInterfaces[i]);
+        }
+    }
+    vFireInterfaces.clear();
 }
 
 void MissileManager::Update()
@@ -66,7 +78,7 @@ void MissileManager::Update()
         vMissiles[i]->SetPlayerPos(this->playerPos);
         vMissiles[i]->SetStartPos(this->missilePos);
         if(this->fireType == FIRETYPE::PlayerFIRE)
-         vMissiles[i]->SetAngle(this->missileAngle);
+            vMissiles[i]->SetAngle(this->missileAngle);
         vMissiles[i]->Update();
     }
 }
@@ -81,47 +93,64 @@ void MissileManager::Render(HDC hdc)
 
 void MissileManager::Fire(FIRETYPE fireType)
 {
+
     //어떤 미사일을 발사 할 것인지 알려주기
     switch (fireType)
     {
         //체인지 무브 안해줘서 해줬음
     case FIRETYPE::NormalFIRE:
-        fireManager->DoFire(&vMissiles, nullptr);
+        if(currFire != vFireInterfaces[FIRETYPE::NormalFIRE]){
+            currFire = vFireInterfaces[FIRETYPE::NormalFIRE];
+        }
         break;
-    case FIRETYPE::FallingKnivesFire:
-        fireManager->DoFire(&vMissiles, nullptr);
+    case FIRETYPE::FallingKnivesFIRE:
+        if (currFire != vFireInterfaces[FIRETYPE::FallingKnivesFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::FallingKnivesFIRE];
+        }
         break;
     case FIRETYPE::FIREWORKFIRE:
-        fireManager->DoFire(&vMissiles, nullptr);
+        if (currFire != vFireInterfaces[FIRETYPE::FIREWORKFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::FIREWORKFIRE];
+        }
         break;
     case FIRETYPE::GuidedFIRE:
-        this->fireType = FIRETYPE::GuidedFIRE;
-        fireManager->DoFire(&vMissiles, nullptr);
+        if (currFire != vFireInterfaces[FIRETYPE::GuidedFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::GuidedFIRE];
+        }
         break;
     case FIRETYPE::PlayerFIRE:
-        this->fireType = FIRETYPE::PlayerFIRE;
-        fireManager->DoFire(&vMissiles, nullptr);
+        if (currFire != vFireInterfaces[FIRETYPE::PlayerFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::PlayerFIRE];
+        }
         break; 
-   /* case FIRETYPE::MeteorFIRE:
-        fireManager->ChangeMove(new MeteorFire());
-        fireManager->DoFire(&vMissiles);
+    case FIRETYPE::MeteorFIRE:
+        if (currFire != vFireInterfaces[FIRETYPE::MeteorFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::MeteorFIRE];
+        }
         break;
     case FIRETYPE::WormFIRE:
-        fireManager->ChangeMove(new WormFire());
-        fireManager->DoFire(&vMissiles);
+        if (currFire != vFireInterfaces[FIRETYPE::WormFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::WormFIRE];
+        }
         break;
     case FIRETYPE::TwoFIRE:
-        fireManager->ChangeMove(new TwoFire());
-        fireManager->DoFire(&vMissiles);
+        if (currFire != vFireInterfaces[FIRETYPE::TwoFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::TwoFIRE];
+        }
         break;
     case FIRETYPE::NotFIRE:
-        fireManager->ChangeMove(new NotFire());
-        fireManager->DoFire(&vMissiles);
+        if (currFire != vFireInterfaces[FIRETYPE::NotFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::NotFIRE];
+        }
         break;
     case FIRETYPE::ZigzagFIRE:
-        fireManager->DoFire(&vMissiles);*/
+        if (currFire != vFireInterfaces[FIRETYPE::ZigzagFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::ZigzagFIRE];
+        }
         break;
     default:
         break;
     }
+
+    fireManager->DoFire(&vMissiles, nullptr);
 }

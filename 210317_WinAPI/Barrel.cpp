@@ -48,6 +48,7 @@ void Barrel::Update()
     {
         myMissile->Update();
     }
+    Attack();
 
     //myMissile->SetPos(barrelEnd);
     //if (isAlive)

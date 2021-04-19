@@ -18,7 +18,7 @@
 HRESULT StageOneBoss::Init()
 {
     // 보스1 이미지
-    image = ImageManager::GetSingleton()->FindImage("Enemy");
+    image = ImageManager::GetSingleton()->FindImage("StageOneBoss");
     if (image == nullptr)
     {
         MessageBox(g_hWnd, "enemy에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
@@ -41,17 +41,19 @@ HRESULT StageOneBoss::Init()
     //angle = 0;
 
     //보스 이동 방법 정의
-    vMoveInterfaces.resize(4);
-    vMoveInterfaces[0] = new RightSinMove;
-    vMoveInterfaces[1] = new LeftSinMove;
-    vMoveInterfaces[2] = new SpearMove;
-    vMoveInterfaces[3] = new BilliardsMove;
+    vMoveInterfaces.resize(MOVETYPE::END_MOVE);
+    vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE] = new RightSinMove;
+    vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE] = new LeftSinMove;
+    vMoveInterfaces[MOVETYPE::SPEAR_MOVE] = new SpearMove;
+    vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE] = new BilliardsMove;
 
     moveManager = new MoveManager();
 
     moveManager->ChangeMove(vMoveInterfaces[0]);
-    for(int i =0;i<vMoveInterfaces.size();i++)
-        vMoveInterfaces[i]->SetMoveSpeed(moveSpeed);
+    for(int i =0;i<vMoveInterfaces.size();i++){
+        if(vMoveInterfaces[i])
+            vMoveInterfaces[i]->SetMoveSpeed(moveSpeed);
+    }
 
     //moveManager->DoMove(&pos, &angle);
 
@@ -83,16 +85,17 @@ void StageOneBoss::Release()
 {
     for (int i = 0; i < 6; i++)
     {
-        SAFE_RELEASE(vBarrels[i]);
+        if(vBarrels[i])
+            SAFE_RELEASE(vBarrels[i]);
     }
     vBarrels.clear();
 
     SAFE_DELETE(moveManager);
-
     for (int i = 0; i < vMoveInterfaces.size(); i++) {
-        delete vMoveInterfaces[i];
-        vMoveInterfaces[i] = nullptr;
+        if(vMoveInterfaces[i])
+            SAFE_DELETE( vMoveInterfaces[i]);
     }
+    vMoveInterfaces.clear();
 }
 
 void StageOneBoss::Update()
@@ -123,7 +126,7 @@ void StageOneBoss::Update()
         updateCount++;
         if (updateCount >= 5)
         {
-            currFrameX = (currFrameX + 1) % 10;
+            currFrameX = (currFrameX + 1) % 30;
             updateCount = 0;
         }
 
@@ -135,30 +138,30 @@ void StageOneBoss::Move()
     MoveInterface* currMoveInterface = nullptr;
     if(life > 75){
         if ((int)(time / 10.0f) % 2 == 0 && currMoveInterface != vMoveInterfaces[0]) {
-            moveManager->ChangeMove(vMoveInterfaces[0]);
-            currMoveInterface = vMoveInterfaces[0];
+            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE]);
+            currMoveInterface = vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE];
         }
         else if ((int)(time / 10.0f) % 2 && currMoveInterface != vMoveInterfaces[1]) {
-            moveManager->ChangeMove(vMoveInterfaces[1]);
-            currMoveInterface = vMoveInterfaces[1];
+            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE]);
+            currMoveInterface = vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE];
         }
     }
     else if (life > 50) {
-        if(currMoveInterface != vMoveInterfaces[2]){
-            moveManager->ChangeMove(vMoveInterfaces[2]);
-            currMoveInterface = vMoveInterfaces[2];
+        if(currMoveInterface != vMoveInterfaces[MOVETYPE::SPEAR_MOVE]){
+            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::SPEAR_MOVE]);
+            currMoveInterface = vMoveInterfaces[MOVETYPE::SPEAR_MOVE];
         }
     }
     else if (life > 25) {
-        if (currMoveInterface != vMoveInterfaces[3]) {
-            moveManager->ChangeMove(vMoveInterfaces[3]);
-            currMoveInterface = vMoveInterfaces[3];
+        if (currMoveInterface != vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE]) {
+            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE]);
+            currMoveInterface = vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE];
         }
     }
     else {
-        if (currMoveInterface != vMoveInterfaces[2]) {
-            moveManager->ChangeMove(vMoveInterfaces[2]);
-            currMoveInterface = vMoveInterfaces[2];
+        if (currMoveInterface != vMoveInterfaces[MOVETYPE::SPEAR_MOVE]) {
+            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::SPEAR_MOVE]);
+            currMoveInterface = vMoveInterfaces[MOVETYPE::SPEAR_MOVE];
         }
     }
     moveManager->DoMove(&pos, &angle);
@@ -168,13 +171,13 @@ void StageOneBoss::Render(HDC hdc)
 {
     if (isAlive)
     {
-        RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
+        //RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
 
         if (image)
         {
             if (!isAlive)
                 image->AlphaRender(hdc, pos.x, pos.y, true);
-            if (isAlive)
+            else if (isAlive)
                 image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
         }
 

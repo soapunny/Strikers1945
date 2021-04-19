@@ -1,5 +1,6 @@
 #pragma once
 #include "FireInterface.h"
+
 class FireworkFire : public FireInterface
 {
 	virtual void DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos);

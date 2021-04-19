@@ -11,8 +11,6 @@ private:
 public:
 	void ChangeSkill(SkillInterface* changeSkill)
 	{
-		/*if (skillInterface)
-			delete skillInterface;*/
 		skillInterface = changeSkill;
 	}
 
@@ -27,6 +25,6 @@ public:
 	}
 
 	SkillManager() : skillInterface(nullptr) {};
-	~SkillManager() { if (skillInterface) delete skillInterface; skillInterface = nullptr; };
+	~SkillManager() {/* if (skillInterface) delete skillInterface; skillInterface = nullptr;*/ };
 };
 

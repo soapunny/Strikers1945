@@ -1,4 +1,5 @@
 #include "FireworkFire.h"
+#include "Missile.h"
 
 void FireworkFire::DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
@@ -11,7 +12,7 @@ void FireworkFire::DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
     {
         if ((*it)->GetIsFired() == false)
         {
-            (*it)->SetType(Missile::SKILLTYPE::FIREWORKTYPE);
+            (*it)->SetType(Missile::SKILLTYPE::FIREWORK_TYPE);
 
             (*it)->SetLpTargetPos(targetPos);
             (*it)->SetAngle(DegToRad(360/initFireCnt * (fireCnt - 1)));

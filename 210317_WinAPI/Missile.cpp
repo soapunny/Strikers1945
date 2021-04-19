@@ -16,6 +16,7 @@
 #include "TwoSkill.h"
 #include "NotSkill.h"
 #include "ZigzagSkill.h"
+#include "TornadoSkill.h"
 
 HRESULT Missile::Init(FPOINT position)
 {
@@ -31,8 +32,27 @@ HRESULT Missile::Init(FPOINT position)
 	damage = 5000;
 	isFired = false;
 
-	missileType = SKILLTYPE::FIREWORKTYPE;
+	missileType = SKILLTYPE::FIREWORK_TYPE;
 	//missileType = SKILLTYPE::ZigzagSkillTYPE;
+
+	vSkillInterfaces.resize(SKILLTYPE::END_TYPE);
+	vSkillInterfaces[SKILLTYPE::CircularSkill_TYPE] = new CircularSkill;
+	vSkillInterfaces[SKILLTYPE::FallingKnives_TYPE] = new FallingKnivesSkill;
+	vSkillInterfaces[SKILLTYPE::FIREWORK_TYPE]		= new FireworkSkill;
+	vSkillInterfaces[SKILLTYPE::Guided_Skill_TYPE]	= new GuidedSkill;
+	vSkillInterfaces[SKILLTYPE::MeteorSkill_TYPE]	= new MeteorSkill;
+	vSkillInterfaces[SKILLTYPE::NormalSkill_TYPE]	= new NormalSkill;
+	vSkillInterfaces[SKILLTYPE::NotSkill_TYPE]		= new NotSkill;
+	vSkillInterfaces[SKILLTYPE::PlayerSkill_TYPE]	= new PlayerSkill;
+	vSkillInterfaces[SKILLTYPE::TornadoSkill_TYPE]	= new TornadoSkill;
+	vSkillInterfaces[SKILLTYPE::TwoSKill_TYPE]		= new TwoSkill;
+	vSkillInterfaces[SKILLTYPE::WormSKill_TYPE]		= new WormSkill;
+	vSkillInterfaces[SKILLTYPE::ZigzagSkill_TYPE]	= new ZigzagSkill;
+
+	skillManager = new SkillManager();
+	lpCurrSkill = vSkillInterfaces[SKILLTYPE::NormalSkill_TYPE];
+	skillManager->ChangeSkill(lpCurrSkill);
+
 	fireStep = 0;
 
 
@@ -44,14 +64,20 @@ HRESULT Missile::Init(FPOINT position)
 		return E_FAIL;
 	}
 
-	skillManager = new SkillManager();
-	skillManager->ChangeSkill(new FireworkSkill());
 
     return S_OK;
 }
 
 void Missile::Release()
 {
+	SAFE_DELETE(skillManager);
+	for (int i = 0; i < vSkillInterfaces.size(); i++) {
+		if (vSkillInterfaces[i])
+		{
+			SAFE_DELETE(vSkillInterfaces[i]);
+		}
+	}
+	vSkillInterfaces.clear();
 }
 
 void Missile::Update()
@@ -61,48 +87,78 @@ void Missile::Update()
 	{
 		switch (missileType)
 		{
-		case SKILLTYPE::NormalSkillTYPE:
-			//skillManager->ChangeSkill(new NormalSkill());
+		case SKILLTYPE::NormalSkill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::NormalSkill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::NormalSkill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
 
-		case SKILLTYPE::FallingKnivesTYPE:
+		case SKILLTYPE::FallingKnives_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::FallingKnives_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::FallingKnives_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
 
-		case SKILLTYPE::FIREWORKTYPE:
+		case SKILLTYPE::FIREWORK_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::FIREWORK_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::FIREWORK_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
-		case SKILLTYPE::CircularSkillTYPE:
-			skillManager->ChangeSkill(new CircularSkill());
-			skillManager->UseSkill(this, nullptr);
+		case SKILLTYPE::CircularSkill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::CircularSkill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::CircularSkill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
-		case SKILLTYPE::GuidedSkillTYPE:
-			skillManager->ChangeSkill(new GuidedSkill());
-			skillManager->UseSkill(this, nullptr);
+		case SKILLTYPE::Guided_Skill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::Guided_Skill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::Guided_Skill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
-		case SKILLTYPE::PlayerSkillTYPE:
-			skillManager->ChangeSkill(new PlayerSkill());
-			skillManager->UseSkill(this, nullptr);
+		case SKILLTYPE::PlayerSkill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::PlayerSkill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::PlayerSkill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
-		case SKILLTYPE::MeteorSkillTYPE:
-			skillManager->ChangeSkill(new MeteorSkill());
-			skillManager->UseSkill(this, nullptr);
+		case SKILLTYPE::MeteorSkill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::MeteorSkill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::MeteorSkill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
-		case SKILLTYPE::WormSKillTYPE:
-			skillManager->ChangeSkill(new WormSkill());
-			skillManager->UseSkill(this, nullptr);
+		case SKILLTYPE::WormSKill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::WormSKill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::WormSKill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
-		case SKILLTYPE::TwoSKillTYPE:
-			skillManager->ChangeSkill(new TwoSkill());
-			skillManager->UseSkill(this, nullptr);
+		case SKILLTYPE::TwoSKill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::TwoSKill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::TwoSKill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
-		case SKILLTYPE::NotSkillTYPE:
-			skillManager->ChangeSkill(new NotSkill());
-		case SKILLTYPE::ZigzagSkillTYPE:
-			skillManager->ChangeSkill(new ZigzagSkill());
-			skillManager->UseSkill(this, nullptr);
+		case SKILLTYPE::NotSkill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::NotSkill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::NotSkill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
+		case SKILLTYPE::ZigzagSkill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::ZigzagSkill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::ZigzagSkill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
-		case SKILLTYPE::TornadoSkillTYPE:
-			skillManager->ChangeSkill(new ZigzagSkill());
-			skillManager->UseSkill(this, nullptr);
+		case SKILLTYPE::TornadoSkill_TYPE:
+			if (lpCurrSkill != vSkillInterfaces[SKILLTYPE::TornadoSkill_TYPE]) {
+				lpCurrSkill = vSkillInterfaces[SKILLTYPE::TornadoSkill_TYPE];
+				skillManager->ChangeSkill(lpCurrSkill);
+			}
 			break;
 		default:
 			break;
@@ -117,7 +173,7 @@ void Missile::Update()
 			fireStep = 0;
 		}
 
-		if (missileType == SKILLTYPE::PlayerSkillTYPE)
+		if (missileType == SKILLTYPE::PlayerSkill_TYPE)
 		{
 			if( pos.y > GetStartPos().y)
 				isFired = false;

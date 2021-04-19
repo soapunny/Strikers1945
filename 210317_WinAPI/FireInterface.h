@@ -1,8 +1,7 @@
 #pragma once
 #include "config.h"
-#include "Missile.h"
-#include <vector>
 
+class Missile;
 class FireInterface
 {
 protected:
@@ -10,5 +9,8 @@ protected:
 public:
 	virtual void DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos) = 0;
 	virtual void Renew() = 0;
+
+	FireInterface() {}
+	virtual ~FireInterface() {}
 };
 

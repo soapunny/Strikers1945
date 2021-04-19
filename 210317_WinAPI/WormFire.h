@@ -7,5 +7,6 @@ private:
 	int randAngle;
 	int k=0;
 public:
-	virtual void DoFire(vector<Missile*>* vMissiles);
+	virtual void DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos);
+	virtual void Renew() { time = 0.0f; }
 };

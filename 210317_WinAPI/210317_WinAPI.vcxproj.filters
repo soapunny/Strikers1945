@@ -10,7 +10,10 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="FallingKnivesSkill.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="FallingKnivesFire.cpp" />
+=======
+>>>>>>> 74ab09bcfec9d14ccff95abe426914ce907bd7df
     <ClCompile Include="FireworkFire.cpp" />
     <ClCompile Include="FireworkSkill.cpp" />
     <ClCompile Include="GuidedFire.cpp" />
@@ -57,7 +60,12 @@
     <ClCompile Include="ZigzagFire.cpp" />
     <ClCompile Include="ZigzagMove.cpp" />
     <ClCompile Include="ZigzagSkill.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="CollisionCheck.cpp" />
+=======
+    <ClCompile Include="FireManager.cpp" />
+    <ClCompile Include="FallingKnivesFire.cpp" />
+>>>>>>> 74ab09bcfec9d14ccff95abe426914ce907bd7df
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barrel.h" />
@@ -70,7 +78,10 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="FallingKnivesSkill.h" />
+<<<<<<< HEAD
     <ClInclude Include="FallingKnivesFire.h" />
+=======
+>>>>>>> 74ab09bcfec9d14ccff95abe426914ce907bd7df
     <ClInclude Include="GuidedSkill.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
@@ -123,6 +134,10 @@
     <ClInclude Include="ZigzagFire.h" />
     <ClInclude Include="ZigzagMove.h" />
     <ClInclude Include="ZigzagSkill.h" />
+<<<<<<< HEAD
     <ClInclude Include="CollisionCheck.h" />
+=======
+    <ClInclude Include="FallingKnivesFire.h" />
+>>>>>>> 74ab09bcfec9d14ccff95abe426914ce907bd7df
   </ItemGroup>
 </Project>

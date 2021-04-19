@@ -1,31 +1,19 @@
 #pragma once
 #include "config.h"
-#include "FireInterface.h"
-#include "Missile.h"
 
+class FireInterface;
+class Missile;
 class FireManager
 {
 private:
 	FireInterface* fireInterface;
 
 public:
-	virtual	void ChangeMove(FireInterface* changeFire)
-	{
-		/*if (fireInterface)
-			delete fireInterface;*/
-		fireInterface = changeFire;
-	}
+	virtual	void ChangeMove(FireInterface* changeFire);
 
-	void DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
-	{
-		if (fireInterface)
-			fireInterface->DoFire(vMissiles, targetPos);
-	}
+	void DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos);
 
-	inline virtual void Renew() 
-	{
-		fireInterface->Renew();
-	}
+	virtual void Renew();
 
 	FireManager() : fireInterface(nullptr) {};
 	~FireManager() { /*if (fireInterface) delete fireInterface; fireInterface = nullptr;*/ };

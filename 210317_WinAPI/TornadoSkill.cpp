@@ -1,6 +1,6 @@
 #include "TornadoSkill.h"
 
-void TornadoSkill::UseSkill(FPOINT* pos, float* angle, float moveSpeed, float moveTime) //매개변수 하나더 가져와야할거 같은데?
+void TornadoSkill::UseSkill(Missile* missile, FPOINT* lpTargetPos)
 {
 	//지그재그모양으로 아래를 향해 미사일 발사
 	//도중에 미사일을 바꾸는건 어떻게하지?
@@ -17,6 +17,7 @@ void TornadoSkill::UseSkill(FPOINT* pos, float* angle, float moveSpeed, float mo
 		//}
 	
 
-	(*pos).x += cos(*angle) * moveSpeed * elapsedTime / moveTime;
-	(*pos).y -= sin(*angle) * moveSpeed * elapsedTime / moveTime;
+	/*(*pos).x += cos(*angle) * moveSpeed * elapsedTime / moveTime;
+	(*pos).y -= sin(*angle) * moveSpeed * elapsedTime / moveTime;*/
 }
+
