@@ -5,7 +5,6 @@ class MissileManager;
 class Barrel
 {
 private:
-	// ����(������ ������, ����)	���� �ʿ�
 	FPOINT barrelStart;
 	FPOINT barrelEnd;
 	int barrelSize;
@@ -22,6 +21,9 @@ private:
 	bool isAlive;
 	float angle;
 	enum MISSILETYPE{NOT,NORMAL, TWO, WORM, METEOR};
+	FIRETYPE fireType;
+	int maxFireCount;
+
 	MISSILETYPE typeMissile;
 	int dir;
 
@@ -38,6 +40,10 @@ public:
 
 	inline void SetAngle(float angle) { this->barrelAngle = angle; }
 	inline void SetActivated(bool isActivated) { this->isActivated = isActivated; }
+	inline void SetBarrelSize(int barrelSize) { this->barrelSize = barrelSize; }
+	inline void SetFireType(FIRETYPE fireType) { this->fireType = fireType; }
+	inline void SetMaxFireCount(int maxFireCount) { this->maxFireCount = maxFireCount; }
+	inline bool GetActivated() { return isActivated; }
 
 	void Move();
 	void HorizonMove();	

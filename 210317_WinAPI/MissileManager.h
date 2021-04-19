@@ -9,8 +9,6 @@ class FireInterface;
 
 class MissileManager : public GameNode
 {
-public:
-	enum FIRETYPE { NormalFIRE, FallingKnivesFIRE, FIREWORKFIRE, GuidedFIRE, PlayerFIRE, ZigzagFIRE, MeteorFIRE, WormFIRE, TwoFIRE, NotFIRE, END_FIRETYPE};
 
 private:
 	vector<Missile*> vMissiles;

@@ -48,7 +48,7 @@ void Barrel::Update()
     {
         myMissile->Update();
     }
-    Attack();
+    //Attack();
 
     //myMissile->SetPos(barrelEnd);
     //if (isAlive)
@@ -180,7 +180,7 @@ void Barrel::Attack()
         myMissile->SetPos(barrelEnd);
         if (fireCount % 100 == 0 && isActivated)
         {
-            myMissile->Fire(MissileManager::FIRETYPE::FIREWORKFIRE);
+            myMissile->Fire(fireType);
             fireCount = 0;
         }
     }
