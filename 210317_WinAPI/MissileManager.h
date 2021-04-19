@@ -9,7 +9,6 @@ class FireInterface;
 
 class MissileManager : public GameNode
 {
-
 private:
 	vector<Missile*> vMissiles;
 	int totalMissileNum;

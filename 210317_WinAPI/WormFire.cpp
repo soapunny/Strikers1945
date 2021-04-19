@@ -8,7 +8,7 @@ void WormFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
     //작아지면서 해당 위치에 쏘기 그리고 사라짐
     srand(std::time(NULL));
 
-    
+    float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
     for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
     {
         if ((*myIt)->GetIsFired() == false)
@@ -16,7 +16,7 @@ void WormFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
             randAngle = (rand() % 168 - 18) * 100;
             (*myIt)->SetType(Missile::SKILLTYPE::WormSKill_TYPE);
             (*myIt)->SetIsFired(true);
-            (*myIt)->SetAngle((k * 3.14f * 2.0f / 36.0f));
+            (*myIt)->SetAngle(DegToRad(k)* elapsedTime*1000);
             break;
         }
         k++;

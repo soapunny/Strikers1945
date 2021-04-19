@@ -25,7 +25,7 @@ void TwoFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
             
         }
 
-         k+=10;
-        if (k == -80) k = -100;
+         k+=20;
+        if (k > -80) k = -100;
     }
 }

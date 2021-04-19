@@ -12,16 +12,19 @@
 #include "RightMove.h"
 #include "PhaseChangeMove.h"
 #include "CenterMove.h"
+#include "LeftSinMove.h"
+#include "RightSinMove.h"
 
 HRESULT StageTwoBoss::Init()
 {
     // 보스1 이미지
-    image = ImageManager::GetSingleton()->FindImage("Boss_change");
+    image = ImageManager::GetSingleton()->FindImage("StageTwoBoss");
     if (image == nullptr)
     {
         MessageBox(g_hWnd, "enemy에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
         return E_FAIL;
     }
+    currMoveInterface = nullptr;
     currFrameX = 0;
     updateCount = 0;
     hp = 1000;
@@ -33,9 +36,23 @@ HRESULT StageTwoBoss::Init()
     moveSpeed = 100.0f;               //이동 속도
     angle = 0;
     //보스 이동 방법 정의
+    vMoveInterfaces.resize(MOVETYPE::END_MOVE);
+    vMoveInterfaces[MOVETYPE::RIGHT_UP_MOVE] = new RightUpMove;
+    vMoveInterfaces[MOVETYPE::CENTER_MOVE] = new CenterMove;
+    vMoveInterfaces[MOVETYPE::RIGHT_DOWN_MOVE] = new RightDownMove;
+    vMoveInterfaces[MOVETYPE::RIGHT_MOVE ] = new RightMove;
+    vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE] = new RightSinMove;
+    vMoveInterfaces[MOVETYPE::LEFT_MOVE] = new LeftMove;
+    vMoveInterfaces[MOVETYPE::NORMAL_MOVE] = new NormalMove;
+    vMoveInterfaces[MOVETYPE::LEFT_DOWN_MOVE] = new LeftDownMove;
     moveManager = new MoveManager();
-    moveManager->ChangeMove(new NormalMove());
-    moveManager->DoMove(&pos, &angle);
+
+    moveManager->ChangeMove(vMoveInterfaces[0]);
+    for (int i = 0; i < vMoveInterfaces.size(); i++) {
+        if (vMoveInterfaces[i])
+            vMoveInterfaces[i]->SetMoveSpeed(moveSpeed);
+    }
+
     phase = Phase0;
     LeftMoving = true;
     //생존여부
@@ -47,8 +64,9 @@ HRESULT StageTwoBoss::Init()
     {
         vBarrels[i] = new Barrel();
         vBarrels[i]->Init(pos.x,pos.y);
+        vBarrels[i]->SetActivated(true);
     }
-
+    
     return S_OK;
 }
 
@@ -80,6 +98,17 @@ void StageTwoBoss::Update()
     {
         hp -= 300;
     }
+
+    for(int i = 0; i<5; i++)
+    {
+        if (vBarrels[i]->GetFireType() == FIRETYPE::NormalFIRE)   vBarrels[i]->SetMaxFireCount(200);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::TwoFIRE)      vBarrels[i]->SetMaxFireCount(200);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::WormFIRE)     vBarrels[i]->SetMaxFireCount(10);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::MeteorFIRE)   vBarrels[i]->SetMaxFireCount(300);
+    }
+    
+
+    
 }
 
 void StageTwoBoss::Render(HDC hdc)
@@ -93,7 +122,7 @@ void StageTwoBoss::Render(HDC hdc)
             if (!isAlive)
                 image->AlphaRender(hdc, pos.x, pos.y, true);
             if (isAlive)
-                image->Render(hdc, pos.x, pos.y, true);
+                image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
         }
         //포신
         for (int i = 0; i < 5; i++)
@@ -124,6 +153,7 @@ void StageTwoBoss::Attack()
             if (vBarrels[i])
             {
                 vBarrels[i]->Update();
+                vBarrels[i]->Attack();
             }
         }
     }
@@ -136,6 +166,7 @@ void StageTwoBoss::Move()
    // 예를 들어 1번과 3번 공격을 하면서 4번 무빙을 하는 상태 등 그리고 상태에 쿨타임과 우선순위를 부여
    // 
    // 보스 이동 업데이트
+    MoveInterface* currMoveInterface = nullptr;
     currTime++;
     switch (phase)
     {
@@ -190,34 +221,39 @@ void StageTwoBoss::Move()
     moveManager->SetMoveSpeed(moveSpeed);
     moveManager->DoMove(&pos, &angle);
     
-    if (vBarrels[0])
+    if (vBarrels[0])//중앙
     {
-        barrelPos.x = pos.x + 10;
-        barrelPos.y = pos.y;
+        vBarrels[0]->SetSize(10);
+        barrelPos.x = pos.x + 0;
+        barrelPos.y = pos.y-20;
         vBarrels[0]->SetBarrelPos(barrelPos);
     }
-    if (vBarrels[1])
+    if (vBarrels[1])//왼쪽 아래
     {
-        barrelPos.x = pos.x - 100;
-        barrelPos.y = pos.y;
+        vBarrels[1]->SetSize(10);
+        barrelPos.x = pos.x - 65;
+        barrelPos.y = pos.y+55;
         vBarrels[1]->SetBarrelPos(barrelPos);
     }
-    if (vBarrels[2])
+    if (vBarrels[2])//왼쪽 위
     {
-        barrelPos.x = pos.x - 100;
-        barrelPos.y = pos.y - 100;
+        vBarrels[2]->SetSize(10);
+        barrelPos.x = pos.x - 32;
+        barrelPos.y = pos.y - 55;
         vBarrels[2]->SetBarrelPos(barrelPos);
     }
-    if (vBarrels[3])
+    if (vBarrels[3])//오른쪽 아래
     {
-        barrelPos.x = pos.x + 100;
-        barrelPos.y = pos.y;
+        vBarrels[3]->SetSize(10);
+        barrelPos.x = pos.x + 65;
+        barrelPos.y = pos.y+55;
         vBarrels[3]->SetBarrelPos(barrelPos);
     }
-    if (vBarrels[4])
+    if (vBarrels[4])//오른쪽 위
     {
-        barrelPos.x = pos.x + 100;
-        barrelPos.y = pos.y - 100;
+        vBarrels[4]->SetSize(10);
+        barrelPos.x = pos.x + 32;
+        barrelPos.y = pos.y - 55;
         vBarrels[4]->SetBarrelPos(barrelPos);
     }  
     
@@ -248,30 +284,30 @@ void StageTwoBoss::State01()
 #pragma region 와리가리무빙
     if (LeftMoving)
     {
-        if (pos.x >= 550)moveManager->ChangeMove(new RightUpMove());
-        if (pos.x <= 450)moveManager->ChangeMove(new RightDownMove());
-        if (pos.x <= 350)moveManager->ChangeMove(new RightUpMove());
-        if (pos.x <= 250)moveManager->ChangeMove(new RightDownMove());
-        if (pos.x <= 150)moveManager->ChangeMove(new RightUpMove());
+        if (pos.x >= 550)changeRightUpMove();
+        if (pos.x <= 450)changeRightDownMove();
+        if (pos.x <= 350)changeRightUpMove();
+        if (pos.x <= 250) changeRightDownMove();
+        if (pos.x <= 150)changeRightUpMove();
         if (pos.x <= 50)
             LeftMoving = false;
     }
     if (!LeftMoving)
     {
-        if (pos.x <= 50) moveManager->ChangeMove(new LeftDownMove());
-        if (pos.x >= 150)moveManager->ChangeMove(new LeftUpMove());
-        if (pos.x >= 250)moveManager->ChangeMove(new LeftDownMove());           if (pos.x >= 350)moveManager->ChangeMove(new LeftUpMove());
-        if (pos.x >= 350)moveManager->ChangeMove(new LeftUpMove());
-        if (pos.x >= 450)moveManager->ChangeMove(new LeftDownMove());
+        if (pos.x <= 50) changeLeftDownMove();
+        if (pos.x >= 150)changeLeftUpMove();
+        if (pos.x >= 250)changeLeftDownMove();
+        if (pos.x >= 350)changeLeftUpMove();
+        if (pos.x >= 450)changeLeftDownMove();
         if (pos.x >= 550)LeftMoving = true;
     }
 #pragma endregion
 
-    vBarrels[0]->SetMissileType(0);
-    vBarrels[1]->SetMissileType(1);
-    vBarrels[2]->SetMissileType(0);
-    vBarrels[3]->SetMissileType(1);
-    vBarrels[4]->SetMissileType(0);
+    vBarrels[0]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[1]->SetFireType(FIRETYPE::NormalFIRE);
+    vBarrels[2]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[3]->SetFireType(FIRETYPE::NormalFIRE);
+    vBarrels[4]->SetFireType(FIRETYPE::NotFIRE);
 }
 
 void StageTwoBoss::State02()
@@ -279,33 +315,33 @@ void StageTwoBoss::State02()
 #pragma region 반대끝무빙
     if (LeftMoving)
     {
-        moveManager->ChangeMove(new LeftMove());
+        changeLeftMove();;
         if (pos.x <= 50)
             LeftMoving = false;
     }
     if (!LeftMoving)
     {
-        moveManager->ChangeMove(new RightMove());        
+        changeRightMove();
         if (pos.x >= 550)LeftMoving = true;
     }
 #pragma endregion
-    vBarrels[0]->SetMissileType(0);
-    vBarrels[1]->SetMissileType(0);
-    vBarrels[2]->SetMissileType(2);
-    vBarrels[3]->SetMissileType(0);
-    vBarrels[4]->SetMissileType(2);
+    vBarrels[0]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[1]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[2]->SetFireType(FIRETYPE::TwoFIRE);
+    vBarrels[3]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[4]->SetFireType(FIRETYPE::TwoFIRE);
 }
 
 void StageTwoBoss::State03()
 {
 #pragma region 센트무브
-    moveManager->ChangeMove(new CenterMove());//센터무브
+    changeCenterMove();
 #pragma endregion
-    vBarrels[0]->SetMissileType(3);
-    vBarrels[1]->SetMissileType(0);
-    vBarrels[2]->SetMissileType(0);
-    vBarrels[3]->SetMissileType(0);
-    vBarrels[4]->SetMissileType(0);
+    vBarrels[0]->SetFireType(FIRETYPE::WormFIRE);
+    vBarrels[1]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[2]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[3]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[4]->SetFireType(FIRETYPE::NotFIRE);
 }
 
 void StageTwoBoss::State04()
@@ -313,42 +349,42 @@ void StageTwoBoss::State04()
 #pragma region 와리가리무빙
     if (LeftMoving)
     {
-        if (pos.x >= 550)moveManager->ChangeMove(new RightUpMove());
-        if (pos.x <= 450)moveManager->ChangeMove(new RightDownMove());
-        if (pos.x <= 350)moveManager->ChangeMove(new RightUpMove());
-        if (pos.x <= 250)moveManager->ChangeMove(new RightDownMove());
-        if (pos.x <= 150)moveManager->ChangeMove(new RightUpMove());
+        if (pos.x >= 550)changeRightUpMove();
+        if (pos.x <= 450)changeRightDownMove();
+        if (pos.x <= 350)changeRightUpMove();
+        if (pos.x <= 250) changeRightDownMove();
+        if (pos.x <= 150)changeRightUpMove();
         if (pos.x <= 50)
             LeftMoving = false;
     }
     if (!LeftMoving)
     {
-        if (pos.x <= 50) moveManager->ChangeMove(new LeftDownMove());
-        if (pos.x >= 150)moveManager->ChangeMove(new LeftUpMove());
-        if (pos.x >= 250)moveManager->ChangeMove(new LeftDownMove());           if (pos.x >= 350)moveManager->ChangeMove(new LeftUpMove());
-        if (pos.x >= 350)moveManager->ChangeMove(new LeftUpMove());
-        if (pos.x >= 450)moveManager->ChangeMove(new LeftDownMove());
+        if (pos.x <= 50) changeLeftDownMove();
+        if (pos.x >= 150)changeLeftUpMove();
+        if (pos.x >= 250)changeLeftDownMove();
+        if (pos.x >= 350)changeLeftUpMove();
+        if (pos.x >= 450)changeLeftDownMove();
         if (pos.x >= 550)LeftMoving = true;
     }
 #pragma endregion
-    vBarrels[0]->SetMissileType(0);
-    vBarrels[1]->SetMissileType(1);
-    vBarrels[2]->SetMissileType(2);
-    vBarrels[3]->SetMissileType(1);
-    vBarrels[4]->SetMissileType(2);
+    vBarrels[0]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[1]->SetFireType(FIRETYPE::NormalFIRE);
+    vBarrels[2]->SetFireType(FIRETYPE::TwoFIRE);
+    vBarrels[3]->SetFireType(FIRETYPE::NormalFIRE);
+    vBarrels[4]->SetFireType(FIRETYPE::TwoFIRE);
 
 }
 
 void StageTwoBoss::State05()
 {
 #pragma region 센터무빙
-    moveManager->ChangeMove(new CenterMove());//센터무브
+    changeCenterMove();
 #pragma endregion
-    vBarrels[0]->SetMissileType(4);
-    vBarrels[1]->SetMissileType(0);
-    vBarrels[2]->SetMissileType(0);
-    vBarrels[3]->SetMissileType(0);
-    vBarrels[4]->SetMissileType(0);
+    vBarrels[0]->SetFireType(FIRETYPE::MeteorFIRE);
+    vBarrels[1]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[2]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[3]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[4]->SetFireType(FIRETYPE::NotFIRE);
 }
 
 
@@ -357,29 +393,29 @@ void StageTwoBoss::State06()
 #pragma region 와리가리무빙
     if (LeftMoving)
     {
-        if (pos.x >= 550)moveManager->ChangeMove(new RightUpMove());
-        if (pos.x <= 450)moveManager->ChangeMove(new RightDownMove());
-        if (pos.x <= 350)moveManager->ChangeMove(new RightUpMove());
-        if (pos.x <= 250)moveManager->ChangeMove(new RightDownMove());
-        if (pos.x <= 150)moveManager->ChangeMove(new RightUpMove());
+        if (pos.x >= 550)changeRightUpMove();
+        if (pos.x <= 450)changeRightDownMove();
+        if (pos.x <= 350)changeRightUpMove();
+        if (pos.x <= 250) changeRightDownMove();
+        if (pos.x <= 150)changeRightUpMove();
         if (pos.x <= 50)
             LeftMoving = false;
     }
     if (!LeftMoving)
     {
-        if (pos.x <= 50) moveManager->ChangeMove(new LeftDownMove());
-        if (pos.x >= 150)moveManager->ChangeMove(new LeftUpMove());
-        if (pos.x >= 250)moveManager->ChangeMove(new LeftDownMove());           if (pos.x >= 350)moveManager->ChangeMove(new LeftUpMove());
-        if (pos.x >= 350)moveManager->ChangeMove(new LeftUpMove());
-        if (pos.x >= 450)moveManager->ChangeMove(new LeftDownMove());
+        if (pos.x <= 50) changeLeftDownMove();
+        if (pos.x >= 150)changeLeftUpMove();
+        if (pos.x >= 250)changeLeftDownMove();
+        if (pos.x >= 350)changeLeftUpMove();
+        if (pos.x >= 450)changeLeftDownMove();
         if (pos.x >= 550)LeftMoving = true;
     }
 #pragma endregion
-    vBarrels[0]->SetMissileType(4);
-    vBarrels[1]->SetMissileType(1);
-    vBarrels[2]->SetMissileType(0);
-    vBarrels[3]->SetMissileType(1);
-    vBarrels[4]->SetMissileType(0);
+    vBarrels[0]->SetFireType(FIRETYPE::MeteorFIRE);
+    vBarrels[1]->SetFireType(FIRETYPE::NormalFIRE);
+    vBarrels[2]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[3]->SetFireType(FIRETYPE::NormalFIRE);
+    vBarrels[4]->SetFireType(FIRETYPE::NotFIRE);
 }
 
 void StageTwoBoss::State07()
@@ -387,42 +423,102 @@ void StageTwoBoss::State07()
 #pragma region 반대끝무빙
     if (LeftMoving)
     {
-        moveManager->ChangeMove(new LeftMove());
+        changeLeftMove();;
         if (pos.x <= 50)
             LeftMoving = false;
     }
     if (!LeftMoving)
     {
-        moveManager->ChangeMove(new RightMove());
+        changeRightMove();
         if (pos.x >= 550)LeftMoving = true;
     }
 #pragma endregion
-    vBarrels[0]->SetMissileType(3);
-    vBarrels[1]->SetMissileType(0);
-    vBarrels[2]->SetMissileType(2);
-    vBarrels[3]->SetMissileType(0);
-    vBarrels[4]->SetMissileType(2);
+    vBarrels[0]->SetFireType(FIRETYPE::WormFIRE);
+    vBarrels[1]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[2]->SetFireType(FIRETYPE::NormalFIRE);
+    vBarrels[3]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[4]->SetFireType(FIRETYPE::NormalFIRE);
 }
 
 void StageTwoBoss::State08()
 {
 #pragma region 센터무빙
-    moveManager->ChangeMove(new CenterMove());//센터무브
+    changeCenterMove();
 #pragma endregion
-    vBarrels[0]->SetMissileType(3);
-    vBarrels[1]->SetMissileType(1);
-    vBarrels[2]->SetMissileType(4);
-    vBarrels[3]->SetMissileType(1);
-    vBarrels[4]->SetMissileType(4);
+    vBarrels[0]->SetFireType(FIRETYPE::WormFIRE);
+    vBarrels[1]->SetFireType(FIRETYPE::NormalFIRE);
+    vBarrels[2]->SetFireType(FIRETYPE::MeteorFIRE);
+    vBarrels[3]->SetFireType(FIRETYPE::NormalFIRE);
+    vBarrels[4]->SetFireType(FIRETYPE::MeteorFIRE);
 }
 
 void StageTwoBoss::StateNot()
 {
-    vBarrels[0]->SetMissileType(0);
-    vBarrels[1]->SetMissileType(0);
-    vBarrels[2]->SetMissileType(0);
-    vBarrels[3]->SetMissileType(0);
-    vBarrels[4]->SetMissileType(0);
+    vBarrels[0]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[1]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[2]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[3]->SetFireType(FIRETYPE::NotFIRE);
+    vBarrels[4]->SetFireType(FIRETYPE::NotFIRE);
+}
+
+void StageTwoBoss::changeRightMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::RIGHT_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::RIGHT_MOVE];
+}
+
+void StageTwoBoss::changeLeftMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::LEFT_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::LEFT_MOVE];
+}
+
+void StageTwoBoss::changeRightUpMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::RIGHT_UP_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::RIGHT_UP_MOVE];
+}
+
+void StageTwoBoss::changeLeftUpMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::LEFT_UP_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::LEFT_UP_MOVE];
+}
+
+void StageTwoBoss::changeRightDownMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::RIGHT_DOWN_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::RIGHT_DOWN_MOVE];
+}
+
+void StageTwoBoss::changeLeftDownMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::LEFT_DOWN_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::LEFT_DOWN_MOVE];
+}
+
+void StageTwoBoss::changeRightSinMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE];
+}
+
+void StageTwoBoss::changeLeftSinMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE];
+}
+
+void StageTwoBoss::changeCenterMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::CENTER_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::CENTER_MOVE];
+}
+
+void StageTwoBoss::changeNormalMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::NORMAL_MOVE];
 }
 
 

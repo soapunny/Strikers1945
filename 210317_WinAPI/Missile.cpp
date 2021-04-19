@@ -25,11 +25,11 @@ HRESULT Missile::Init(FPOINT position)
 	// (속력 = 거리 / 시간)
 	// moveSpeed * (elapsedTime / moveTime) = moveSpeed / (moveTime / elapsedTime)
 	moveTime = 2.0f;	//10초 동안
-	moveSpeed = 500;	//500을 이동하고 싶다
+	moveSpeed = 500 ;	//500을 이동하고 싶다
 
 	size = 25;
 	shape = { 0, 0, 0, 0 };
-	damage = 5000;
+	damage = 500;
 	isFired = false;
 
 	missileType = SKILLTYPE::FIREWORK_TYPE;
