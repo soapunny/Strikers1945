@@ -30,15 +30,15 @@ HRESULT PlayerShip::Init()
 	playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
 
 	// 테스트 용 포신 //
-	barrelSize = 2;
+	barrelSize = 20;
 	barrelEnd[0] = { (pos.x - 10.0f) ,  pos.y - barrelSize * 2 };
 	barrelEnd[1] = { (pos.x + 10.0f) ,  pos.y - barrelSize * 2 };
-	barrelEnd[2] = { (pos.x + cosf(DegToRad(barrelAngle[2])) * barrelSize) ,  pos.y - barrelSize * 2 };
-	barrelEnd[3] = { (pos.x + cosf(DegToRad(barrelAngle[3])) * barrelSize) ,  pos.y - barrelSize * 2 };
-	barrelAngle[0] = 90;
-	barrelAngle[1] = 90;
-	barrelAngle[2] = 135;
-	barrelAngle[3] = 45;
+	barrelEnd[2] = { (pos.x + cosf(barrelAngle[2]) * barrelSize) ,  pos.y - barrelSize * 2 };
+	barrelEnd[3] = { (pos.x + cosf(barrelAngle[3]) * barrelSize) ,  pos.y - barrelSize * 2 };
+	barrelAngle[0] = PI / 2;
+	barrelAngle[1] = PI / 2;
+	barrelAngle[2] = 3 * (PI / 4);
+	barrelAngle[3] = PI / 4;
 
 	// 테스트 용 포신 미사일//
 	for (int i = 0; i < 4; i++)
@@ -106,7 +106,7 @@ void PlayerShip::Update()
 
 	for (int i = 2; i < 4; i++)
 	{
-		barrelEnd[i] = { ((pos.x - 10.0f + (20.0f * (i - 2))) + cosf(DegToRad(barrelAngle[i])) * barrelSize) , pos.y - barrelSize };
+		barrelEnd[i] = { ((pos.x - 10.0f + (20.0f * (i - 2))) + cosf(barrelAngle[i])* barrelSize) , pos.y - barrelSize };
 	}
 
 	for (int i = 0; i < 4; i++)
