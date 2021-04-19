@@ -76,7 +76,7 @@ void Enemy::Update()
                 fireCount++;
                 if (fireCount % 20 == 0)
                 {
-                    myMissile->Fire(MissileManager::FIRETYPE::FallingKnivesFIRE);
+                    myMissile->Fire(FIRETYPE::FallingKnivesFIRE);
                     //myMissile->Fire(MissileManager::FIRETYPE::ZigzagFIRE);
                     fireCount = 0;
                 }
@@ -86,7 +86,7 @@ void Enemy::Update()
                 fireCount++;
                 if (fireCount % 20 == 0)
                 {
-                    myMissile->Fire(MissileManager::FIRETYPE::MeteorFIRE);
+                    myMissile->Fire(FIRETYPE::MeteorFIRE);
                     fireCount = 0;
                 }
             }
@@ -97,7 +97,7 @@ void Enemy::Update()
                 fireCount++;
                 if (fireCount % 20 == 0)
                 {
-                    myMissile->Fire(MissileManager::FIRETYPE::GuidedFIRE);
+                    myMissile->Fire(FIRETYPE::GuidedFIRE);
                     fireCount = 0;
                 }
             }

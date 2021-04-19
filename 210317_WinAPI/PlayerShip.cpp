@@ -226,7 +226,7 @@ void PlayerShip::Attack(int i)
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				myMissile[i]->Fire(MissileManager::FIRETYPE::PlayerFIRE);
+				myMissile[i]->Fire(FIRETYPE::PlayerFIRE);
 			}
 			fireCount = 0;
 		}

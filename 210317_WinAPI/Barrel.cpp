@@ -8,7 +8,7 @@ HRESULT Barrel::Init(int posX, int posY)
     barrelStart.x = pos.x;
     barrelStart.y = pos.y;
     barrelAngle = -3.14f / 2.0f; //지금은 45도 
-
+    maxFireCount = 1;
     //barrelSize = 10;
     //barrelStart.x = posX;
     //barrelStart.y = posY;
@@ -50,72 +50,12 @@ void Barrel::Update()
     }
     Attack();
 
-    //myMissile->SetPos(barrelEnd);
-    //if (isAlive)
-    //{
-    //    //애니메이션
-    //    updateCount++;
-    //    if (updateCount >= 5)
-    //    {
-    //        currFrameX = (currFrameX + 1) % 10;
-    //        updateCount = 0;
-    //    }
-
-    //    //미사일 발사
-    //    if (myMissile)
-    //    {
-    //        myMissile->Update();
-
-    //        if (missileType == NORMAL)
-    //        {
-    //            fireCount++;
-    //            if (fireCount % 100 == 0)
-    //            {
-    //                myMissile->Fire(MissileManager::FIRETYPE::NormalFIRE);
-    //                fireCount = 0;
-    //            }
-    //        }
-    //        if (missileType == METEOR)
-    //        {
-    //            fireCount++;
-    //            if (fireCount % 200 == 0)
-    //            {
-    //                myMissile->Fire(MissileManager::FIRETYPE::MeteorFIRE);
-    //                fireCount = 0;
-    //            }
-    //        }
-    //        if (missileType == WORM)
-    //        {
-    //            fireCount++;
-    //            if (fireCount % 200 == 0)
-    //            {
-    //                myMissile->Fire(MissileManager::FIRETYPE::WormFIRE);
-    //                fireCount = 0;
-    //            }
-    //        }
-    //        if (missileType == TWO)
-    //        {
-    //            fireCount++;
-    //            if (fireCount % 200 == 0)
-    //            {
-    //                myMissile->Fire(MissileManager::FIRETYPE::TwoFIRE);
-    //                fireCount = 0;
-    //            }
-    //        }
-    //        if (missileType == NOT)
-    //        {
-    //            fireCount++;
-    //            if (fireCount % 200 == 0)
-    //            {
-    //                myMissile->Fire(MissileManager::FIRETYPE::NotFIRE);
-    //                fireCount = 0;
-    //            }
-    //        }
-    //    }
-    //}
+    myMissile->SetPos(barrelEnd);
+  
+  
    
-    // barrelEnd.x = barrelStart.x + cosf(barrelAngle) * barrelSize;
-    // barrelEnd.y = barrelStart.y - sinf(barrelAngle) * barrelSize;
+     barrelEnd.x = barrelStart.x + cosf(barrelAngle) * barrelSize;
+     barrelEnd.y = barrelStart.y - sinf(barrelAngle) * barrelSize;
     
     /*
  
@@ -178,9 +118,9 @@ void Barrel::Attack()
 
         fireCount++;
         myMissile->SetPos(barrelEnd);
-        if (fireCount % 100 == 0 && isActivated)
+        if (fireCount % maxFireCount == 0 && isActivated)
         {
-            myMissile->Fire(MissileManager::FIRETYPE::FIREWORKFIRE);
+            myMissile->Fire(fireType);
             fireCount = 0;
         }
     }

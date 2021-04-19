@@ -21,13 +21,14 @@ private:
 	float moveSpeed;
 	bool isAlive;
 	float angle;
-	enum MISSILETYPE{NOT,NORMAL, TWO, WORM, METEOR};
-	MISSILETYPE typeMissile;
-	int dir;
 
+	int dir;
+	FIRETYPE fireType;
+	int maxFireCount;
 	// �̻���
 	MissileManager* myMissile; //���� �ʿ�
 	int fireCount;
+	
 public:
 	HRESULT Init(int posX = 0, int posY = 0);
 	virtual HRESULT Init() { return E_FAIL; };
@@ -42,6 +43,7 @@ public:
 	void Move();
 	void HorizonMove();	
 
+	inline void SetSize(int size) { this->barrelSize = size; }
 	inline void SetBarrelPos(FPOINT pos) { this->barrelStart = pos; }
 	inline void SetPos(FPOINT pos) { this->pos = pos; }
 	inline FPOINT GetPos() { return this->pos; }
@@ -49,10 +51,13 @@ public:
 	inline bool GetIsAlive() { return this->isAlive; }
 	inline void SetMissileType(int type) { this->missileType = type; }
 	inline void SetbarrelEnd( FPOINT barrelEnd) { this->barrelEnd = barrelEnd; }
-
+	inline void SetMaxFireCount(int maxFireCount) { this->maxFireCount = maxFireCount; }
+	inline void SetFireType(FIRETYPE fireType) { this->fireType = fireType; }
+	inline FIRETYPE GetFireType() { return fireType; }
 	inline FPOINT GetstartPos() {return barrelStart;}//포신을 보스에서 돌려줄려고 가져옴
 	inline float GetAngle() { return barrelAngle; }
 	inline int GetSize() { return barrelSize; }
+	
 	//inline void SetPos(FPOINT pos) { this->barrelStart = pos; }
 };
 

@@ -5,19 +5,24 @@ void MeteorFire::DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
     vector<Missile*>::iterator myIt;
 
-     //일정 범위 안에서 위로 쭉 쏘아 올리고 
-     //작아지면서 해당 위치에 쏘기 그리고 사라짐
+    //일정 범위 안에서 위로 쭉 쏘아 올리고 
+    //작아지면서 해당 위치에 쏘기 그리고 사라짐
     srand(std::time(NULL));
-    
-    for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
+    for (int i = 0; i < 36; i++)
     {
-        if ((*myIt)->GetIsFired() == false)
-        {   
-            firedCount++;
-            (*myIt)->SetType(Missile::SKILLTYPE::MeteorSkill_TYPE);
-            (*myIt)->SetIsFired(true);            
-            (*myIt)->SetAngle(DegToRad((firedCount * 3.14f * 2.0f / 36.0f)));
-            
+        if (firedCount > 36) firedCount = 0;
+        for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
+        {
+
+            if ((*myIt)->GetIsFired() == false)
+            {
+                firedCount++;
+                (*myIt)->SetType(Missile::SKILLTYPE::MeteorSkill_TYPE);
+                (*myIt)->SetIsFired(true);
+                (*myIt)->SetAngle(DegToRad((firedCount * 10)));
+                break;
+
+            }
         }
     }
 }
