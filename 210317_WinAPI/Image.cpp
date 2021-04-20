@@ -100,6 +100,12 @@ HRESULT Image::Init(const char* fileName, int width, int height, int maxFrameX, 
     imageInfo->currFrameX = 0;
     imageInfo->currFrameY = 0;
 
+    //비어있는 알파블랜드 dc 만들기
+    imageInfo->hBlendDC = CreateCompatibleDC(hdc);
+    imageInfo->hBlendBitmap = CreateCompatibleBitmap(hdc, width, height);
+    imageInfo->hOldhBlendBit =
+        (HBITMAP)SelectObject(imageInfo->hBlendDC, imageInfo->hBlendBitmap);
+
     ReleaseDC(g_hWnd, hdc);
 
     if (imageInfo->hBitmap == NULL)
@@ -110,6 +116,11 @@ HRESULT Image::Init(const char* fileName, int width, int height, int maxFrameX, 
 
     this->isTransparent = isTransparent;
     this->transColor = transColor;
+
+    this->blendFunc.AlphaFormat = 0;
+    this->blendFunc.BlendFlags = 0;
+    this->blendFunc.BlendOp = AC_SRC_OVER;
+    this->blendFunc.SourceConstantAlpha = 50;
 
     return S_OK;
 }
@@ -156,6 +167,52 @@ void Image::Render(HDC hdc, int destX, int destY, bool isCenterRenderring)
   
 }
 
+void Image::Render(HDC hdc, int size, int destX, int destY, bool isCenterRenderring)
+{
+    int x = destX;
+    int y = destY;
+
+    if (isCenterRenderring)
+    {
+        x -= (size / 2);
+        y -= (size / 2);
+
+        //x -= (imageInfo->width * (size / imageInfo->width)) / 2;
+        //y -= (imageInfo->height * (size / imageInfo->height)) / 2;
+    }
+
+    if (isTransparent)
+    {
+        // 특정 색상을 빼고 복사하는 함수
+        GdiTransparentBlt(
+            hdc,
+            x, y,
+            size, size,
+            //imageInfo->width * (size / imageInfo->width), imageInfo->height * (size / imageInfo->height),
+
+            imageInfo->hMemDC,
+            0, 0,
+            imageInfo->width, imageInfo->height,
+            transColor
+        );
+    }
+    else
+    {
+        // bitmap 에 있는 이미지 정보를 다른 비트맵에 복사
+        BitBlt(
+            hdc,                // 복사 목적지 DC
+            x, y,       // 복사 시작 위치
+            imageInfo->width,   // 원본에서 복사될 가로크기
+            imageInfo->height,  // 원본에서 복사될 세로크기
+            imageInfo->hMemDC,  // 원본 DC
+            0, 0,               // 원본에서 복사 시작 위치
+            SRCCOPY             // 복사 옵션
+        );
+    }
+
+
+}
+
 //프레임 조절이 필요 있을 때 사용
 void Image::FrameRender(HDC hdc, int destX, int destY, int currFrameX, int currFrameY, bool isCenterRenderring)
 {
@@ -178,6 +235,52 @@ void Image::FrameRender(HDC hdc, int destX, int destY, int currFrameX, int currF
 
             x, y,                                           // 윈도우 붙여넣는 위치
             imageInfo->frameWidth, imageInfo->frameHeight,  // 윈도우 붙여넣는 크기
+
+            imageInfo->hMemDC,                              // 출발 DC
+
+            imageInfo->frameWidth * imageInfo->currFrameX,  // 원본 복사 X 위치
+            imageInfo->frameHeight * imageInfo->currFrameY, // 원본 복사 Y 위치
+            imageInfo->frameWidth, imageInfo->frameHeight,  // 원본 복사 크기
+
+            transColor                                      // 제외할 색상
+        );
+    }
+    else
+    {
+        BitBlt(
+            hdc,
+            x, y,
+            imageInfo->frameWidth,
+            imageInfo->frameHeight,
+            imageInfo->hMemDC,
+            (imageInfo->frameWidth) * (imageInfo->currFrameX),
+            (imageInfo->frameHeight) * (imageInfo->currFrameY),
+            SRCCOPY
+        );
+    }
+}
+
+void Image::FrameRender(HDC hdc, int destX, int destY, int currFrameX, int currFrameY, bool isCenterRenderring, int size)
+{
+    imageInfo->currFrameX = currFrameX;
+    imageInfo->currFrameY = currFrameY;
+
+    int x = destX;
+    int y = destY;
+    if (isCenterRenderring)
+    {
+        x -= (size / 2);
+        y -= (size / 2);
+    }
+
+    if (isTransparent)
+    {
+        // 특정 색상을 빼고 복사하는 함수
+        GdiTransparentBlt(
+            hdc,                                            // 목적지 DC
+
+            x, y,                                           // 윈도우 붙여넣는 위치
+            size, size,  // 윈도우 붙여넣는 크기
 
             imageInfo->hMemDC,                              // 출발 DC
 
@@ -301,6 +404,66 @@ void Image::AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring)
     );*/
   
 }
+//void Image::AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring, int currFrameX, int size)
+//{
+//    imageInfo->currFrameX = currFrameX;
+//    imageInfo->currFrameY = 0;
+//    int x = destX;
+//    int y = destY;
+//    if (isCenterRenderring)
+//    {
+//        x -= (size / 2);
+//        y -= (size / 2);
+//    }
+//
+//    /*
+//    1. 모자이크 효과
+//    2. 블러 효과
+//    3. 블랙홀 효과
+//    4. 퍼즐 효과
+//    */
+//
+//    // 원본DC(hdc)에 그려져 있는 내용(배경)을 (비어져 있는 임시) BlendDC에 복사
+//    BitBlt(
+//        imageInfo->hBlendDC,                 // 복사 목적지 DC
+//        0, 0,                               // 복사 시작 위치
+//        size,size,
+//
+//
+//        hdc,
+//        destX,destY,                            // 원본에서 복사 시작 위치
+//        SRCCOPY                              // 복사 옵션
+//    );
+//
+//    // 출력할 이미지 hMemDC의 내용(우주선 이미지)을 지정한 색상(마젠타)을 제외하면서 BlendDC에 복사
+//    GdiTransparentBlt(
+//        imageInfo->hBlendDC,
+//        0, 0,
+//        size, size,
+//
+//
+//        imageInfo->hMemDC,
+//        imageInfo->frameWidth * currFrameX,      // 
+//        imageInfo->frameHeight * 0,
+//        imageInfo->frameWidth,
+//        imageInfo->frameHeight,
+//        transColor
+//    );
+//    
+//    // BlendDC를 원본DC(hdc)에 그려주는 과정에서 알파블랜드 적용시키기
+//    AlphaBlend(
+//        hdc,
+//        x, y,
+//        size, size,
+//
+//
+//        imageInfo->hBlendDC,        
+//        0,0,
+//        size, size,
+//        blendFunc
+//    );  //BLENDFUNCTION()
+//
+//}
 
 void Image::Release()
 {
@@ -309,6 +472,10 @@ void Image::Release()
         SelectObject(imageInfo->hMemDC, imageInfo->hOldBit);
         DeleteObject(imageInfo->hBitmap);
         DeleteDC(imageInfo->hMemDC);
+
+        SelectObject(imageInfo->hBlendDC, imageInfo->hOldhBlendBit);
+        DeleteObject(imageInfo->hBlendBitmap);
+        DeleteDC(imageInfo->hBlendDC);
 
         delete imageInfo;
         imageInfo = nullptr;

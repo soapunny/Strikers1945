@@ -16,10 +16,10 @@ void WormFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
             randAngle = (rand() % 168 - 18) * 100;
             (*myIt)->SetType(Missile::SKILLTYPE::WormSKill_TYPE);
             (*myIt)->SetIsFired(true);
-            (*myIt)->SetAngle(DegToRad(k)* elapsedTime*1000);
+            (*myIt)->SetAngle(DegToRad(k)/** elapsedTime*1000*/);
+            k +=10;
             break;
         }
-        k++;
     }
 }
 

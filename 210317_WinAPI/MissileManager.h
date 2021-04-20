@@ -27,6 +27,8 @@ private:
 
 	FIRETYPE fireType;
 
+	int missileSize;
+
 public:
 	HRESULT Init(FPOINT pos);		// 오버라이딩 : 다형성
 	
@@ -41,5 +43,6 @@ public:
 	inline void GetPos() { this->missilePos; }
 	inline void SetPos(FPOINT pos) { this->missilePos = pos; }
 	inline void SetAngle(float angle) { this->missileAngle = angle; }
+	inline void SetSize(int size) { this->missileSize = size; }
 };
 

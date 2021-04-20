@@ -16,7 +16,7 @@ HRESULT Barrel::Init(int posX, int posY)
     //isAlive = true;
     //target = nullptr;
     dir = 1;
-
+    missileSize = 25;
     // 미사일
     myMissile = new MissileManager();   //동적 필요
     myMissile->Init(pos);       //
@@ -47,6 +47,7 @@ void Barrel::Update()
     if (myMissile)
     {
         myMissile->Update();
+        myMissile->SetSize(missileSize);
     }
     //Attack();
 

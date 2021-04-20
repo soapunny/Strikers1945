@@ -26,6 +26,7 @@ HRESULT MissileManager::Init(FPOINT pos)
         (*myIt)->SetPos(pos);
         (*myIt)->SetStartPos(pos);
     }
+    missileSize = 25;
 
     //FallingKnivesFire fkf;
     
@@ -80,6 +81,7 @@ void MissileManager::Update()
         if(this->fireType == FIRETYPE::PlayerFIRE)
             vMissiles[i]->SetAngle(this->missileAngle);
         vMissiles[i]->Update();
+        vMissiles[i]->SetSize(missileSize);
     }
 }
 
@@ -101,6 +103,7 @@ void MissileManager::Fire(FIRETYPE fireType)
         if(currFire != vFireInterfaces[FIRETYPE::NormalFIRE]){
             currFire = vFireInterfaces[FIRETYPE::NormalFIRE];
             fireManager->ChangeMove(currFire);
+            
         }
         break;
     case FIRETYPE::FallingKnivesFIRE:
