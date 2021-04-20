@@ -5,13 +5,18 @@
 
 HRESULT BossManager::Init()
 {
+    return Init(nullptr);
+}
+
+HRESULT BossManager::Init(FPOINT* playerPos)
+{
     vBoss.resize(3);
     vBoss[0] = new StageOneBoss();
     vBoss[1] = new StageTwoBoss();
     vBoss[2] = new StageThreeBoss();
     for (int i = 0; i < vBoss.size(); i++)
     {
-        vBoss[i]->Init();
+        vBoss[i]->Init(playerPos);
     }
  
     return S_OK;
@@ -19,20 +24,19 @@ HRESULT BossManager::Init()
 
 void BossManager::Release()
 {
-    vector<Boss*>::iterator myIt;
-    for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
+    for (int i = 0 ;i< vBoss.size();i++)
     {
-        (*myIt)->Release();   
-        delete (*myIt);
-        (*myIt) = nullptr;
+        if(vBoss[i]){
+            SAFE_RELEASE(vBoss[i]);
+        }
     }
     vBoss.clear();
 }
 
 void BossManager::Update()
 {
-    vBoss[1]->GetAlive();
-    vBoss[1]->Update();
+    vBoss[0]->GetAlive();
+    vBoss[0]->Update();
 
     //vBoss[2]->GetAlive();
     //vBoss[2]->Update();
@@ -48,8 +52,8 @@ void BossManager::Update()
 void BossManager::Render(HDC hdc)
 {
 
-    vBoss[1]->GetAlive();
-    vBoss[1]->Render(hdc);
+    vBoss[0]->GetAlive();
+    vBoss[0]->Render(hdc);
 
     //vBoss[2]->GetAlive();
     //vBoss[2]->Render(hdc);

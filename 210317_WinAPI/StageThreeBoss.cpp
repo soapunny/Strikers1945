@@ -58,7 +58,7 @@ HRESULT StageThreeBoss::Init()
 void StageThreeBoss::Release()
 {
    
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         if (vBarrels[i])
             SAFE_RELEASE(vBarrels[i]);

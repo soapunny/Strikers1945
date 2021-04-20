@@ -53,7 +53,7 @@ HRESULT MainGame::Init()
 
 	//보스
 	bossManager = new BossManager();
-	bossManager->Init();
+	bossManager->Init(playerShip->GetLpPos());
 
 	//충돌
 	collisionCheck = new CollisionCheck();

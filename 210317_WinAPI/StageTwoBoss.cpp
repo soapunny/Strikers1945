@@ -60,7 +60,7 @@ HRESULT StageTwoBoss::Init()
 
     //포신
     vBarrels.resize(5);             //개수는 최대 6개로 지정
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         vBarrels[i] = new Barrel();
         vBarrels[i]->Init(pos.x,pos.y);
@@ -72,7 +72,7 @@ HRESULT StageTwoBoss::Init()
 
 void StageTwoBoss::Release()
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         if (vBarrels[i])
         {
@@ -125,7 +125,7 @@ void StageTwoBoss::Render(HDC hdc)
                 image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
         }
         //포신
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < vBarrels.size(); i++)
         {
             if (vBarrels[i])
             {

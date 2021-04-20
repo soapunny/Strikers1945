@@ -45,6 +45,7 @@ public:
 	void Attack(int i);
 
 	FPOINT GetPos() { return this->pos; }
+	FPOINT* GetLpPos() { return &pos; }
 
 	inline int GetPlayerLife() { return playerLife; }
 	inline void SetPlayerLife() { this->playerLife -= 1; }

@@ -22,10 +22,13 @@ protected:
 
 	vector<Barrel*> vBarrels;
 
+	FPOINT* playerPos;
+
 	MoveManager* moveManager;
 
 public:
 	virtual HRESULT Init();
+	virtual HRESULT Init(FPOINT* playerPos) { return S_OK; }
 	virtual void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);
