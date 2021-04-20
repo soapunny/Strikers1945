@@ -16,15 +16,18 @@ HRESULT StageThreeBoss::Init()
         MessageBox(g_hWnd, "enemy에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
         return E_FAIL;
     }
+    isActBarrelCount = 1;
     zigzagFireCount = 4;
     currFrameX = 0;
     updateCount = 0;
-    status = 0;
+    Attackstatus = 0;
+    Movestatus = 0;
     pos.x = WINSIZE_X / 2 ;
     pos.y = -150;
     size = 150;
     BossHp = 100;
     moveSpeed = 100.0f;
+    TornadoFireCount = 30;
     isAlive = true;
    
     //이동방향설정
@@ -80,7 +83,7 @@ void StageThreeBoss::Update()
         if (vBarrels[i])
         {
            
-            if (i < 1)
+            if (i < isActBarrelCount)
             {
                 vBarrels[i]->SetActivated(true);
 
@@ -95,7 +98,11 @@ void StageThreeBoss::Update()
             //vBarrels[i]->SetPos(pos);
         }
     }
-
+    if (BossHp <= 75)
+    {
+        isActBarrelCount = 2;
+       // Attackstatus = 1;
+    }
   
     Move();
     
@@ -145,22 +152,44 @@ void StageThreeBoss::Attack()
         AttackElapesdTimer = TimerManager::GetSingleton()->getElapsedTime();
         AttackTimer += AttackElapesdTimer;
         //미사일 발사
-        if ((int)AttackTimer % 2 == 0)
+        if (Attackstatus == 1)
         {
-            for (int i = 0; i < 1; i++)
-            {
-            
-                if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
+           
+                for (int i = 0; i < 1; i++)
                 {
-                    //if(BossHp/4*3>)
 
-                    vBarrels[i]->Attack();
-                    vBarrels[i]->SetMaxFireCount(zigzagFireCount);
-                    vBarrels[i]->SetFireType(FIRETYPE::ZigzagFIRE);
-                    vBarrels[i]->Update();
+                    if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
+                    {
+                        //if(BossHp/4*3>)
+
+                        vBarrels[i]->Attack();
+                        vBarrels[i]->SetMaxFireCount(TornadoFireCount);
+                        vBarrels[i]->SetFireType(FIRETYPE::TornadoFIRE);
+                       
+                        vBarrels[i]->Update();
+                    }
+                }
+            
+        }
+        if (Attackstatus == 2)
+        {
+            if ((int)AttackTimer % 2 == 0)
+            {
+                for (int i = 0; i < 1; i++)
+                {
+            
+                    if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
+                    {
+                        //if(BossHp/4*3>)
+                        vBarrels[i]->Attack();
+                        vBarrels[i]->SetMaxFireCount(zigzagFireCount);
+                        vBarrels[i]->SetFireType(FIRETYPE::ZigzagFIRE);
+                        vBarrels[i]->Update();
+                    }
                 }
             }
         }
+        
 
         
     }
@@ -173,37 +202,58 @@ void StageThreeBoss::Move()
     
     MoveElapesdTimer =TimerManager::GetSingleton()->getElapsedTime();//똑같은 속도로 나선형으로 도는방법 중심점만 밀어주면 되나?
     MoveTimer += MoveElapesdTimer;
-    if (MoveTimer < 3)
-    { 
+
+   
+
+    if (Movestatus == 0)//등장 이동
+    {  
+        moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);//이게 값전달이 안되고있었네
+        currMoveInterface = vMoveInterfaces[MOVETYPE::NORMAL_MOVE];
+        moveSpeed = 100;
+        moveManager->SetMoveSpeed(moveSpeed);
+     
+       if (MoveTimer > 3)
+       { 
+           moveSpeed = 0;
+           moveManager->SetMoveSpeed(moveSpeed);    
+           Attackstatus = 1;
+       }
+       if (MoveTimer > 15)
+       {
+           Attackstatus = 2;
+           Movestatus++;
+       }
+      
+      
+    }
+    if (Movestatus == 1)
+    {
+       moveSpeed = 2;
+       moveManager->SetMoveSpeed(moveSpeed);        
+       Movestatus++;
+    }
+
+    if (Movestatus == 2)
+    {
+       moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE]);
+       currMoveInterface = vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE];
+  
+       moveSpeed += 0.001;
+       if (moveSpeed > 10)
+       {
+           Movestatus++;
+       }
+       moveManager->SetMoveSpeed(moveSpeed);
+    }
+    if (Movestatus == 3)
+    {
+       //moveManager->DoMove(&pos, &angle);
+       moveSpeed -= 0.001;
+       moveManager->SetMoveSpeed(moveSpeed);
+    }
         
-        moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
-       currMoveInterface = vMoveInterfaces[MOVETYPE::NORMAL_MOVE];
-    }
-
+   
     
-
-    if(MoveTimer>3 && MoveTimer<25) //시간에따라 움직임 혹은 체력에 따라로 변할수도 있음
-    {
-        if (status == 0)
-        {
-            moveSpeed = 2;
-            moveManager->SetMoveSpeed(moveSpeed);
-            status++;
-        }
-        //moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE]);
-        //currMoveInterface = vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE];
-       
-        moveSpeed += 0.001;
-        moveManager->SetMoveSpeed(moveSpeed);
-    } 
-    else
-    {
-
-        //moveManager->DoMove(&pos, &angle);
-        moveSpeed -= 0.001;
-        moveManager->SetMoveSpeed(moveSpeed);
-    }
-
     moveManager->DoMove(&pos, &angle);
     
 }

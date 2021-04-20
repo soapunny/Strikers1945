@@ -4,7 +4,7 @@
 class Image;
 class MissileManager;
 
-class PlayerShip: public GameNode
+class PlayerShip: public GameNode 
 {
 private:
 	Image* image;

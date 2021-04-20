@@ -1,5 +1,6 @@
 #pragma once
 #include "GameNode.h"
+#include "Subject.h"
 
 class Tank;
 class BossManager;
@@ -7,12 +8,14 @@ class EnemyManager;
 class Image;
 class PlayerShip;
 class CollisionCheck;
+class SceneManager;
 
-class MainGame : public GameNode
+class MainGame : public GameNode, public Subject  //두개를 상속받을수 있다.
 {
 private:
+	
 	bool isInited;
-
+	int status;
 	HDC hdc;
 	PAINTSTRUCT ps;
 	HANDLE hTimer;
@@ -21,6 +24,10 @@ private:
 
 	Image* backBuffer;
 	Image* backGround;
+	
+	Image* openingImage;
+	Image* endingImage;
+
 	FPOINT backGroundPos;
 	Image* backCloud;
 
@@ -30,18 +37,26 @@ private:
 	//Enemy* enemy;
 	EnemyManager* enemyManager;
 
+	SceneManager* sceneManagerObserver;//옵저버 씬매니저
+
 	PlayerShip* playerShip;
 
 	BossManager* bossManager;
 
 	CollisionCheck* collisionCheck;
 
+	
 public:
 	virtual HRESULT Init();		// 오버라이딩 : 다형성
 	virtual void Release();
 	virtual void Update();
 	void Render();
+	
 	virtual void Render(HDC hdc) {};
+
+	virtual void RegisterObserver(SceneManager* scenemanager);
+	virtual void UnRegisterObserver() ;
+	virtual void notifyObserve();
 
 	void CheckCollision();
 
