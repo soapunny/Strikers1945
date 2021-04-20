@@ -2,6 +2,27 @@
 #include "StageOneBoss.h"
 #include "StageTwoBoss.h"
 #include "StageThreeBoss.h"
+#include "SceneManager.h"
+void BossManager::RegisterObserver(SceneManager* scenemanager)
+{
+    scenemanager = sceneManagerObserver;
+}
+
+void BossManager::UnRegisterObserver()
+{
+    delete sceneManagerObserver;
+    sceneManagerObserver = nullptr;
+}
+
+void BossManager::notifyObserve()
+{
+    if (sceneManagerObserver) //보스죽으면 다음보스나오고 보스죽으면 다음보스나오고
+    {        
+       sceneManagerObserver->DeadNotify(vBoss[0]->GetAlive(), vBoss[1]->GetAlive(), vBoss[2]->GetAlive());       
+    }
+       
+   
+}
 
 HRESULT BossManager::Init()
 {
@@ -18,9 +39,14 @@ HRESULT BossManager::Init(FPOINT* playerPos)
     {
         vBoss[i]->Init(playerPos);
     }
- 
+
+    sceneManagerObserver = new SceneManager;
+    RegisterObserver(sceneManagerObserver);
+    
     return S_OK;
 }
+
+
 
 void BossManager::Release()
 {
@@ -30,17 +56,14 @@ void BossManager::Release()
             SAFE_RELEASE(vBoss[i]);
         }
     }
+    UnRegisterObserver();
     vBoss.clear();
 }
 
 void BossManager::Update()
 {
-    vBoss[0]->GetAlive();
-    vBoss[0]->Update();
-
-    //vBoss[2]->GetAlive();
-    //vBoss[2]->Update();
-
+    vBoss[sceneManagerObserver->GetNextBoss()]->Update();
+    notifyObserve();
     /*vector<Boss*>::iterator myIt;
     for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
     {
@@ -51,13 +74,7 @@ void BossManager::Update()
 
 void BossManager::Render(HDC hdc)
 {
-
-    vBoss[0]->GetAlive();
-    vBoss[0]->Render(hdc);
-
-    //vBoss[2]->GetAlive();
-    //vBoss[2]->Render(hdc);
-
+    vBoss[sceneManagerObserver->GetNextBoss()]->Render(hdc);
     /*vector<Boss*>::iterator myIt;
     for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
     {

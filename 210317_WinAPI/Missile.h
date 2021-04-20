@@ -77,4 +77,6 @@ public:
 	//inline POINT GetTarget(POINT target) { return target; }
 
 	inline int GetSize() { return this->size; }
+
+	inline void SetSize(int size) { this->size = size; }
 };

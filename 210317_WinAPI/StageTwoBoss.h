@@ -6,6 +6,8 @@ class StageTwoBoss :public Boss
 {
 private:
 	enum PHASE{Phase0, Phase1, Phase2, Phase3, Dead};
+	enum STATE { STATE1,STATE2,STATE3, STATE4, STATE5, STATE6,STATE7, STATE8, STATENOT,STATETRUE};
+	STATE state;
 	vector<MoveInterface*> vMoveInterfaces;
 	PHASE phase;
 	bool LeftMoving;
@@ -16,6 +18,7 @@ private:
 	int currTime;
 public:
 	virtual HRESULT Init();
+	virtual HRESULT Init(FPOINT* playerPos);
 	virtual void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);
@@ -24,15 +27,7 @@ public:
 	virtual void Move();
 	virtual void RotateBarrel(float angle);
 	virtual void OnDead();
-	void State01();
-	void State02();
-	void State03();
-	void State04();
-	void State05();
-	void State06();
-	void State07();
-	void State08();
-	void StateNot();
+	void StateType(STATE state);
 	void changeRightMove();
 	void changeLeftMove();
 	void changeRightUpMove();

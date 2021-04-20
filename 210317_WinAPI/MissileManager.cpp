@@ -13,7 +13,7 @@
 #include "NotFire.h"
 #include "ZigzagFire.h"
 #include "FallingKnivesFire.h"
-
+#include "TornadoFire.h"
 HRESULT MissileManager::Init(FPOINT pos)
 {
     totalMissileNum = 2000;
@@ -26,6 +26,7 @@ HRESULT MissileManager::Init(FPOINT pos)
         (*myIt)->SetPos(pos);
         (*myIt)->SetStartPos(pos);
     }
+    missileSize = 25;
 
     //FallingKnivesFire fkf;
     
@@ -40,6 +41,8 @@ HRESULT MissileManager::Init(FPOINT pos)
     vFireInterfaces[FIRETYPE::TwoFIRE] = new TwoFire();
     vFireInterfaces[FIRETYPE::WormFIRE] = new WormFire();
     vFireInterfaces[FIRETYPE::ZigzagFIRE] = new ZigzagFire();
+    vFireInterfaces[FIRETYPE::TornadoFIRE] = new TornadoFire();
+
 
 
     //어떤 미사일을 장전 시킬 것인가
@@ -80,6 +83,7 @@ void MissileManager::Update()
         if(this->fireType == FIRETYPE::PlayerFIRE)
             vMissiles[i]->SetAngle(this->missileAngle);
         vMissiles[i]->Update();
+        vMissiles[i]->SetSize(missileSize);
     }
 }
 
@@ -101,6 +105,7 @@ void MissileManager::Fire(FIRETYPE fireType)
         if(currFire != vFireInterfaces[FIRETYPE::NormalFIRE]){
             currFire = vFireInterfaces[FIRETYPE::NormalFIRE];
             fireManager->ChangeMove(currFire);
+            
         }
         break;
     case FIRETYPE::FallingKnivesFIRE:
@@ -155,6 +160,12 @@ void MissileManager::Fire(FIRETYPE fireType)
     case FIRETYPE::ZigzagFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::ZigzagFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::ZigzagFIRE];
+            fireManager->ChangeMove(currFire);
+        }
+        break;
+    case FIRETYPE::TornadoFIRE:
+        if (currFire != vFireInterfaces[FIRETYPE::TornadoFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::TornadoFIRE];
             fireManager->ChangeMove(currFire);
         }
         break;

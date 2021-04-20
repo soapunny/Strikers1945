@@ -197,7 +197,7 @@ void StageOneBoss::Move()
             vBarrels[2]->SetFireType(FIRETYPE::FIREWORKFIRE);
         }
     }
-    else {
+    else if(life > 0){
         if (currMoveInterface != vMoveInterfaces[MOVETYPE::SPEAR_MOVE]) {
             currMoveInterface = vMoveInterfaces[MOVETYPE::SPEAR_MOVE];
             currMoveInterface->Renew();
@@ -207,6 +207,15 @@ void StageOneBoss::Move()
             vBarrels[3]->SetFireType(FIRETYPE::FallingKnivesFIRE);
             vBarrels[4]->SetFireType(FIRETYPE::FallingKnivesFIRE);
         }
+    }
+    else {
+        vBarrels[0]->SetActivated(false);
+        vBarrels[1]->SetActivated(false);
+        vBarrels[2]->SetActivated(false);
+        vBarrels[3]->SetActivated(false);
+        vBarrels[4]->SetActivated(false); 
+        vBarrels[5]->SetActivated(false);
+        isAlive = false;
     }
     moveManager->DoMove(&pos, &angle);
 }

@@ -190,8 +190,8 @@ void Missile::Render(HDC hdc)
 {
 	if (isFired)
 	{
-		img->Render(hdc, pos.x, pos.y, true);
-	}
+		img->Render(hdc, size, pos.x, pos.y, true);
+	}	
 }
 
 void Missile::SetIsFired(bool isFired)

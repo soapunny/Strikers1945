@@ -10,6 +10,7 @@ class Barrel;
 class Boss : public GameNode
 {
 protected:
+	char szText[128];
 	Image* image;
 	int currFrameX;
 	int updateCount;

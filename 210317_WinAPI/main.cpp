@@ -77,6 +77,7 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance,
 			//htimer가 아니라 cpu timer를 사용하기 위함
 			TimerManager::GetSingleton()->Update();
 			g_mainGame.Update();
+			
 			g_mainGame.Render();
 		}
 	}

@@ -21,12 +21,14 @@ private:
 	bool isAlive;
 	float angle;
 
-	enum MISSILETYPE{NOT,NORMAL, TWO, WORM, METEOR};
+	int missileSize;
+
+	int dir;
 	FIRETYPE fireType;
 	int maxFireCount;
 
-	MISSILETYPE typeMissile;
-	int dir;
+
+
 
 	// �̻���
 	MissileManager* myMissile; //���� �ʿ�
@@ -62,6 +64,7 @@ public:
 	inline FPOINT GetstartPos() {return barrelStart;}//포신을 보스에서 돌려줄려고 가져옴
 	inline float GetAngle() { return barrelAngle; }
 	inline int GetSize() { return barrelSize; }
+	inline void SetMissileSize(int missileSize) { this->missileSize = missileSize; }
 	
 	//inline void SetPos(FPOINT pos) { this->barrelStart = pos; }
 };

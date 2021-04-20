@@ -12,12 +12,16 @@ private:
 	float AttackTimer;
 	float MoveTimer;
 	int zigzagFireCount;
+	int TornadoFireCount;
+	int isActBarrelCount;
 	FPOINT BerralEnd;
 	int MaxBossHp; //아마 나중에 보스에다 선언할듯
 	int BossHp;
-	int status;
+	int Attackstatus;
+	int Movestatus;
 public:
 	virtual HRESULT Init();
+	virtual HRESULT Init(FPOINT* playerPos);
 	virtual void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);

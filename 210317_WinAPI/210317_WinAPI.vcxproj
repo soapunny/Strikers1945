@@ -179,6 +179,7 @@
     <ClCompile Include="PlayerFire.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
     <ClCompile Include="RightSinMove.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SpearMove.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="RightDownMove.cpp" />
@@ -188,9 +189,11 @@
     <ClCompile Include="StageOneBoss.cpp" />
     <ClCompile Include="StageThreeBoss.cpp" />
     <ClCompile Include="StageTwoBoss.cpp" />
+    <ClCompile Include="Subject.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
+    <ClCompile Include="TornadoFire.cpp" />
     <ClCompile Include="TornadoSkill.cpp" />
     <ClCompile Include="TwoFire.cpp" />
     <ClCompile Include="TwoSkill.cpp" />
@@ -238,6 +241,7 @@
     <ClInclude Include="NormalSkill.h" />
     <ClInclude Include="NotFire.h" />
     <ClInclude Include="NotSkill.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="PhaseChangeMove.h" />
     <ClInclude Include="PlayerFire.h" />
     <ClInclude Include="PlayerShip.h" />
@@ -247,6 +251,7 @@
     <ClInclude Include="RightMove.h" />
     <ClInclude Include="RightSideMove.h" />
     <ClInclude Include="RightUpMove.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SkillInterface.h" />
     <ClInclude Include="SkillManager.h" />
@@ -254,9 +259,11 @@
     <ClInclude Include="StageOneBoss.h" />
     <ClInclude Include="StageThreeBoss.h" />
     <ClInclude Include="StageTwoBoss.h" />
+    <ClInclude Include="Subject.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerManager.h" />
+    <ClInclude Include="TornadoFire.h" />
     <ClInclude Include="TornadoSkill.h" />
     <ClInclude Include="TwoFire.h" />
     <ClInclude Include="TwoSkill.h" />

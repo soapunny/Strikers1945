@@ -7,7 +7,6 @@ private:
 	vector<MoveInterface*> vMoveInterfaces; 
 	MoveInterface* currMoveInterface;
 	float time;
-	char szText[128];
 
 public:
 	virtual HRESULT Init();
