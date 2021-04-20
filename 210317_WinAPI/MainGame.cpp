@@ -6,10 +6,12 @@
 #include "BossManager.h"
 #include "CollisionCheck.h"
 
+
+
 HRESULT MainGame::Init()
 {
 	hdc = GetDC(g_hWnd);
-
+	status = 0;
 	KeyManager::GetSingleton()->Init();
 	ImageManager::GetSingleton()->Init();
 
@@ -22,6 +24,8 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("Boss_change", "Image/Boss_change.bmp", 382, 294,1,1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageOneBoss", "Image/StageOneBoss.bmp", 186*30, 186, 30, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageThreeBoss", "Image/StageThreeBoss.bmp", 163 * 24, 121, 24, 1, true, RGB(255, 255, 255));
+	ImageManager::GetSingleton()->AddImage("오프닝", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
+	ImageManager::GetSingleton()->AddImage("엔딩", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
 
 	// 메인게임의 초기화 함수
 	//hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
@@ -39,10 +43,15 @@ HRESULT MainGame::Init()
 	backCloud = new Image();
 	backCloud = ImageManager::GetSingleton()->FindImage("구름");
 
+	openingImage = new Image();
+	openingImage = ImageManager::GetSingleton()->FindImage("오프닝");
+
+	endingImage = new Image();
+	endingImage = ImageManager::GetSingleton()->FindImage("엔딩");
 	//탱크
 	tank = new Tank();
 	tank->Init();
-
+	
 	// 에너미 메니저
 	enemyManager = new EnemyManager();
 	enemyManager->Init();
@@ -78,6 +87,9 @@ void MainGame::Release()
 	SAFE_RELEASE(bossManager);
 	SAFE_RELEASE(collisionCheck);
 
+	SAFE_RELEASE(openingImage); 
+	SAFE_RELEASE(endingImage);
+	
 	ReleaseDC(g_hWnd, hdc);
 
 	//KillTimer(g_hWnd, 0);
@@ -86,40 +98,44 @@ void MainGame::Release()
 void MainGame::Update()
 {
 	//배경 이동
-	backGroundPos.y += 0.05f;
-
-	//탱크(플레이어)
-	if (tank)
+	if (status >= 1)
 	{
-		tank->Update();
-	}
+		backGroundPos.y += 0.05f;
 
-	//적
-	if (enemyManager)
-	{
-		enemyManager->SetPlayerPos(playerShip->GetPos());
-		enemyManager->Update();
-	}
+		//탱크(플레이어)
+		if (tank)
+		{
+			tank->Update();
+		}
 
-	//플레이어
-	if (playerShip)
-	{
-		playerShip->Update();
-	}
+		//적
+		if (enemyManager)
+		{
+			enemyManager->SetPlayerPos(playerShip->GetPos());
+			enemyManager->Update();
+		}
 
-	//플레이어
-	if (bossManager)
-	{
-		bossManager->Update();
-	}
+		//플레이어
+		if (playerShip)
+		{
+			playerShip->Update();
+		}
 
-	//적 플레이어 충돌 검사
-	if (collisionCheck)
-	{
-		collisionCheck->SetPlayerRect(playerShip->GetPlayerRect());
-		collisionCheck->Update();
-		CheckCollision();
+		//플레이어
+		if (bossManager)
+		{
+			bossManager->Update();
+		}
+
+		//적 플레이어 충돌 검사
+		if (collisionCheck)
+		{
+			collisionCheck->SetPlayerRect(playerShip->GetPlayerRect());
+			collisionCheck->Update();
+			CheckCollision();
+		}
 	}
+	
 
 
 	//InvalidateRect(g_hWnd, NULL, false); //화면갱신
@@ -128,57 +144,97 @@ void MainGame::Update()
 void MainGame::Render()
 {
 	HDC hBackDC = backBuffer->GetMemDC();
-
+	if (status == 0)//오프닝 상태
+	{
+		if (KeyManager::GetSingleton()->IsOnceKeyDown(' '))
+		{
+			status++;
+			//sceneManagerObserver->OpeningNotify(status);
+			//오프닝 넘기기
+		}
+		if (openingImage)
+		{
+			openingImage->Render(hBackDC);
+		}
+	}
+	else if (status == 1)
+	{
 	//배경
-	if (backGround)
-	{
-		backGround->Render(hBackDC, backGroundPos.x, backGroundPos.y);
+		if (backGround)
+		{
+			backGround->Render(hBackDC, backGroundPos.x, backGroundPos.y);
+		}
+		if (backCloud)
+		{
+			//backCloud->AlphaRender(hBackDC, backGroundPos.x, backGroundPos.y);
+
+			//BLENDFUNCTION* blendFunc = backCloud->GetBlendFunc();
+			//blendFunc->SourceConstantAlpha = 100;
+		}
+		
+		//FPS
+		TimerManager::GetSingleton()->Render(hBackDC);
+
+		//collsion
+		if (collisionCheck)
+		{
+			collisionCheck->Render(hBackDC);
+		}
+
+		//tank
+		if (tank)
+		{
+			//tank->Render(hBackDC);
+		}
+
+		//enemy manager
+		if (enemyManager)
+		{
+			enemyManager->Render(hBackDC);
+		}
+
+		//playerShip
+		if (playerShip)
+		{
+			playerShip->Render(hBackDC);
+		}
+	
+		//boss Manager
+		if (bossManager)
+		{
+			bossManager->Render(hBackDC);
+		}
 	}
-	if (backCloud)
+	else//엔딩 출력
 	{
-		//backCloud->AlphaRender(hBackDC, backGroundPos.x, backGroundPos.y);
-
-		//BLENDFUNCTION* blendFunc = backCloud->GetBlendFunc();
-		//blendFunc->SourceConstantAlpha = 100;
+		if (endingImage)
+		{
+			endingImage->Render(hBackDC);
+		}
 	}
 
-	// 마우스 좌표
-
-	//FPS
-	TimerManager::GetSingleton()->Render(hBackDC);
-
-	//collsion
-	if (collisionCheck)
-	{
-		collisionCheck->Render(hBackDC);
-	}
-
-	//tank
-	if (tank)
-	{
-		//tank->Render(hBackDC);
-	}
-
-	//enemy manager
-	if (enemyManager)
-	{
-		enemyManager->Render(hBackDC);
-	}
-
-	//playerShip
-	if (playerShip)
-	{
-		playerShip->Render(hBackDC);
-	}
-
-	//boss Manager
-	if (bossManager)
-	{
-		bossManager->Render(hBackDC);
-	}
-
+	
+	
 	backBuffer->Render(hdc);
 }
+
+void MainGame::RegisterObserver(SceneManager* scenemanager)
+{
+	sceneManagerObserver = scenemanager;
+}
+
+void MainGame::UnRegisterObserver()
+{
+	delete sceneManagerObserver;
+	sceneManagerObserver = nullptr;
+}
+
+void MainGame::notifyObserve()
+{
+
+}
+
+
 
 void MainGame::CheckCollision()
 {
