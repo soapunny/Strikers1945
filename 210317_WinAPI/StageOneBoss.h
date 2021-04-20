@@ -10,7 +10,7 @@ private:
 
 public:
 	virtual HRESULT Init();
-	virtual HRESULT Init(FPOINT* playerPos);
+	virtual HRESULT Init(CollisionCheck* collisionCheck, FPOINT* playerPos);
 	virtual void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);

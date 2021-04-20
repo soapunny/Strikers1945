@@ -2,9 +2,17 @@
 #include "Image.h"
 #include "MissileManager.h"
 #include "CommonFunction.h"
+#include "CollisionCheck.h"
 
 HRESULT PlayerShip::Init()
 {
+	return E_FAIL;
+}
+
+HRESULT PlayerShip::Init(CollisionCheck* collisionCheck)
+{
+	this->collisionCheck = collisionCheck;
+	
 	image = ImageManager::GetSingleton()->FindImage("플레이어 우주선");
 	if (image == nullptr)
 	{
@@ -28,9 +36,10 @@ HRESULT PlayerShip::Init()
 	collisionSize.y = 50;
 
 	playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
+	collisionCheck->SetPlayerRect(playerRect);
 
-	// 테스트 용 포신 //
-	barrelSize = 20;
+	//포신
+	barrelSize = 1;
 	barrelEnd[0] = { (pos.x - 10.0f) ,  pos.y - barrelSize * 2 };
 	barrelEnd[1] = { (pos.x + 10.0f) ,  pos.y - barrelSize * 2 };
 	barrelEnd[2] = { (pos.x + cosf(barrelAngle[2]) * barrelSize) ,  pos.y - barrelSize * 2 };
@@ -40,12 +49,11 @@ HRESULT PlayerShip::Init()
 	barrelAngle[2] = 3 * (PI / 4);
 	barrelAngle[3] = PI / 4;
 
-	// 테스트 용 포신 미사일//
+	//미사일
 	for (int i = 0; i < 4; i++)
 	{
 		myMissile[i] = new MissileManager();
-		myMissile[i]->Init(barrelEnd[i]);
-		//myMissile[i]->SetAngle(barrelAngle[i]);
+		myMissile[i]->Init(this->collisionCheck, barrelEnd[i]);
 	}
 	fireCount = 0;
 
@@ -67,13 +75,16 @@ void PlayerShip::Release()
 
 void PlayerShip::Update()
 {
+	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
+
 	playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
-	
+	collisionCheck->SetPlayerRect(playerRect);
+
 	//첫 등장 (아래에서 위로)
 	if (!canMove)
 	{
 		if (pos.y >= WINSIZE_Y - 200)
-			pos.y -= 1.0f;
+			pos.y -= elapsedTime * 500.0f;// 1.0f;
 		else
 			canMove = true;
 	}
@@ -95,9 +106,6 @@ void PlayerShip::Update()
 		Move();
 	}
 
-	//
-	RotateBarrel(3.14f / 4.0f);
-	
 	// 포신 위치, 각도에 따른 좌표 계산
 	for (int i = 0; i < 2; i++)
 	{
@@ -113,6 +121,7 @@ void PlayerShip::Update()
 	{
 		if (myMissile[i])
 		{
+			myMissile[i]->SetOwnerType(MissileManager::OWNERTYPE::Player);
 			myMissile[i]->SetPlayerPos(this->pos);
 			myMissile[i]->SetPos(barrelEnd[i]);
 			myMissile[i]->SetAngle(barrelAngle[i]);
@@ -125,9 +134,6 @@ void PlayerShip::Update()
 
 void PlayerShip::Render(HDC hdc)
 {
-	//충돌 박스
-	 //playerRect = RenderRectToCenter(hdc, pos.x, pos.y, collisionSize.x, collisionSize.y);
-
 	//life 표시
 	wsprintf(szText, "LIFE: %d",playerLife);
 	TextOut(hdc, WINSIZE_X - 150, 80, szText, strlen(szText));
@@ -154,7 +160,7 @@ void PlayerShip::Render(HDC hdc)
 	MoveToEx(hdc, pos.x + 10, pos.y, NULL);
 	LineTo(hdc, barrelEnd[3].x, barrelEnd[3].y);
 
-	//미사일5
+	//미사일
 	for (int i = 0; i < 4; i++)
 	{
 		if (myMissile[i])
@@ -162,10 +168,6 @@ void PlayerShip::Render(HDC hdc)
 			myMissile[i]->Render(hdc);
 		}
 	}
-}
-
-void PlayerShip::RotateBarrel(float angle)
-{
 }
 
 void PlayerShip::Move()

@@ -14,14 +14,17 @@
 #include "RightUpMove.h"
 #include "RightSideMove.h"
 #include "ZigzagMove.h"
+#include "CollisionCheck.h"
 
 HRESULT StageOneBoss::Init()
 {
-    return Init(nullptr);
+    return S_OK;
 }
 
-HRESULT StageOneBoss::Init(FPOINT* playerPos)
+HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
 {
+    this->collisionCheck = collisionCheck;
+
     // 보스1 이미지
     image = ImageManager::GetSingleton()->FindImage("StageOneBoss");
     if (image == nullptr)
@@ -82,7 +85,7 @@ HRESULT StageOneBoss::Init(FPOINT* playerPos)
     for (int i = 0; i < vBarrels.size(); i++)
     {
         vBarrels[i] = new Barrel();
-        vBarrels[i]->Init(pos.x, pos.y);
+        vBarrels[i]->Init(this->collisionCheck, pos.x, pos.y);
         vBarrels[i]->SetAngle(i * PI / 3 - PI * 2 / 3);
         vBarrels[i]->SetBarrelSize(50);
         vBarrels[i]->SetActivated(false);
@@ -114,6 +117,8 @@ void StageOneBoss::Release()
 
 void StageOneBoss::Update()
 {
+    bossRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + 150), (LONG)(pos.y + 150) };
+
     if(isAlive){
         //보스 이동 업데이트
         float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();

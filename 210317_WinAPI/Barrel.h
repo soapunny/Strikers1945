@@ -1,10 +1,13 @@
 ﻿#pragma once
 #include "GameNode.h"
 
+class CollisionCheck;
 class MissileManager;
 class Barrel
 {
 private:
+	CollisionCheck* collisionCheck;
+
 	FPOINT barrelStart;
 	FPOINT barrelEnd;
 	int barrelSize;
@@ -35,7 +38,7 @@ private:
 	int fireCount;
 	
 public:
-	HRESULT Init(int posX = 0, int posY = 0);
+	HRESULT Init(CollisionCheck* collisionCheck, int posX = 0, int posY = 0);
 	virtual HRESULT Init() { return E_FAIL; };
 	void Release();
 	void Update();

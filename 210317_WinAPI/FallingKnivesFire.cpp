@@ -1,7 +1,8 @@
 #include "FallingKnivesFire.h"
 #include "Missile.h"
+#include "CollisionCheck.h"
 
-void FallingKnivesFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
+void FallingKnivesFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
     vector<Missile*>::iterator it;
     int fireCnt = 12;

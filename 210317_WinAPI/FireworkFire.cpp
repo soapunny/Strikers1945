@@ -1,7 +1,8 @@
 #include "FireworkFire.h"
 #include "Missile.h"
+#include "CollisionCheck.h"
 
-void FireworkFire::DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
+void FireworkFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
 
     vector<Missile*>::iterator it;

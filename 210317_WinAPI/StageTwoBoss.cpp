@@ -15,11 +15,14 @@
 #include "LeftSinMove.h"
 #include "RightSinMove.h"
 
-HRESULT StageTwoBoss::Init() {
-    return Init(nullptr);
-}
-HRESULT StageTwoBoss::Init(FPOINT* playerPos)
+HRESULT StageTwoBoss::Init() 
 {
+    return S_OK;
+}
+HRESULT StageTwoBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
+{
+    this->collisionCheck = collisionCheck;
+
     // 보스1 이미지
     image = ImageManager::GetSingleton()->FindImage("StageTwoBoss");
     if (image == nullptr)
@@ -67,7 +70,7 @@ HRESULT StageTwoBoss::Init(FPOINT* playerPos)
     for (int i = 0; i < vBarrels.size(); i++)
     {
         vBarrels[i] = new Barrel();
-        vBarrels[i]->Init(pos.x,pos.y);
+        vBarrels[i]->Init(this->collisionCheck, pos.x,pos.y);
         vBarrels[i]->SetActivated(true);
     }
     

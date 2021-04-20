@@ -1,6 +1,7 @@
 #include "ZigzagFire.h"
 #include "Missile.h"
-void ZigzagFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
+#include "CollisionCheck.h"
+void ZigzagFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
     vector<Missile*>::iterator myIt;
  //   for (int j = 0; j < 5; j++)

@@ -1,7 +1,8 @@
 #include "GuidedFire.h"
 #include "Missile.h"
+#include "CollisionCheck.h"
 
-void GuidedFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
+void GuidedFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
     time += 1.0f;
     vector<Missile*>::iterator myIt;

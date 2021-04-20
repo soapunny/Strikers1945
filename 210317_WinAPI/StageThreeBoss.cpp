@@ -5,16 +5,19 @@
 #include "ZigzagMove.h"
 #include "NormalMove.h"
 #include "MissileManager.h"
+#include "CollisionCheck.h"
 
 HRESULT StageThreeBoss::Init()
 {
-    return Init(nullptr);
+    return S_OK;//return Init(nullptr);
 }
 
-HRESULT StageThreeBoss::Init(FPOINT* playerPos)
+HRESULT StageThreeBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
 {
+    this->collisionCheck = collisionCheck;
+
     // 보스3 이미지
-     currMoveInterface = nullptr;
+    currMoveInterface = nullptr;
     image = ImageManager::GetSingleton()->FindImage("StageThreeBoss");
     if (image == nullptr)
     {
@@ -51,7 +54,7 @@ HRESULT StageThreeBoss::Init(FPOINT* playerPos)
     for (int i = 0; i < vBarrels.size(); i++)
     {
         vBarrels[i] = new Barrel();
-        vBarrels[i]->Init(pos.x, pos.y);
+        vBarrels[i]->Init(this->collisionCheck, pos.x, pos.y);
         //vBarrels[i]->Init(pos);
 
         //RotateBarrel(vBarrels[i] , i);
