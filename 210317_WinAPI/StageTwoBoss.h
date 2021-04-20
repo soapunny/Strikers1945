@@ -16,6 +16,7 @@ private:
 	MoveInterface* currMoveInterface;
 	FPOINT barrelPos;
 	int currTime;
+	int currElapesdTimer;
 public:
 	virtual HRESULT Init();
 	virtual HRESULT Init(CollisionCheck* collisionCheck, FPOINT* playerPos);
@@ -38,7 +39,9 @@ public:
 	void changeLeftSinMove();
 	void changeCenterMove();
 	void changeNormalMove();
-	
+	void phaseChangeMove();
+	void backMove();
+
 
 };
 

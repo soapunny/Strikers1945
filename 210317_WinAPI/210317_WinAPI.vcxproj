@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BackMove.cpp" />
     <ClCompile Include="Barrel.cpp" />
     <ClCompile Include="BilliardsMove.cpp" />
     <ClCompile Include="Boss.cpp" />
@@ -191,6 +192,8 @@
     <ClCompile Include="StageTwoBoss.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="TargetFire.cpp" />
+    <ClCompile Include="TargetSkill.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
     <ClCompile Include="TornadoFire.cpp" />
@@ -204,6 +207,7 @@
     <ClCompile Include="ZigzagSkill.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackMove.h" />
     <ClInclude Include="Barrel.h" />
     <ClInclude Include="BilliardsMove.h" />
     <ClInclude Include="Boss.h" />
@@ -261,6 +265,8 @@
     <ClInclude Include="StageTwoBoss.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="Tank.h" />
+    <ClInclude Include="TargetFire.h" />
+    <ClInclude Include="TargetSkill.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerManager.h" />
     <ClInclude Include="TornadoFire.h" />

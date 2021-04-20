@@ -16,7 +16,7 @@ public:
 		NormalSkill_TYPE, ZigzagSkill_TYPE, FallingKnives_TYPE, FIREWORK_TYPE
 		, CircularSkill_TYPE, Guided_Skill_TYPE, PlayerSkill_TYPE
 		, MeteorSkill_TYPE, WormSKill_TYPE, TwoSKill_TYPE, NotSkill_TYPE
-		, TornadoSkill_TYPE, END_TYPE};
+		, TornadoSkill_TYPE, TargetSkill_TYPE, END_TYPE};
 
 protected:
 	// ¿ÃπÃ¡ˆ

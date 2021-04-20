@@ -10,17 +10,26 @@ void WormFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissile
     srand(std::time(NULL));
 
     float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
-    for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
+    for (int i = 0; i < 10; i++)
     {
-        if ((*myIt)->GetIsFired() == false)
+
+        for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
         {
-            randAngle = (rand() % 168 - 18) * 100;
-            (*myIt)->SetType(Missile::SKILLTYPE::WormSKill_TYPE);
-            (*myIt)->SetIsFired(true);
-            (*myIt)->SetAngle(DegToRad(k)/** elapsedTime*1000*/);
-            k +=10;
-            break;
+            if ((*myIt)->GetIsFired() == false)
+            {
+                randAngle = (rand() % 168 - 18) * 100;
+                (*myIt)->SetType(Missile::SKILLTYPE::WormSKill_TYPE);
+                (*myIt)->SetIsFired(true);
+                (*myIt)->SetAngle(DegToRad(k)/** elapsedTime*1000*/);
+                (*myIt)->SetMoveSpeed(100);
+                    break;
+                
+                    
+            }
         }
+        k -= 12;
+        if (k == -330)
+            break;
     }
 }
 

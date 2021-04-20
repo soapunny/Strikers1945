@@ -28,7 +28,7 @@ HRESULT Missile::Init(CollisionCheck* collisionCheck, FPOINT position)
 	// (속력 = 거리 / 시간)
 	// moveSpeed * (elapsedTime / moveTime) = moveSpeed / (moveTime / elapsedTime)
 	moveTime = 2.0f;	//10초 동안
-	moveSpeed = 500 ;	//500을 이동하고 싶다
+	moveSpeed = 300 ;	//500을 이동하고 싶다
 
 	size = 20;
 	shape = { 0, 0, 0, 0 };
@@ -170,7 +170,7 @@ void Missile::Update()
 
 		if (pos.x < 0 || pos.y < 0 || pos.x > WINSIZE_X || pos.y > WINSIZE_Y)
 		{
-			moveSpeed = 500.0f;
+			moveSpeed = 300.0f;
 			skillManager->Renew();
 			isFired = false;
 			this->collisionCheck->DeletePlayerMissile(this);

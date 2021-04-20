@@ -78,7 +78,7 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     this->playerPos = playerPos;
     
     //생존여부
-    isAlive = true;
+    isAlive = false;
 
     //포신
     vBarrels.resize(6);             //개수는 최대 6개로 지정

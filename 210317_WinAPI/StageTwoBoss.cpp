@@ -14,6 +14,8 @@
 #include "CenterMove.h"
 #include "LeftSinMove.h"
 #include "RightSinMove.h"
+#include "BackMove.h"
+
 
 HRESULT StageTwoBoss::Init() 
 {
@@ -21,6 +23,7 @@ HRESULT StageTwoBoss::Init()
 }
 HRESULT StageTwoBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
 {
+
     this->collisionCheck = collisionCheck;
 
     // 보스1 이미지
@@ -39,8 +42,9 @@ HRESULT StageTwoBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     pos.x = WINSIZE_X / 2;          //위치
     pos.y = 200;
     size = 230;                     //크기
-    moveSpeed = 100.0f;               //이동 속도
+    moveSpeed = 150.0f;               //이동 속도
     angle = 0;
+    currElapesdTimer = 0;
     //보스 이동 방법 정의
     vMoveInterfaces.resize(MOVETYPE::END_MOVE);
     vMoveInterfaces[MOVETYPE::RIGHT_UP_MOVE] = new RightUpMove;
@@ -51,6 +55,10 @@ HRESULT StageTwoBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     vMoveInterfaces[MOVETYPE::LEFT_MOVE] = new LeftMove;
     vMoveInterfaces[MOVETYPE::NORMAL_MOVE] = new NormalMove;
     vMoveInterfaces[MOVETYPE::LEFT_DOWN_MOVE] = new LeftDownMove;
+    vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE] = new RightSinMove;
+    vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE] = new LeftSinMove;
+    vMoveInterfaces[MOVETYPE::PHASE_CHANGE_MOVE] = new PhaseChangeMove;
+    vMoveInterfaces[MOVETYPE::BACK_MOVE] = new BackMove;
     moveManager = new MoveManager();
 
     moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::CENTER_MOVE]);
@@ -98,6 +106,14 @@ void StageTwoBoss::Release()
 
 void StageTwoBoss::Update()
 {
+    /*srand(time(NULL));
+    if(rand() % 300 == 0)
+    {
+        if (!LeftMoving)
+            LeftMoving = true;
+        else
+            LeftMoving = false;
+    }*/
     for (int i = 0; i < vBarrels.size(); i++)
     {
         vBarrels[i]->Update();
@@ -107,7 +123,7 @@ void StageTwoBoss::Update()
     //미사일 발사
     Attack();
 
-    if (KeyManager::GetSingleton()->IsStayKeyDown('M'))
+    if (KeyManager::GetSingleton()->IsOnceKeyUp('M'))
     {
         life -= 300;
     }
@@ -116,8 +132,9 @@ void StageTwoBoss::Update()
     {
         if (vBarrels[i]->GetFireType() == FIRETYPE::NormalFIRE)   vBarrels[i]->SetMaxFireCount(50);
         if (vBarrels[i]->GetFireType() == FIRETYPE::TwoFIRE)      vBarrels[i]->SetMaxFireCount(50);
-        if (vBarrels[i]->GetFireType() == FIRETYPE::WormFIRE)     vBarrels[i]->SetMaxFireCount(10);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::WormFIRE)     vBarrels[i]->SetMaxFireCount(150);
         if (vBarrels[i]->GetFireType() == FIRETYPE::MeteorFIRE)   vBarrels[i]->SetMaxFireCount(150);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::TargetFIRE)   vBarrels[i]->SetMaxFireCount(100);
     }
     
 
@@ -184,12 +201,15 @@ void StageTwoBoss::Attack()
 
 void StageTwoBoss::Move()
 {
+    
    // 나중에 상태 개념을 넣어서 상태를 변경 시키면 그에 맞는 행동을 하도록
    // 지금은 페이즈 라는 상태 밖에 없지만 페이즈의 하위로 상태에 맞춰 어택(섞어서 사용)과 무브를 함
    // 예를 들어 1번과 3번 공격을 하면서 4번 무빙을 하는 상태 등 그리고 상태에 쿨타임과 우선순위를 부여
    // 
    // 보스 이동 업데이트
     MoveInterface* currMoveInterface = nullptr;
+    currElapesdTimer = TimerManager::GetSingleton()->getElapsedTime();//똑같은 속도로 나선형으로 도는방법 중심점만 밀어주면 되나?
+    currTime += currElapesdTimer;
     currTime++;
     
     switch (phase)
@@ -203,43 +223,52 @@ void StageTwoBoss::Move()
         else StateType(STATENOT);
         break;
     case StageTwoBoss::Phase1:        
-        if (currTime <= 1000)  StateType(STATE1);
-        else if (currTime > 1000 && currTime < 1500) StateType(STATE2);
-        else if (currTime > 1500 && currTime < 2000)  StateType(STATE3);
-        else StateType(STATENOT);
-        if (currTime == 2000)  currTime = 0;
+        if (pos.y >= (WINSIZE_Y / 2)-50) backMove();
+        else {
+            if (currTime <= 500)  StateType(STATE1);
+            else if (currTime > 500 && currTime < 1000) StateType(STATE2);
+            else if (currTime > 1000 && currTime < 1500)  StateType(STATE3);
+            else StateType(STATENOT);
+            if (currTime == 1500)  currTime = 0;
 
-        if (life <= 700) {phase = Phase2; changePhase = true; currTime = 0;}
+            if (life <= 700) { phase = Phase2; changePhase = true; currTime = 0; }
+        }
        break;
    case StageTwoBoss::Phase2:
-       if(changePhase)
-           moveManager->ChangeMove(new PhaseChangeMove());
+       if (changePhase)
+           phaseChangeMove();
        if (pos.y >= 250) changePhase = false;
-       if (!changePhase)
-       {
-           if (currTime < 1000)  StateType(STATE4);
-           else if (currTime > 1000 &&currTime < 1500)  StateType(STATE3);
-           else if (currTime > 1500 &&currTime < 2000)  StateType(STATE4);
-           else if (currTime > 2000 &&currTime < 2500)  StateType(STATE5);
-           else if (currTime > 2500 &&currTime < 3000) StateType(STATE4);
-           else if (currTime == 3000)  currTime = 0;
-           else StateType(STATENOT);
-           if (life <= 400) { phase = Phase3; currTime = 0; }
+       if (pos.y >= (WINSIZE_Y / 2) - 50) backMove();
+       else {
+           if (!changePhase)
+           {
+               if (currTime < 500)  StateType(STATE4);
+               else if (currTime > 500 && currTime < 1000)  StateType(STATE3);
+               else if (currTime > 1000 && currTime < 1500)  StateType(STATE4);
+               else if (currTime > 1500 && currTime < 2000)  StateType(STATE5);
+               else if (currTime > 2000 && currTime < 2500) StateType(STATE4);
+               else if (currTime == 2500)  currTime = 0;
+               else StateType(STATENOT);
+               if (life <= 400) { phase = Phase3; currTime = 0; }
+           }
        }
        break;
    case StageTwoBoss::Phase3:
        if (changePhase)
-           moveManager->ChangeMove(new PhaseChangeMove());
+           phaseChangeMove();
        if (pos.y >= 250) changePhase = false;
-       if (!changePhase)
-       {
-           if (currTime < 1000)  StateType(STATE4);
-           else if (currTime > 1000 && currTime < 1500)  StateType(STATE4);
-           else if (currTime > 1500 && currTime < 2000)  StateType(STATE6);
-           else if (currTime > 2000 && currTime < 2500)  StateType(STATE7);
-           else if (currTime > 2500 && currTime < 3000)  StateType(STATE8);
-           else StateType(STATENOT);
-           if (currTime >= 3000)  currTime = 0;
+       if (pos.y >= (WINSIZE_Y / 2) - 50) backMove();
+       else {
+           if (!changePhase)
+           {
+               if (currTime < 500)  StateType(STATE4);
+               else if (currTime > 500 && currTime < 1000)  StateType(STATE5);
+               else if (currTime > 1000 && currTime < 1500)  StateType(STATE6);
+               else if (currTime > 1500 && currTime < 2000)  StateType(STATE7);
+               else if (currTime > 2000 && currTime < 2500)  StateType(STATE8);
+               else StateType(STATENOT);
+               if (currTime >= 2500)  currTime = 0;
+           }
        }
        break;
    case StageTwoBoss::Dead:
@@ -322,26 +351,27 @@ void StageTwoBoss::StateType(STATE state)
 
     if(state == STATE1)
     {
-#pragma region 와리가리무빙
+#pragma region 와리가리무빙        ;
         if (LeftMoving)
         {
             if (pos.x >= 550)changeRightUpMove();
-            if (pos.x <= 450)changeRightDownMove();
-            if (pos.x <= 350)changeRightUpMove();
-            if (pos.x <= 250) changeRightDownMove();
-            if (pos.x <= 150)changeRightUpMove();
-            if (pos.x <= 50)
+            else if (pos.x <= 450 && pos.x > 350)changeRightDownMove();
+            else if (pos.x <= 350 && pos.x > 250)changeRightUpMove();
+            else if (pos.x <= 250 && pos.x > 150)changeRightDownMove();
+            else if (pos.x <= 150 && pos.x > 50)changeRightUpMove();
+            else if (pos.x <= 50)
                 LeftMoving = false;
         }
         if (!LeftMoving)
         {
             if (pos.x <= 50) changeLeftDownMove();
-            if (pos.x >= 150)changeLeftUpMove();
-            if (pos.x >= 250)changeLeftDownMove();
-            if (pos.x >= 350)changeLeftUpMove();
-            if (pos.x >= 450)changeLeftDownMove();
-            if (pos.x >= 550)LeftMoving = true;
+            else if (pos.x >= 150 && pos.x < 250) changeLeftUpMove();
+            else if (pos.x >= 250 && pos.x < 350) changeLeftDownMove();
+            else if (pos.x >= 350 && pos.x < 450)changeLeftUpMove();
+            else if (pos.x >= 450 && pos.x < 550)changeLeftDownMove();
+            else if (pos.x >= 550)LeftMoving = true;
         }
+#pragma endregion
 #pragma endregion
 
         vBarrels[0]->SetActivated(false);
@@ -351,7 +381,8 @@ void StageTwoBoss::StateType(STATE state)
         vBarrels[3]->SetActivated(true);
         vBarrels[3]->SetFireType(FIRETYPE::NormalFIRE);
         vBarrels[4]->SetActivated(false);
-        vBarrels[5]->SetActivated(false);
+        vBarrels[5]->SetActivated(true);
+        vBarrels[5]->SetFireType(FIRETYPE::TargetFIRE);
     }
 
     else if (state == STATE2)
@@ -376,22 +407,32 @@ void StageTwoBoss::StateType(STATE state)
         vBarrels[3]->SetActivated(false);
          vBarrels[4]->SetActivated(true);
         vBarrels[4]->SetFireType(FIRETYPE::TwoFIRE); vBarrels[4]->SetMissileSize(50);
-            vBarrels[5]->SetActivated(true);
         vBarrels[5]->SetActivated(true);
+        vBarrels[5]->SetFireType(FIRETYPE::TargetFIRE);
     }
 
     else if (state == STATE3)
     {
-#pragma region 센트무브
-        changeCenterMove();
+#pragma region 반대끝무빙
+        if (LeftMoving)
+        {
+            changeLeftMove();;
+            if (pos.x <= 50)
+                LeftMoving = false;
+        }
+        if (!LeftMoving)
+        {
+            changeRightMove();
+            if (pos.x >= 550)LeftMoving = true;
+        }
 #pragma endregion
          vBarrels[0]->SetActivated(true);
         vBarrels[0]->SetFireType(FIRETYPE::WormFIRE); vBarrels[0]->SetMissileSize(50);
         vBarrels[1]->SetActivated(false);
         vBarrels[2]->SetActivated(false);
         vBarrels[3]->SetActivated(false);
-        vBarrels[4]->SetActivated(false);
-        vBarrels[5]->SetActivated(false);
+        vBarrels[5]->SetActivated(true);
+        vBarrels[5]->SetFireType(FIRETYPE::TargetFIRE);
     }
 
     else if (state == STATE4)
@@ -400,21 +441,21 @@ void StageTwoBoss::StateType(STATE state)
         if (LeftMoving)
         {
             if (pos.x >= 550)changeRightUpMove();
-            if (pos.x <= 450)changeRightDownMove();
-            if (pos.x <= 350)changeRightUpMove();
-            if (pos.x <= 250) changeRightDownMove();
-            if (pos.x <= 150)changeRightUpMove();
-            if (pos.x <= 50)
+            else if (pos.x <= 450 && pos.x > 350)changeRightDownMove();
+            else if (pos.x <= 350 && pos.x > 250)changeRightUpMove();
+            else if (pos.x <= 250 && pos.x > 150)changeRightDownMove();
+            else if (pos.x <= 150 && pos.x > 50)changeRightUpMove();
+            else if (pos.x <= 50)
                 LeftMoving = false;
         }
         if (!LeftMoving)
         {
             if (pos.x <= 50) changeLeftDownMove();
-            if (pos.x >= 150)changeLeftUpMove();
-            if (pos.x >= 250)changeLeftDownMove();
-            if (pos.x >= 350)changeLeftUpMove();
-            if (pos.x >= 450)changeLeftDownMove();
-            if (pos.x >= 550)LeftMoving = true;
+            else if (pos.x >= 150 && pos.x < 250) changeLeftUpMove();
+            else if (pos.x >= 250 && pos.x < 350) changeLeftDownMove();
+            else if (pos.x >= 350 && pos.x < 450)changeLeftUpMove();
+            else if (pos.x >= 450 && pos.x < 550)changeLeftDownMove();
+            else if (pos.x >= 550)LeftMoving = true;
         }
 #pragma endregion
         vBarrels[0]->SetActivated(false);
@@ -427,7 +468,7 @@ void StageTwoBoss::StateType(STATE state)
         vBarrels[2]->SetFireType(FIRETYPE::TwoFIRE); vBarrels[2]->SetMissileSize(50);
         vBarrels[3]->SetFireType(FIRETYPE::NormalFIRE);
         vBarrels[4]->SetFireType(FIRETYPE::TwoFIRE); vBarrels[4]->SetMissileSize(50);
-        vBarrels[5]->SetFireType(FIRETYPE::TwoFIRE); vBarrels[5]->SetMissileSize(50);
+        vBarrels[5]->SetFireType(FIRETYPE::TargetFIRE); vBarrels[5]->SetMissileSize(50);        
 
     }
 
@@ -438,9 +479,11 @@ void StageTwoBoss::StateType(STATE state)
 #pragma endregion
         vBarrels[0]->SetActivated(true);
         vBarrels[0]->SetFireType(FIRETYPE::MeteorFIRE); vBarrels[0]->SetMissileSize(35);
-        vBarrels[1]->SetActivated(false);
+        vBarrels[1]->SetActivated(true);
+        vBarrels[1]->SetFireType(FIRETYPE::NormalFIRE);
         vBarrels[2]->SetActivated(false);
-        vBarrels[3]->SetActivated(false);
+        vBarrels[3]->SetActivated(true);
+        vBarrels[3]->SetFireType(FIRETYPE::NormalFIRE);
         vBarrels[4]->SetActivated(false);
         vBarrels[5]->SetActivated(false);
     }
@@ -448,25 +491,25 @@ void StageTwoBoss::StateType(STATE state)
     else if (state == STATE6)
     {
 #pragma region 와리가리무빙
-        if (LeftMoving)
-        {
-            if (pos.x >= 550)changeRightUpMove();
-            if (pos.x <= 450)changeRightDownMove();
-            if (pos.x <= 350)changeRightUpMove();
-            if (pos.x <= 250) changeRightDownMove();
-            if (pos.x <= 150)changeRightUpMove();
-            if (pos.x <= 50)
-                LeftMoving = false;
-        }
-        if (!LeftMoving)
-        {
-            if (pos.x <= 50) changeLeftDownMove();
-            if (pos.x >= 150)changeLeftUpMove();
-            if (pos.x >= 250)changeLeftDownMove();
-            if (pos.x >= 350)changeLeftUpMove();
-            if (pos.x >= 450)changeLeftDownMove();
-            if (pos.x >= 550)LeftMoving = true;
-        }
+    if (LeftMoving)
+    {
+        if (pos.x >= 550)changeRightUpMove();
+        else if (pos.x <= 450 && pos.x > 350)changeRightDownMove();
+        else if (pos.x <= 350 && pos.x > 250)changeRightUpMove();
+        else if (pos.x <= 250 && pos.x > 150)changeRightDownMove();
+        else if (pos.x <= 150 && pos.x > 50)changeRightUpMove();
+        else if (pos.x <= 50)
+            LeftMoving = false;
+    }
+    if (!LeftMoving)
+    {
+        if (pos.x <= 50) changeLeftDownMove();
+        else if (pos.x >= 150 && pos.x < 250) changeLeftUpMove();
+        else if (pos.x >= 250 && pos.x < 350) changeLeftDownMove();
+        else if (pos.x >= 350 && pos.x < 450)changeLeftUpMove();
+        else if (pos.x >= 450 && pos.x < 550)changeLeftDownMove();
+        else if (pos.x >= 550)LeftMoving = true;
+    }
 #pragma endregion
         vBarrels[0]->SetActivated(true);
         vBarrels[0]->SetFireType(FIRETYPE::MeteorFIRE); vBarrels[0]->SetMissileSize(35);
@@ -604,4 +647,16 @@ void StageTwoBoss::changeNormalMove()
 {
     moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
     currMoveInterface = vMoveInterfaces[MOVETYPE::NORMAL_MOVE];
+}
+
+void StageTwoBoss::phaseChangeMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::PHASE_CHANGE_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::PHASE_CHANGE_MOVE];
+}
+
+void StageTwoBoss::backMove()
+{
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::BACK_MOVE]);
+    currMoveInterface = vMoveInterfaces[MOVETYPE::BACK_MOVE];
 }

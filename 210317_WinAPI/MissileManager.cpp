@@ -15,6 +15,7 @@
 #include "ZigzagFire.h"
 #include "FallingKnivesFire.h"
 #include "TornadoFire.h"
+#include "TargetFire.h"
 
 HRESULT MissileManager::Init(CollisionCheck* collisionCheck, FPOINT pos)
 {
@@ -44,6 +45,7 @@ HRESULT MissileManager::Init(CollisionCheck* collisionCheck, FPOINT pos)
     vFireInterfaces[FIRETYPE::WormFIRE] = new WormFire();
     vFireInterfaces[FIRETYPE::ZigzagFIRE] = new ZigzagFire();
     vFireInterfaces[FIRETYPE::TornadoFIRE] = new TornadoFire();
+    vFireInterfaces[FIRETYPE::TargetFIRE] = new TargetFire();
 
 
 
@@ -188,6 +190,12 @@ void MissileManager::Fire(FIRETYPE fireType)
     case FIRETYPE::TornadoFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::TornadoFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::TornadoFIRE];
+            fireManager->ChangeMove(currFire);
+        }
+        break;
+    case FIRETYPE::TargetFIRE:
+        if (currFire != vFireInterfaces[FIRETYPE::TargetFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::TargetFIRE];
             fireManager->ChangeMove(currFire);
         }
         break;

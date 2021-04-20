@@ -13,20 +13,21 @@ void TwoFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles
     int i = 0;
     for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
     {
+        
         if ((*myIt)->GetIsFired() == false)
         {
             randAngle = (rand() % 168 - 18) * 100;
             (*myIt)->SetType(Missile::SKILLTYPE::TwoSKill_TYPE);
             (*myIt)->SetIsFired(true);            
             (*myIt)->SetAngle(DegToRad(k));
-            
+            (*myIt)->SetMoveSpeed(200);
             i++;
-            if(i >= 2)
+            if(i >= 3)
                 break;
             
         }
 
          k+=20;
-        if (k > -80) k = -100;
+        if (k > -70) k = -110;
     }
 }
