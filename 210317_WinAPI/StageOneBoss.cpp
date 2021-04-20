@@ -100,6 +100,8 @@ void StageOneBoss::Release()
 
 void StageOneBoss::Update()
 {
+    bossRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + 150), (LONG)(pos.y + 150) };
+
     if(isAlive){
         //보스 이동 업데이트
         float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();

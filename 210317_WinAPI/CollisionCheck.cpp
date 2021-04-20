@@ -1,11 +1,15 @@
 #include "CollisionCheck.h"
 #include "CommonFunction.h"
 #include "PlayerShip.h"
+#include "MissileManager.h"
+#include "Missile.h"
 
 HRESULT CollisionCheck::Init()
 {
 	playerIsCollision = false;
-	enemyIsCollision = false;
+	bossIsCollision = false;
+
+	//playerMissile = new list<Missile*>();
 
 	return S_OK;
 }
@@ -16,19 +20,32 @@ void CollisionCheck::Release()
 
 void CollisionCheck::Update()
 {
-	//플레이어와 에너미 미사일 충돌
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
+	list<Missile*>::iterator myIt;
+	
+	//"플레이어"와 "보스 미사일" 충돌
+	for (myIt = bossMissile.begin(); myIt != bossMissile.end(); myIt++)
 	{
-		//if (IntersectRect(&rcTemp, &RectHit_Player, &RectHit_EnemyMissile))
+		if ((*myIt)->GetIsFired() == true)
 		{
-			playerIsCollision = true;
+			if (IntersectRect(&rcTemp, &RectHit_Player, (*myIt)->GetPlayerMissileRect()))
+			{
+				playerIsCollision = true;
+			}
 		}
 	}
 
-	//플레이어 미사일과 에너미충돌
-	if (IntersectRect(&rcTemp, &RectHit_Enemy, &RectHit_PlayerMissile))
+	//"플레이어 미사일"과 "보스"충돌
+	for (myIt = playerMissile.begin(); myIt != playerMissile.end(); myIt++)
 	{
-		enemyIsCollision = true;
+		if ((*myIt)->GetIsFired() == true)
+		{
+			if (IntersectRect(&rcTemp, &RectHit_Boss, (*myIt)->GetPlayerMissileRect()))
+			{
+				bossIsCollision = true;
+				(*myIt)->SetIsFired(false);
+				this->playerMissile.remove((*myIt));
+			}
+		}
 	}
 }
 
@@ -36,4 +53,19 @@ void CollisionCheck::Render(HDC hdc)
 {
 	//플레이어 충돌 박스
 	RenderRectToCenter(hdc, RectHit_Player.left, RectHit_Player.top, RectHit_Player.right - RectHit_Player.left, RectHit_Player.bottom - RectHit_Player.top);
+
+	//보스 충돌 박스
+	RenderRectToCenter(hdc, RectHit_Boss.left, RectHit_Boss.top, RectHit_Boss.right - RectHit_Boss.left, RectHit_Boss.bottom - RectHit_Boss.top);
+
+	//플레리어 미사일 충돌 박스
+	list<Missile*>::iterator myIt;
+	/*for (myIt = playerMissile.begin(); myIt != playerMissile.end(); myIt++)
+	{
+		if ((*myIt)->GetIsFired() == true)
+		{
+			RenderRectToCenter(hdc, (*myIt)->GetPlayerMissileRect()->left, (*myIt)->GetPlayerMissileRect()->top,
+				(*myIt)->GetPlayerMissileRect()->right - (*myIt)->GetPlayerMissileRect()->left,
+				(*myIt)->GetPlayerMissileRect()->bottom - (*myIt)->GetPlayerMissileRect()->top);
+		}
+	}*/
 }

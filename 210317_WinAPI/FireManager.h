@@ -3,6 +3,7 @@
 
 class FireInterface;
 class Missile;
+class CollisionCheck;
 class FireManager
 {
 private:
@@ -11,7 +12,7 @@ private:
 public:
 	virtual	void ChangeMove(FireInterface* changeFire);
 
-	void DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos);
+	void DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* targetPos);
 
 	virtual void Renew();
 

@@ -1,7 +1,8 @@
 #include "MeteorFire.h"
 #include "Missile.h"
+#include "CollisionCheck.h"
 
-void MeteorFire::DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
+void MeteorFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
     vector<Missile*>::iterator myIt;
 

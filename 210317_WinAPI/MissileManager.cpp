@@ -1,5 +1,6 @@
 #pragma once
 #include "CommonFunction.h"
+#include "CollisionCheck.h"
 #include "MissileManager.h"
 #include "Missile.h"
 #include "FireManager.h"
@@ -14,21 +15,21 @@
 #include "ZigzagFire.h"
 #include "FallingKnivesFire.h"
 
-HRESULT MissileManager::Init(FPOINT pos)
+HRESULT MissileManager::Init(CollisionCheck* collisionCheck, FPOINT pos)
 {
+    this->collisionCheck = collisionCheck;
+
     totalMissileNum = 2000;
     vMissiles.resize(totalMissileNum);
     vector<Missile*>::iterator myIt;
     for (myIt = vMissiles.begin(); myIt != vMissiles.end(); myIt++)
     {
         (*myIt) = new Missile();
-        (*myIt)->Init(pos);
+        (*myIt)->Init(this->collisionCheck, pos);
         (*myIt)->SetPos(pos);
         (*myIt)->SetStartPos(pos);
     }
 
-    //FallingKnivesFire fkf;
-    
     vFireInterfaces.resize(FIRETYPE::END_FIRETYPE);
     vFireInterfaces[FIRETYPE::NormalFIRE] = new NormalFire();
     vFireInterfaces[FIRETYPE::FallingKnivesFIRE] = new FallingKnivesFire();
@@ -75,11 +76,25 @@ void MissileManager::Update()
 {
     for (int i = 0; i < vMissiles.size(); i++)
     {
-        vMissiles[i]->SetPlayerPos(this->playerPos);
-        vMissiles[i]->SetStartPos(this->missilePos);
-        if(this->fireType == FIRETYPE::PlayerFIRE)
-            vMissiles[i]->SetAngle(this->missileAngle);
-        vMissiles[i]->Update();
+        if (vMissiles[i]->GetIsFired())
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (ownerType == j)
+                {
+                    vMissiles[i]->SetOwnerType((Missile::OWNERTYPE)j);
+                }
+
+            }
+
+            vMissiles[i]->SetPlayerPos(this->playerPos);
+            vMissiles[i]->SetStartPos(this->missilePos);
+            if (this->fireType == FIRETYPE::PlayerFIRE)
+            {
+                vMissiles[i]->SetAngle(this->missileAngle);
+            }
+            vMissiles[i]->Update();
+        }
     }
 }
 
@@ -162,5 +177,5 @@ void MissileManager::Fire(FIRETYPE fireType)
         break;
     }
 
-    fireManager->DoFire(&vMissiles, nullptr);
+    fireManager->DoFire(this->collisionCheck, &vMissiles, nullptr);
 }

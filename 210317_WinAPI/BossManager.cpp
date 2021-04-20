@@ -31,6 +31,8 @@ void BossManager::Release()
 
 void BossManager::Update()
 {
+    bossRect = vBoss[0]->GetBossRect();
+
     vBoss[0]->GetAlive();
     vBoss[0]->Update();
     /*vector<Boss*>::iterator myIt;

@@ -4,7 +4,7 @@
 class NormalFire : public FireInterface
 {
 public:
-	virtual void DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos);
+	virtual void DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* targetPos);
 	inline virtual void Renew() { time = 0; }
 };
 

@@ -18,8 +18,8 @@ HRESULT Barrel::Init(int posX, int posY)
     dir = 1;
 
     // 미사일
-    myMissile = new MissileManager();   //동적 필요
-    myMissile->Init(pos);       //
+    //myMissile = new MissileManager();   //동적 필요
+    //myMissile->Init(pos);       //
     fireCount = 0;
 
     isActivated = false;
@@ -46,6 +46,7 @@ void Barrel::Update()
 
     if (myMissile)
     {
+        myMissile->SetOwnerType(MissileManager::Boss);
         myMissile->Update();
     }
     Attack();
@@ -159,7 +160,7 @@ void Barrel::Update()
 void Barrel::Render(HDC hdc)
 {
     // 포신
-    myMissile->Render(hdc);
+    //myMissile->Render(hdc);
     MoveToEx(hdc, barrelStart.x, barrelStart.y, NULL);
     LineTo(hdc, barrelEnd.x, barrelEnd.y );
 

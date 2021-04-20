@@ -8,10 +8,10 @@ void FireManager::ChangeMove(FireInterface* changeFire)
 	fireInterface = changeFire;
 }
 
-void FireManager::DoFire(vector<Missile*>* vMissiles, FPOINT* targetPos)
+void FireManager::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
 	if (fireInterface)
-		fireInterface->DoFire(vMissiles, targetPos);
+		fireInterface->DoFire(collisionCheck, vMissiles, targetPos);
 }
 
 void FireManager::Renew()

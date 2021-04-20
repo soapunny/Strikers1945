@@ -7,10 +7,11 @@ class Barrel;
 class PlayerShip;
 class SkillManager;
 class SkillInterface;
-
+class CollisionCheck;
 class Missile : public GameNode
 {
 public:
+	enum OWNERTYPE {PLAYER, ENEMY, BOSS};
 	enum SKILLTYPE { 
 		NormalSkill_TYPE, ZigzagSkill_TYPE, FallingKnives_TYPE, FIREWORK_TYPE
 		, CircularSkill_TYPE, Guided_Skill_TYPE, PlayerSkill_TYPE
@@ -32,6 +33,7 @@ protected:
 	float angle;
 	bool isFired;
 	SKILLTYPE missileType;
+	OWNERTYPE ownerType;
 	SkillInterface* lpCurrSkill;
 	int fireIndex;
 	int fireStep;
@@ -43,8 +45,14 @@ protected:
 	SkillManager* skillManager;
 	vector<SkillInterface*> vSkillInterfaces;
 
+	//미사일 충돌체
+	RECT playerMissileRect;
+	RECT enemyMissileRect;
+
+	CollisionCheck* collisionCheck;
+
 public:
-	HRESULT Init(FPOINT position);
+	HRESULT Init(CollisionCheck* collisionCheck, FPOINT position);
 	virtual HRESULT Init() { return E_FAIL; };
 	virtual void Release();		
 	virtual void Update();		
@@ -68,6 +76,9 @@ public:
 	inline float GetMoveTime() { return moveTime; }
 	inline void SetTarget(Enemy* target) { this->target = target; }
 
+	inline OWNERTYPE GetOwnerType() { return this->ownerType; }
+	inline void SetOwnerType(OWNERTYPE type) { this->ownerType = type; }
+
 	inline SKILLTYPE GetType() { return this->missileType; }
 	inline void SetType(SKILLTYPE type) { this->missileType = type; }
 	
@@ -77,4 +88,7 @@ public:
 	//inline POINT GetTarget(POINT target) { return target; }
 
 	inline int GetSize() { return this->size; }
+
+	inline RECT* GetPlayerMissileRect() { return &(this->playerMissileRect); }
+	inline RECT* GetEnemyMissileRect() { return &(this->enemyMissileRect); }
 };

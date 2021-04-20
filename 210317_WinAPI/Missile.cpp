@@ -17,9 +17,12 @@
 #include "NotSkill.h"
 #include "ZigzagSkill.h"
 #include "TornadoSkill.h"
+#include "CollisionCheck.h"
 
-HRESULT Missile::Init(FPOINT position)
+HRESULT Missile::Init(CollisionCheck* collisionCheck, FPOINT position)
 {
+	this->collisionCheck = collisionCheck;
+
 	startPos = position;
 	pos = {-100, -100};
 	// (속력 = 거리 / 시간)
@@ -27,13 +30,12 @@ HRESULT Missile::Init(FPOINT position)
 	moveTime = 2.0f;	//10초 동안
 	moveSpeed = 500;	//500을 이동하고 싶다
 
-	size = 25;
+	size = 20;
 	shape = { 0, 0, 0, 0 };
 	damage = 5000;
 	isFired = false;
 
 	missileType = SKILLTYPE::FIREWORK_TYPE;
-	//missileType = SKILLTYPE::ZigzagSkillTYPE;
 
 	vSkillInterfaces.resize(SKILLTYPE::END_TYPE);
 	vSkillInterfaces[SKILLTYPE::CircularSkill_TYPE] = new CircularSkill;
@@ -55,9 +57,10 @@ HRESULT Missile::Init(FPOINT position)
 
 	fireStep = 0;
 
+	ownerType = OWNERTYPE::ENEMY;
 
 	// 이미지
-	img = ImageManager::GetSingleton()->FindImage("미사일");
+	img = ImageManager::GetSingleton()->FindImage("적 미사일");
 	if (img == nullptr)
 	{
 		MessageBox(g_hWnd, "미사일에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
@@ -170,13 +173,17 @@ void Missile::Update()
 			moveSpeed = 500.0f;
 			skillManager->Renew();
 			isFired = false;
+			this->collisionCheck->DeletePlayerMissile(this);
 			fireStep = 0;
 		}
 
 		if (missileType == SKILLTYPE::PlayerSkill_TYPE)
 		{
-			if( pos.y > GetStartPos().y)
+			if (pos.y > GetPlayerPos().y)
+			{
 				isFired = false;
+				this->collisionCheck->DeletePlayerMissile(this);
+			}
 		}
 	}
 
@@ -190,6 +197,16 @@ void Missile::Render(HDC hdc)
 {
 	if (isFired)
 	{
+		//충돌 박스
+		if (ownerType == OWNERTYPE::PLAYER)
+			playerMissileRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + size), (LONG)(pos.y + size) };
+		else if (ownerType == OWNERTYPE::ENEMY || ownerType == OWNERTYPE::BOSS)
+			enemyMissileRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + size), (LONG)(pos.y + size) };
+
+		if(ownerType == OWNERTYPE::PLAYER)
+			img = ImageManager::GetSingleton()->FindImage("플레이어 미사일");
+		else if(ownerType == OWNERTYPE::ENEMY || ownerType == OWNERTYPE::BOSS)
+			img = ImageManager::GetSingleton()->FindImage("적 미사일");
 		img->Render(hdc, pos.x, pos.y, true);
 	}
 }

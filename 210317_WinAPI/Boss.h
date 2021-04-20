@@ -24,6 +24,8 @@ protected:
 
 	MoveManager* moveManager;
 
+	RECT bossRect;
+
 public:
 	virtual HRESULT Init();
 	virtual void Release();
@@ -42,4 +44,6 @@ public:
 
 	inline void SetAlive(bool isAlive) { this->isAlive = isAlive; }
 	inline bool GetAlive() { return this->isAlive; }
+
+	inline RECT GetBossRect() { return bossRect; }
 };

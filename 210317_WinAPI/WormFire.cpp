@@ -1,6 +1,7 @@
 #include "WormFire.h"
 #include "Missile.h"
-void WormFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
+#include "CollisionCheck.h"
+void WormFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
     vector<Missile*>::iterator myIt;
 

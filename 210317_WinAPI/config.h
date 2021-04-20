@@ -10,6 +10,7 @@
 #include <bitset>
 #include <map>
 #include <vector>
+#include<list>
 
 #include "KeyManager.h"
 #include "ImageManager.h"
