@@ -51,6 +51,17 @@ void Barrel::Update()
     }
     //Attack();
 
+    //myMissile->SetPos(barrelEnd);
+    //if (isAlive)
+    //{
+    //    //애니메이션
+    //    updateCount++;
+    //    if (updateCount >= 5)
+    //    {
+    //        currFrameX = (currFrameX + 1) % 10;
+    //        updateCount = 0;
+    //    }
+
     myMissile->SetPos(barrelEnd);
   
   
@@ -121,7 +132,7 @@ void Barrel::Attack()
         myMissile->SetPos(barrelEnd);
         if (fireCount % maxFireCount == 0 && isActivated)
         {
-            myMissile->Fire(fireType);//FIRETYPE::ZigzagFIRE
+            myMissile->Fire(fireType);
             fireCount = 0;
         }
     }

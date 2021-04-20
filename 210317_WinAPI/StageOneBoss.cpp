@@ -30,7 +30,7 @@ HRESULT StageOneBoss::Init()
     //보스 
     pos.x = WINSIZE_X-200;          //위치
     pos.y = WINSIZE_Y / 5;
-    size = 200;                     //크기
+    size = 186;                     //크기
     moveSpeed = 100.0f;               //이동 속도
     angle = PI/3;
 
@@ -48,8 +48,9 @@ HRESULT StageOneBoss::Init()
     vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE] = new BilliardsMove;
 
     moveManager = new MoveManager();
+    currMoveInterface = vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE];
 
-    moveManager->ChangeMove(vMoveInterfaces[0]);
+    moveManager->ChangeMove(currMoveInterface);
     for(int i =0;i<vMoveInterfaces.size();i++){
         if(vMoveInterfaces[i])
             vMoveInterfaces[i]->SetMoveSpeed(moveSpeed);
@@ -76,6 +77,9 @@ HRESULT StageOneBoss::Init()
         vBarrels[i] = new Barrel();
         vBarrels[i]->Init(pos.x, pos.y);
         vBarrels[i]->SetAngle(i * PI/3 - PI*2/3);
+        vBarrels[i]->SetBarrelSize(50); 
+        vBarrels[i]->SetActivated(false);
+        vBarrels[i]->SetFireType(FIRETYPE::FallingKnivesFIRE);
     }
 
     return S_OK;
@@ -105,6 +109,10 @@ void StageOneBoss::Update()
         float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
         time += elapsedTime;
 
+        if (KeyManager::GetSingleton()->IsOnceKeyDown('U')) {
+            life -= 25;
+        }
+
         Move();
 
         //포신 위치
@@ -112,13 +120,7 @@ void StageOneBoss::Update()
         {
             if (vBarrels[i])
             {
-                vBarrels[i]->SetPos(pos);
-                if (i < 2) {
-                    vBarrels[i]->SetActivated(true);
-                }
-                else {
-                    vBarrels[i]->SetActivated(false);
-                }
+                vBarrels[i]->SetBarrelPos(pos);
             }
         }
 
@@ -135,33 +137,50 @@ void StageOneBoss::Update()
 }
 void StageOneBoss::Move()
 {
-    MoveInterface* currMoveInterface = nullptr;
     if(life > 75){
-        if ((int)(time / 10.0f) % 2 == 0 && currMoveInterface != vMoveInterfaces[0]) {
-            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE]);
+        if ((int)(time / 10.0f) % 2 == 0 && currMoveInterface != vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE]) {
             currMoveInterface = vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE];
+            moveManager->ChangeMove(currMoveInterface);
+            vBarrels[0]->SetActivated(true);
+            vBarrels[1]->SetActivated(true);
+            vBarrels[0]->SetFireType(FIRETYPE::NormalFIRE);
+            vBarrels[1]->SetFireType(FIRETYPE::NormalFIRE);
         }
-        else if ((int)(time / 10.0f) % 2 && currMoveInterface != vMoveInterfaces[1]) {
-            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE]);
+        else if ((int)(time / 10.0f) % 2 && currMoveInterface != vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE]) {
             currMoveInterface = vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE];
+            moveManager->ChangeMove(currMoveInterface);
+            vBarrels[0]->SetActivated(true);
+            vBarrels[1]->SetActivated(true);
+            vBarrels[0]->SetFireType(FIRETYPE::NormalFIRE);
+            vBarrels[1]->SetFireType(FIRETYPE::NormalFIRE);
         }
     }
     else if (life > 50) {
         if(currMoveInterface != vMoveInterfaces[MOVETYPE::SPEAR_MOVE]){
-            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::SPEAR_MOVE]);
             currMoveInterface = vMoveInterfaces[MOVETYPE::SPEAR_MOVE];
+            moveManager->ChangeMove(currMoveInterface);
+            vBarrels[0]->SetActivated(false);
+            vBarrels[1]->SetActivated(false);
+            vBarrels[3]->SetActivated(true);
+            vBarrels[4]->SetActivated(true);
+            vBarrels[3]->SetFireType(FIRETYPE::FallingKnivesFIRE);
+            vBarrels[4]->SetFireType(FIRETYPE::FallingKnivesFIRE);
         }
     }
     else if (life > 25) {
         if (currMoveInterface != vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE]) {
-            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE]);
             currMoveInterface = vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE];
+            moveManager->ChangeMove(currMoveInterface);
+            vBarrels[3]->SetFireType(FIRETYPE::FIREWORKFIRE);
+            vBarrels[4]->SetFireType(FIRETYPE::FIREWORKFIRE);
         }
     }
     else {
         if (currMoveInterface != vMoveInterfaces[MOVETYPE::SPEAR_MOVE]) {
-            moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::SPEAR_MOVE]);
             currMoveInterface = vMoveInterfaces[MOVETYPE::SPEAR_MOVE];
+            moveManager->ChangeMove(currMoveInterface);
+            vBarrels[3]->SetFireType(FIRETYPE::FallingKnivesFIRE);
+            vBarrels[4]->SetFireType(FIRETYPE::FallingKnivesFIRE);
         }
     }
     moveManager->DoMove(&pos, &angle);
@@ -189,6 +208,8 @@ void StageOneBoss::Render(HDC hdc)
                 vBarrels[i]->Render(hdc);
             }
         }
+        wsprintf(szText, "BOSS_LIFE: %d", life);
+        TextOut(hdc, WINSIZE_X - 150, 120, szText, strlen(szText));
     }
 }
 
@@ -200,7 +221,7 @@ void StageOneBoss::Attack()
         if (vBarrels[i])
         {
             vBarrels[i]->Update();
-            if (pos.x > WINSIZE_X/5 && pos.x < WINSIZE_X*4/5) {
+            if (pos.x > WINSIZE_X/5 && pos.x < WINSIZE_X*4/5 && vBarrels[i]->GetActivated()) {
                 vBarrels[i]->Attack();
             }
         }

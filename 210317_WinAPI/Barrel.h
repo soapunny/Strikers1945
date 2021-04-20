@@ -5,7 +5,6 @@ class MissileManager;
 class Barrel
 {
 private:
-	// ����(������ ������, ����)	���� �ʿ�
 	FPOINT barrelStart;
 	FPOINT barrelEnd;
 	int barrelSize;
@@ -27,6 +26,10 @@ private:
 	int dir;
 	FIRETYPE fireType;
 	int maxFireCount;
+
+
+
+
 	// �̻���
 	MissileManager* myMissile; //���� �ʿ�
 	int fireCount;
@@ -41,7 +44,10 @@ public:
 
 	inline void SetAngle(float angle) { this->barrelAngle = angle; }
 	inline void SetActivated(bool isActivated) { this->isActivated = isActivated; }
-	inline bool GetActivated() { return this->isActivated; }
+	inline void SetBarrelSize(int barrelSize) { this->barrelSize = barrelSize; }
+	inline void SetFireType(FIRETYPE fireType) { this->fireType = fireType; }
+	inline void SetMaxFireCount(int maxFireCount) { this->maxFireCount = maxFireCount; }
+	inline bool GetActivated() { return isActivated; }
 
 	void Move();
 	void HorizonMove();	
@@ -54,8 +60,6 @@ public:
 	inline bool GetIsAlive() { return this->isAlive; }
 	inline void SetMissileType(int type) { this->missileType = type; }
 	inline void SetbarrelEnd( FPOINT barrelEnd) { this->barrelEnd = barrelEnd; }
-	inline void SetMaxFireCount(int maxFireCount) { this->maxFireCount = maxFireCount; }
-	inline void SetFireType(FIRETYPE fireType) { this->fireType = fireType; }
 	inline FIRETYPE GetFireType() { return fireType; }
 	inline FPOINT GetstartPos() {return barrelStart;}//포신을 보스에서 돌려줄려고 가져옴
 	inline float GetAngle() { return barrelAngle; }
