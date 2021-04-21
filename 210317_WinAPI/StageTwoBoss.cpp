@@ -15,7 +15,7 @@
 #include "LeftSinMove.h"
 #include "RightSinMove.h"
 #include "BackMove.h"
-
+#include "BossManager.h"
 
 HRESULT StageTwoBoss::Init() 
 {
@@ -226,8 +226,8 @@ void StageTwoBoss::Move()
         if (pos.y >= (WINSIZE_Y / 2)-50) backMove();
         else {
             if (currTime <= 500)  StateType(STATE1);
-            else if (currTime > 500 && currTime < 1000) StateType(STATE2);
-            else if (currTime > 1000 && currTime < 1500)  StateType(STATE3);
+            else if (currTime > 500 && currTime <= 1000) StateType(STATE2);
+            else if (currTime > 1000 && currTime <= 1500)  StateType(STATE3);
             else StateType(STATENOT);
             if (currTime == 1500)  currTime = 0;
 
@@ -242,11 +242,11 @@ void StageTwoBoss::Move()
        else {
            if (!changePhase)
            {
-               if (currTime < 500)  StateType(STATE4);
-               else if (currTime > 500 && currTime < 1000)  StateType(STATE3);
-               else if (currTime > 1000 && currTime < 1500)  StateType(STATE4);
-               else if (currTime > 1500 && currTime < 2000)  StateType(STATE5);
-               else if (currTime > 2000 && currTime < 2500) StateType(STATE4);
+               if (currTime <= 500)  StateType(STATE4);
+               else if (currTime > 500 && currTime <= 1000)  StateType(STATE3);
+               else if (currTime > 1000 && currTime <= 1500)  StateType(STATE4);
+               else if (currTime > 1500 && currTime <= 2000)  StateType(STATE5);
+               else if (currTime > 2000 && currTime <= 2500) StateType(STATE4);
                else if (currTime == 2500)  currTime = 0;
                else StateType(STATENOT);
                if (life <= 400) { phase = Phase3; currTime = 0; }
@@ -261,17 +261,19 @@ void StageTwoBoss::Move()
        else {
            if (!changePhase)
            {
-               if (currTime < 500)  StateType(STATE4);
-               else if (currTime > 500 && currTime < 1000)  StateType(STATE5);
-               else if (currTime > 1000 && currTime < 1500)  StateType(STATE6);
-               else if (currTime > 1500 && currTime < 2000)  StateType(STATE7);
-               else if (currTime > 2000 && currTime < 2500)  StateType(STATE8);
+               if (currTime <= 500)  StateType(STATE4);
+               else if (currTime > 500 && currTime <= 1000)  StateType(STATE5);
+               else if (currTime > 1000 && currTime <= 1500)  StateType(STATE6);
+               else if (currTime > 1500 && currTime <= 2000)  StateType(STATE7);
+               else if (currTime > 2000 && currTime <= 2500)  StateType(STATE8);
                else StateType(STATENOT);
                if (currTime >= 2500)  currTime = 0;
+               if (life <= 0) { phase = Dead; currTime = 0; }
            }
        }
        break;
    case StageTwoBoss::Dead:
+       isAlive = false;
        break;
    default:
        break;

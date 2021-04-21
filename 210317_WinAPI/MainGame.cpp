@@ -4,6 +4,7 @@
 #include "Image.h"
 #include "PlayerShip.h"
 #include "BossManager.h"
+#include "ItemManager.h"
 #include "CollisionCheck.h"
 
 HRESULT MainGame::Init()
@@ -61,6 +62,10 @@ HRESULT MainGame::Init()
 	//보스
 	bossManager = new BossManager();
 	bossManager->Init(collisionCheck, playerShip->GetLpPos());
+
+	//아이템
+	itemManagerObserver = new ItemManager();
+	itemManagerObserver->Init();
 
 	//초기화 확인
 	isInited = true;
@@ -130,6 +135,10 @@ void MainGame::Update()
 			collisionCheck->Update();
 			CheckCollision();
 		}
+		if (itemManagerObserver)
+		{
+			itemManagerObserver->Update();
+		}
 	}
 	
 
@@ -170,12 +179,16 @@ void MainGame::Render()
 		//FPS
 		TimerManager::GetSingleton()->Render(hBackDC);
 
+
 		//collsion
 		if (collisionCheck)
 		{
 			collisionCheck->Render(hBackDC);
 		}
-
+		if (itemManagerObserver)
+		{
+			itemManagerObserver->Render(hBackDC);
+		}
 		//tank
 		if (tank)
 		{
@@ -216,6 +229,11 @@ void MainGame::Render()
 void MainGame::RegisterObserver(SceneManager* scenemanager)
 {
 	sceneManagerObserver = scenemanager;
+}
+
+void MainGame::RegisterObserver(ItemManager* itemmanager)
+{
+	itemManagerObserver = itemmanager;
 }
 
 void MainGame::UnRegisterObserver()

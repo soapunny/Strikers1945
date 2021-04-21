@@ -17,11 +17,13 @@ void SceneManager::DeadNotify(bool OneBossAlive, bool twoBossAlive, bool threeBo
 	{
 		SetBossNumber(1);
 	}
-	else if (twoBossAlive == false)
+	
+	if (twoBossAlive == false)
 	{
 		SetBossNumber(2);
 	}
-	else if (threeBossAlive == false)
+	
+	if (threeBossAlive == false)
 	{
 		//엔딩하라 알려주기
 	}

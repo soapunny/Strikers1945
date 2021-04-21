@@ -160,6 +160,10 @@
     <ClCompile Include="GuidedSkill.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemLife.cpp" />
+    <ClCompile Include="ItemLifeFactory.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="LeftDownMove.cpp" />
     <ClCompile Include="LeftSinMove.cpp" />
@@ -228,6 +232,13 @@
     <ClInclude Include="FireworkFire.h" />
     <ClInclude Include="FireworkSkill.h" />
     <ClInclude Include="GameNode.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemFactory.h" />
+    <ClInclude Include="ItemLife.h" />
+    <ClInclude Include="ItemLifeFactory.h" />
+    <ClInclude Include="ItemManager.h" />
+    <ClInclude Include="ItemObserver.h" />
+    <ClInclude Include="ItemSubject.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LeftDownMove.h" />
     <ClInclude Include="LeftSinMove.h" />

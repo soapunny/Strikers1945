@@ -195,6 +195,7 @@ void Missile::Update()
 
 void Missile::Render(HDC hdc)
 {
+
 	if (isFired)
 	{
 		//충돌 박스

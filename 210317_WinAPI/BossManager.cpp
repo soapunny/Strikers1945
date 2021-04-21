@@ -3,6 +3,7 @@
 #include "StageTwoBoss.h"
 #include "StageThreeBoss.h"
 #include "SceneManager.h"
+#include "ItemManager.h"
 #include "CollisionCheck.h"
 
 HRESULT BossManager::Init()
@@ -34,17 +35,37 @@ void BossManager::RegisterObserver(SceneManager* scenemanager)
     scenemanager = sceneManagerObserver;
 }
 
+void BossManager::RegisterObserver(ItemManager* itemManager)
+{
+    itemManager = itemManagerObserver;
+}
+
 void BossManager::UnRegisterObserver()
 {
     delete sceneManagerObserver;
     sceneManagerObserver = nullptr;
 }
 
+void BossManager::ItemUnRegisterObserver()
+{
+    delete itemManagerObserver;
+    itemManagerObserver = nullptr;
+}
+
 void BossManager::notifyObserve()
 {
-    if (sceneManagerObserver) //보스죽으면 다음보스나오고 보스죽으면 다음보스나오고
+    if (sceneManagerObserver) 
     {        
-       sceneManagerObserver->DeadNotify(vBoss[0]->GetAlive(), vBoss[1]->GetAlive(), vBoss[2]->GetAlive());       
+        sceneManagerObserver->DeadNotify(vBoss[0]->GetAlive(), vBoss[1]->GetAlive(), vBoss[2]->GetAlive());
+    }
+}
+
+void BossManager::ItemnotifyObserve()
+{
+    if (itemManagerObserver) //보스가 죽으면 해당하는 아이템 생성
+    {
+        
+        if (!vBoss[1]->GetAlive()) { itemManagerObserver->SetDropNotify(BOSSDROP); itemManagerObserver->SetDropPos(vBoss[1]->GetPos()); }
     }
 }
 

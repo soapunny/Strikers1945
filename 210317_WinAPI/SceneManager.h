@@ -11,7 +11,7 @@ private:
 	/*
 	Image* openingImage;
 	Image* endingImage;*/
-	int bossNumber = 0;
+	int bossNumber = 1;
 public:
 	void Render(HDC hdc);
 	

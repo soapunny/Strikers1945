@@ -30,4 +30,5 @@ public:
 	virtual void Move();
 	virtual void RotateBarrel(Barrel* barrel, int barrelNum);
 	virtual void OnDead();
+	
 };

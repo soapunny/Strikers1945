@@ -5,6 +5,7 @@
 class Tank;
 class BossManager;
 class EnemyManager;
+class ItemManager;
 class Image;
 class PlayerShip;
 class CollisionCheck;
@@ -39,6 +40,8 @@ private:
 
 	SceneManager* sceneManagerObserver;//옵저버 씬매니저
 
+	ItemManager* itemManagerObserver;
+
 	PlayerShip* playerShip;
 
 	BossManager* bossManager;
@@ -55,6 +58,7 @@ public:
 	virtual void Render(HDC hdc) {};
 
 	virtual void RegisterObserver(SceneManager* scenemanager);
+	virtual void RegisterObserver(ItemManager* scenemanager);
 	virtual void UnRegisterObserver() ;
 	virtual void notifyObserve();
 
