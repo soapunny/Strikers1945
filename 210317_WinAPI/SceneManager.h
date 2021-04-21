@@ -8,9 +8,9 @@ enum BossNumber {
 class SceneManager :public Observer//옵서버 패턴을 이용한 씬매니저
 {
 private:
-	
+	/*
 	Image* openingImage;
-	Image* endingImage;
+	Image* endingImage;*/
 	int bossNumber = 0;
 	int endingStatus = 2;
 	bool endingTrue= false;

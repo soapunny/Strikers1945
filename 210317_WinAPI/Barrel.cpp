@@ -1,8 +1,11 @@
 #include "Barrel.h"
 #include "MissileManager.h"
+#include "CollisionCheck.h"
 
-HRESULT Barrel::Init(int posX, int posY)
+HRESULT Barrel::Init(CollisionCheck* collisionCheck, int posX, int posY)
 {
+    this->collisionCheck = collisionCheck;
+
     //포신 동적 필요
     barrelSize = 100;
     barrelStart.x = pos.x;
@@ -19,7 +22,7 @@ HRESULT Barrel::Init(int posX, int posY)
     missileSize = 25;
     // 미사일
     myMissile = new MissileManager();   //동적 필요
-    myMissile->Init(pos);       //
+    myMissile->Init(this->collisionCheck, pos);       //
     fireCount = 0;
     maxFireCount = 1;
     isActivated = true;
@@ -46,6 +49,7 @@ void Barrel::Update()
 
     if (myMissile)
     {
+        myMissile->SetOwnerType(MissileManager::Boss);
         myMissile->Update();
         myMissile->SetSize(missileSize);
     }
@@ -64,8 +68,6 @@ void Barrel::Update()
 
     myMissile->SetPos(barrelEnd);
   
-  
-   
      barrelEnd.x = barrelStart.x + cosf(barrelAngle) * barrelSize;
      barrelEnd.y = barrelStart.y - sinf(barrelAngle) * barrelSize;
     

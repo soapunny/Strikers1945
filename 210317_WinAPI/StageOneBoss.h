@@ -7,10 +7,10 @@ private:
 	vector<MoveInterface*> vMoveInterfaces; 
 	MoveInterface* currMoveInterface;
 	float time;
-	char szText[128];
 
 public:
 	virtual HRESULT Init();
+	virtual HRESULT Init(CollisionCheck* collisionCheck, FPOINT* playerPos);
 	virtual void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);

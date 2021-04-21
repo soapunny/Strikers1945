@@ -15,8 +15,14 @@
 #include "LeftSinMove.h"
 #include "RightSinMove.h"
 
-HRESULT StageTwoBoss::Init()
+HRESULT StageTwoBoss::Init() 
 {
+    return S_OK;
+}
+HRESULT StageTwoBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
+{
+    this->collisionCheck = collisionCheck;
+
     // 보스1 이미지
     image = ImageManager::GetSingleton()->FindImage("StageTwoBoss");
     if (image == nullptr)
@@ -27,7 +33,7 @@ HRESULT StageTwoBoss::Init()
     currMoveInterface = nullptr;
     currFrameX = 0;
     updateCount = 0;
-    hp = 1000;
+    life = 1000;
     currTime = 0;
     //보스 
     pos.x = WINSIZE_X / 2;          //위치
@@ -61,10 +67,10 @@ HRESULT StageTwoBoss::Init()
 
     //포신
     vBarrels.resize(6);             //개수는 최대 6개로 지정
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         vBarrels[i] = new Barrel();
-        vBarrels[i]->Init(pos.x,pos.y);
+        vBarrels[i]->Init(this->collisionCheck, pos.x,pos.y);
         vBarrels[i]->SetActivated(true);
     }
     
@@ -74,7 +80,7 @@ HRESULT StageTwoBoss::Init()
 
 void StageTwoBoss::Release()
 {
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         if (vBarrels[i])
         {
@@ -83,11 +89,16 @@ void StageTwoBoss::Release()
             vBarrels[i] = nullptr;
         }
     }
+
+    for (int i = 0; i < vMoveInterfaces.size(); i++) {
+        if (vMoveInterfaces[i])
+            SAFE_DELETE(vMoveInterfaces[i]);
+    }
 }
 
 void StageTwoBoss::Update()
 {
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         vBarrels[i]->Update();
     }
@@ -98,10 +109,10 @@ void StageTwoBoss::Update()
 
     if (KeyManager::GetSingleton()->IsStayKeyDown('M'))
     {
-        hp -= 300;
+        life -= 300;
     }
 
-    for(int i = 0; i<6; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         if (vBarrels[i]->GetFireType() == FIRETYPE::NormalFIRE)   vBarrels[i]->SetMaxFireCount(50);
         if (vBarrels[i]->GetFireType() == FIRETYPE::TwoFIRE)      vBarrels[i]->SetMaxFireCount(50);
@@ -135,13 +146,15 @@ void StageTwoBoss::Render(HDC hdc)
             }
         }
         //포신
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < vBarrels.size(); i++)
         {
             if (vBarrels[i])
             {
                 vBarrels[i]->Render(hdc);
             }
         }
+        wsprintf(szText, "BOSS_LIFE: %d", life);
+        TextOut(hdc, WINSIZE_X - 150, 120, szText, strlen(szText));
     }
 }
 
@@ -158,7 +171,7 @@ void StageTwoBoss::Attack()
         }
 
         //미사일 발사
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < vBarrels.size(); i++)
         {
             if (vBarrels[i] && vBarrels[i]->GetActivated())
             {
@@ -196,7 +209,7 @@ void StageTwoBoss::Move()
         else StateType(STATENOT);
         if (currTime == 2000)  currTime = 0;
 
-        if (hp <= 700) {phase = Phase2; changePhase = true; currTime = 0;}
+        if (life <= 700) {phase = Phase2; changePhase = true; currTime = 0;}
        break;
    case StageTwoBoss::Phase2:
        if(changePhase)
@@ -211,7 +224,7 @@ void StageTwoBoss::Move()
            else if (currTime > 2500 &&currTime < 3000) StateType(STATE4);
            else if (currTime == 3000)  currTime = 0;
            else StateType(STATENOT);
-           if (hp <= 400) { phase = Phase3; currTime = 0; }
+           if (life <= 400) { phase = Phase3; currTime = 0; }
        }
        break;
    case StageTwoBoss::Phase3:

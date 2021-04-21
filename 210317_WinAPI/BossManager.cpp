@@ -3,6 +3,32 @@
 #include "StageTwoBoss.h"
 #include "StageThreeBoss.h"
 #include "SceneManager.h"
+#include "CollisionCheck.h"
+
+HRESULT BossManager::Init()
+{
+    return S_OK;
+}
+
+HRESULT BossManager::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
+{
+    this->collisionCheck = collisionCheck;
+
+    vBoss.resize(3);
+    vBoss[0] = new StageOneBoss();
+    vBoss[1] = new StageTwoBoss();
+    vBoss[2] = new StageThreeBoss();
+    for (int i = 0; i < vBoss.size(); i++)
+    {
+        vBoss[i]->Init(this->collisionCheck, playerPos);
+    }
+
+    sceneManagerObserver = new SceneManager;
+    RegisterObserver(sceneManagerObserver);
+    
+    return S_OK;
+}
+
 void BossManager::RegisterObserver(SceneManager* scenemanager)
 {
     scenemanager = sceneManagerObserver;
@@ -20,37 +46,15 @@ void BossManager::notifyObserve()
     {        
        sceneManagerObserver->DeadNotify(vBoss[0]->GetAlive(), vBoss[1]->GetAlive(), vBoss[2]->GetAlive());       
     }
-       
-   
 }
-
-HRESULT BossManager::Init()
-{
-    sceneManagerObserver = new SceneManager;
-    RegisterObserver(sceneManagerObserver);
-    
-    vBoss.resize(3);
-    vBoss[0] = new StageOneBoss();
-    vBoss[1] = new StageTwoBoss();
-    vBoss[2] = new StageThreeBoss();
-    for (int i = 0; i < vBoss.size(); i++)
-    {
-        vBoss[i]->Init();
-    }
- 
-    return S_OK;
-}
-
-
 
 void BossManager::Release()
 {
-    vector<Boss*>::iterator myIt;
-    for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
+    for (int i = 0 ;i< vBoss.size();i++)
     {
-        (*myIt)->Release();   
-        delete (*myIt);
-        (*myIt) = nullptr;
+        if(vBoss[i]){
+            SAFE_RELEASE(vBoss[i]);
+        }
     }
     UnRegisterObserver();
     vBoss.clear();
@@ -60,12 +64,6 @@ void BossManager::Update()
 {
     vBoss[sceneManagerObserver->GetNextBoss()]->Update();
     notifyObserve();
-    /*vector<Boss*>::iterator myIt;
-    for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
-    {
-        if((*myIt)->GetAlive())
-            (*myIt)->Update();
-    }*/
 }
 
 void BossManager::Render(HDC hdc)

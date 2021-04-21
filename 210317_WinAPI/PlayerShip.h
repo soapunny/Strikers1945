@@ -3,10 +3,12 @@
 
 class Image;
 class MissileManager;
-
-class PlayerShip: public GameNode 
+class CollisionCheck;
+class PlayerShip: public GameNode
 {
 private:
+	CollisionCheck* collisionCheck;
+
 	Image* image;
 	FPOINT pos;
 	float moveSpeed;	//초당 이동거리
@@ -23,7 +25,6 @@ private:
 	int playerLife;
 
 	FPOINT collisionSize;
-
 	int barrelSize;
 	FPOINT barrelEnd[4];
 	float barrelAngle[4];
@@ -35,21 +36,22 @@ private:
 
 public:
 	HRESULT Init();
+	HRESULT Init(CollisionCheck* collisionCheck);
 	void Release();
 	void Update();
 	void Render(HDC hdc);
 
-	void RotateBarrel(float angle);
 	void Move();
 	void OnDead();
 	void Attack(int i);
 
 	FPOINT GetPos() { return this->pos; }
+	FPOINT* GetLpPos() { return &pos; }
 
 	inline int GetPlayerLife() { return playerLife; }
 	inline void SetPlayerLife() { this->playerLife -= 1; }
 
 	inline RECT GetPlayerRect() { return playerRect; }
-	inline void SetPlayerRect(int life) { this->playerLife = life; }
+	inline void SetPlayerLife(int life) { this->playerLife = life; }
 };
 

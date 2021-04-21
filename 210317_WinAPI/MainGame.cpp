@@ -6,8 +6,6 @@
 #include "BossManager.h"
 #include "CollisionCheck.h"
 
-
-
 HRESULT MainGame::Init()
 {
 	hdc = GetDC(g_hWnd);
@@ -17,15 +15,16 @@ HRESULT MainGame::Init()
 
 	//이미지를 미리 로드 해두자
 	ImageManager::GetSingleton()->AddImage("Enemy","Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
-	ImageManager::GetSingleton()->AddImage("미사일","Image/bullet(4).bmp", 20, 20, true, RGB(0, 65, 126));
+	ImageManager::GetSingleton()->AddImage("적 미사일", "Image/bullet.bmp", 20, 20, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("플레이어 미사일","Image/bullet(4).bmp", 20, 20, true, RGB(0, 65, 126));
 	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/playerJet.bmp", 489/2, 131/2, 3, 1, true, RGB(248, 0, 248));
 	ImageManager::GetSingleton()->AddImage("구름", "Image/cloud.bmp", WINSIZE_X, 1360, true, RGB(246, 246, 246));
 	ImageManager::GetSingleton()->AddImage("EnemyMissile","Image/구슬.bmp", 20, 20, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("StageTwoBoss", "Image/StageTwoBoss.bmp", 3152*2, 156*2,16,1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageOneBoss", "Image/StageOneBoss.bmp", 186*30, 186, 30, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageThreeBoss", "Image/StageThreeBoss.bmp", 163 * 24, 121, 24, 1, true, RGB(255, 255, 255));
-	ImageManager::GetSingleton()->AddImage("오프닝", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
-	ImageManager::GetSingleton()->AddImage("엔딩", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
+	ImageManager::GetSingleton()->AddImage("오프닝", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y);
+	//ImageManager::GetSingleton()->AddImage("엔딩", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
 
 	// 메인게임의 초기화 함수
 	//hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
@@ -40,37 +39,32 @@ HRESULT MainGame::Init()
 
 	//배경 이미지
 	backGround = new Image();
-	backGround->Init("Image/Strikers_backGround.bmp", WINSIZE_X, 2694);
-	//backGround->Init("Image/Strikers_backGround(2).bmp", WINSIZE_X, 3604);
+	backGround->Init("Image/Strikers_backGround(2).bmp", WINSIZE_X, 3604);
 	backGroundPos.x = 0;
-	backGroundPos.y = -2694 + WINSIZE_Y;
+	backGroundPos.y = -3604 + WINSIZE_Y;
 	backCloud = new Image();
 	backCloud = ImageManager::GetSingleton()->FindImage("구름");
-
-	openingImage = new Image();
 	openingImage = ImageManager::GetSingleton()->FindImage("오프닝");
-
-	endingImage = new Image();
 	endingImage = ImageManager::GetSingleton()->FindImage("엔딩");
 	//탱크
 	tank = new Tank();
 	tank->Init();
-	
+
+	//충돌
+	collisionCheck = new CollisionCheck();
+	collisionCheck->Init();
+
 	// 에너미 메니저
 	enemyManager = new EnemyManager();
 	enemyManager->Init();
 
 	//플레이어
 	playerShip = new PlayerShip();
-	playerShip->Init();
+	playerShip->Init(collisionCheck);
 
 	//보스
 	bossManager = new BossManager();
-	bossManager->Init();
-
-	//충돌
-	collisionCheck = new CollisionCheck();
-	collisionCheck->Init();
+	bossManager->Init(collisionCheck, playerShip->GetLpPos());
 
 	//초기화 확인
 	isInited = true;
@@ -90,9 +84,12 @@ void MainGame::Release()
 	SAFE_RELEASE(playerShip);
 	SAFE_RELEASE(bossManager);
 	SAFE_RELEASE(collisionCheck);
+<<<<<<< HEAD
 
 	//SAFE_RELEASE(openingImage); 
 	//SAFE_RELEASE(endingImage);
+=======
+>>>>>>> 586d660f76e2e64037896e1473f7a3985eebcc29
 	
 	ReleaseDC(g_hWnd, hdc);
 
@@ -101,10 +98,16 @@ void MainGame::Release()
 
 void MainGame::Update()
 {
+	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
+
 	//배경 이동
 	if (status >= 1)
 	{
-		backGroundPos.y += 0.05f;
+		backGroundPos.y += elapsedTime * 100.0f;
+		if (backGroundPos.y >= 0)
+		{
+			backGroundPos.y = -3604 + WINSIZE_Y;
+		}
 
 		//탱크(플레이어)
 		if (tank)
@@ -134,7 +137,6 @@ void MainGame::Update()
 		//적 플레이어 충돌 검사
 		if (collisionCheck)
 		{
-			collisionCheck->SetPlayerRect(playerShip->GetPlayerRect());
 			collisionCheck->Update();
 			CheckCollision();
 		} 
@@ -142,7 +144,6 @@ void MainGame::Update()
 		
 	}
 	
-
 
 	//InvalidateRect(g_hWnd, NULL, false); //화면갱신
 }
@@ -245,22 +246,20 @@ void MainGame::notifyObserve()
 
 }
 
-
-
 void MainGame::CheckCollision()
 {
-	//플레이어와 에너미 미사일이 출동했다면
+	//"플레이어"와 "보스 미사일"이 출동했다면
 	if (collisionCheck->GetPlayerCollision())
 	{
 		playerShip->SetPlayerLife();				//플레이어 목숨 하나 줄이기
 		collisionCheck->SetPlayerCollision(false);
 	}
 
-	//플레이어 미사일과 에너미 미사일이 출동했다면
-	if (collisionCheck->GetEnemyCollision())
+	//"플레이어 미사일"과 "보스"가 출동했다면
+	if (collisionCheck->GetBossCollision())
 	{
-		//에너미 목숨 줄이자
-		collisionCheck->SetEnemyCollision(false);
+		//보스 목숨 줄이자
+		collisionCheck->SetBossCollision(false);
 	}
 }
 

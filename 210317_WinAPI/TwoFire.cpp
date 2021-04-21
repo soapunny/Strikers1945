@@ -1,7 +1,8 @@
 #include "TwoFire.h"
 #include "Missile.h"
 #include <ctime>
-void TwoFire::DoFire(vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
+#include "CollisionCheck.h"
+void TwoFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
     vector<Missile*>::iterator myIt;
 

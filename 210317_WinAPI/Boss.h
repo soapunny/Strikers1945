@@ -6,10 +6,13 @@
 // TODO : 업캐스팅, 다운캐스팅 설명
 class Image;
 class Barrel;
-
+class CollisionCheck;
 class Boss : public GameNode
 {
 protected:
+	CollisionCheck* collisionCheck;
+
+	char szText[128];
 	Image* image;
 	int currFrameX;
 	int updateCount;
@@ -22,10 +25,19 @@ protected:
 
 	vector<Barrel*> vBarrels;
 
+	FPOINT* playerPos;
+
 	MoveManager* moveManager;
+
+	RECT bossRect;
 
 public:
 	virtual HRESULT Init();
+	virtual HRESULT Init(CollisionCheck* collisionCheck, FPOINT* playerPos) 
+	{ 
+		this->collisionCheck = collisionCheck;
+		return S_OK; 
+	}
 	virtual void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);
@@ -42,4 +54,6 @@ public:
 
 	inline void SetAlive(bool isAlive) { this->isAlive = isAlive; }
 	inline bool GetAlive() { return this->isAlive; }
+
+	inline RECT GetBossRect() { return bossRect; }
 };

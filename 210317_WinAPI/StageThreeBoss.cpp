@@ -5,11 +5,19 @@
 #include "ZigzagMove.h"
 #include "NormalMove.h"
 #include "MissileManager.h"
+#include "CollisionCheck.h"
 
 HRESULT StageThreeBoss::Init()
 {
+    return S_OK;//return Init(nullptr);
+}
+
+HRESULT StageThreeBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
+{
+    this->collisionCheck = collisionCheck;
+
     // 보스3 이미지
-     currMoveInterface = nullptr;
+    currMoveInterface = nullptr;
     image = ImageManager::GetSingleton()->FindImage("StageThreeBoss");
     if (image == nullptr)
     {
@@ -32,21 +40,21 @@ HRESULT StageThreeBoss::Init()
    
     //이동방향설정
     moveManager = new MoveManager();
-    moveManager->ChangeMove(new NormalMove());
     moveManager->SetMoveSpeed(moveSpeed);
     AttackElapesdTimer = 0.0f;
     AttackTimer = 0.0f;
     vMoveInterfaces.resize(MOVETYPE::END_MOVE);
     vMoveInterfaces[MOVETYPE::ZIGZAG_MOVE] = new ZigzagMove;
-     vMoveInterfaces[MOVETYPE::NORMAL_MOVE] = new NormalMove;
+    vMoveInterfaces[MOVETYPE::NORMAL_MOVE] = new NormalMove;
     /*  vMoveInterfaces[MOVETYPE::SPEAR_MOVE] = new SpearMove;
     vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE] = new BilliardsMove;*/
+    moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
     
     vBarrels.resize(6);
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         vBarrels[i] = new Barrel();
-        vBarrels[i]->Init(pos.x, pos.y);
+        vBarrels[i]->Init(this->collisionCheck, pos.x, pos.y);
         //vBarrels[i]->Init(pos);
 
         //RotateBarrel(vBarrels[i] , i);
@@ -61,7 +69,7 @@ HRESULT StageThreeBoss::Init()
 void StageThreeBoss::Release()
 {
    
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         if (vBarrels[i])
             SAFE_RELEASE(vBarrels[i]);
@@ -78,7 +86,7 @@ void StageThreeBoss::Release()
 
 void StageThreeBoss::Update()
 {
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < vBarrels.size(); i++)
     {
         if (vBarrels[i])
         {
@@ -126,7 +134,7 @@ void StageThreeBoss::Render(HDC hdc)
         }
 
         //포신
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < vBarrels.size(); i++)
         {
             if (vBarrels[i])
             {
@@ -135,6 +143,8 @@ void StageThreeBoss::Render(HDC hdc)
                 vBarrels[i]->Render(hdc);
             }
         }
+        wsprintf(szText, "BOSS_LIFE: %d", life);
+        TextOut(hdc, WINSIZE_X - 150, 120, szText, strlen(szText));
     }
 }
 

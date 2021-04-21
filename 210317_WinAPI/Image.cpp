@@ -469,13 +469,18 @@ void Image::Release()
 {
     if (imageInfo)
     {
-        SelectObject(imageInfo->hMemDC, imageInfo->hOldBit);
-        DeleteObject(imageInfo->hBitmap);
-        DeleteDC(imageInfo->hMemDC);
+        if(imageInfo->hMemDC){
+            SelectObject(imageInfo->hMemDC, imageInfo->hOldBit);
+            DeleteObject(imageInfo->hBitmap);
+            DeleteDC(imageInfo->hMemDC);
+        }
 
-        SelectObject(imageInfo->hBlendDC, imageInfo->hOldhBlendBit);
-        DeleteObject(imageInfo->hBlendBitmap);
-        DeleteDC(imageInfo->hBlendDC);
+
+        if (imageInfo->hBlendDC) {
+            SelectObject(imageInfo->hBlendDC, imageInfo->hOldhBlendBit);
+            DeleteObject(imageInfo->hBlendBitmap);
+            DeleteDC(imageInfo->hBlendDC);
+        }
 
         delete imageInfo;
         imageInfo = nullptr;

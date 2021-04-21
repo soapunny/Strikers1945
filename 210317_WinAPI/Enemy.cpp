@@ -28,8 +28,8 @@ HRESULT Enemy::Init(int posX, int posY)
     dir = 1;
 
     // ¹Ì»çÀÏ
-    myMissile = new MissileManager();
-    myMissile->Init(pos);
+    //myMissile = new MissileManager();
+    //myMissile->Init(pos);
     fireCount = 0;
     fireCount2 = 0;
     

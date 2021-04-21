@@ -6,7 +6,7 @@
 
 void SceneManager::Render(HDC hdc)
 {
-	endingImage->Render(hdc);
+	//endingImage->Render(hdc);
 }
 
 
