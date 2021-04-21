@@ -62,6 +62,12 @@
     <ClCompile Include="TornadoFire.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Subject.cpp" />
+    <ClCompile Include="BigEnemy.cpp" />
+    <ClCompile Include="MediumEnemy.cpp" />
+    <ClCompile Include="SmallEnemy.cpp" />
+    <ClCompile Include="SmallEnemyFactory.cpp" />
+    <ClCompile Include="BigEnemyFactory.cpp" />
+    <ClCompile Include="MediumEnemyFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barrel.h" />
@@ -132,5 +138,12 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Subject.h" />
+    <ClInclude Include="BigEnemy.h" />
+    <ClInclude Include="MediumEnemy.h" />
+    <ClInclude Include="SmallEnemy.h" />
+    <ClInclude Include="EnemyFactory.h" />
+    <ClInclude Include="SmallEnemyFactory.h" />
+    <ClInclude Include="BigEnemyFactory.h" />
+    <ClInclude Include="MediumEnemyFactory.h" />
   </ItemGroup>
 </Project>

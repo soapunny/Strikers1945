@@ -8,7 +8,7 @@ class MissileManager;
 
 class Enemy : public GameNode
 {
-private:
+protected:
 	Image* image;
 	int currFrameX;
 	int updateCount;
@@ -29,9 +29,11 @@ private:
 	MissileManager* myMissile;
 	int fireCount;
 	int fireCount2;
+	
+	ENEMY_TYPE enemyType;
 
 public:
-	HRESULT Init(int posX = 0, int posY = 0);
+	virtual HRESULT Init(int posX = 0, int posY = 0);
 	virtual HRESULT Init() { return E_FAIL; };
 	virtual void Release();		
 	virtual void Update();		
@@ -40,6 +42,7 @@ public:
 	void Move();
 	void HorizonMove();
 
+	inline virtual void SetEnemyType(ENEMY_TYPE enemyType) { this->enemyType = enemyType; }
 	inline void SetPlayerPos(FPOINT pos) { this->playerPos = pos; }
 	inline void SetPos(FPOINT pos) { this->pos = pos; }
 	inline FPOINT GetPos() { return this->pos; }
@@ -47,5 +50,6 @@ public:
 	inline int GetSize() { return this->size; }
 	inline void SetIsAlive(bool isAlive) { this->isAlive = isAlive; }
 	inline bool GetIsAlive() { return this->isAlive; }
+	inline virtual ENEMY_TYPE GetEnemyType() { return this->enemyType; }
 };
 
