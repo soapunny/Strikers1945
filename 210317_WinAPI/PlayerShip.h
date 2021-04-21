@@ -10,6 +10,7 @@ private:
 	CollisionCheck* collisionCheck;
 
 	Image* image;
+	Image* explosionimage;
 	FPOINT pos;
 	float moveSpeed;	//초당 이동거리
 	bool isDying;
@@ -17,9 +18,12 @@ private:
 	bool canMove;
 
 	int currFrameX;
-
+	int explosionCurrFrame;
+	bool lifeDecrease;
 	int size;
 	float attackValue;
+
+	int explosionCount;
 
 	char szText[128];
 	int playerLife;
@@ -33,7 +37,7 @@ private:
 	int fireCount;
 
 	RECT playerRect;
-
+	
 public:
 	HRESULT Init();
 	HRESULT Init(CollisionCheck* collisionCheck);

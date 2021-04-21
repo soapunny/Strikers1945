@@ -38,3 +38,8 @@ float TimerManager::getElapsedTime()
 {
 	return timer->getElapsedTime();
 }
+
+int TimerManager::getGameSecond()
+{
+	return timer->getGameSecond();
+}

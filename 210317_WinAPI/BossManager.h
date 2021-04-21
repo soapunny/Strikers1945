@@ -12,7 +12,12 @@ private:
 	vector<Boss*> vBoss;	//3마리
 	SceneManager* sceneManagerObserver; //옵서버 등록어떻게 시키더라?
 	RECT bossRect;			//boss 3마리 rect
-
+	Image* img;
+	int currFrame;
+	int maxFrame;
+	int frameTime;
+	int currBossNumber;
+	int printNumber;
 public:
 
 	HRESULT Init();
@@ -25,7 +30,8 @@ public:
 	void Release();
 	void Update();
 	void Render(HDC hdc);
-
+	
+	bool GetEnding();
 	inline RECT GetBossRect() { return bossRect; }
 };
 

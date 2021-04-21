@@ -9,7 +9,7 @@
 HRESULT MainGame::Init()
 {
 	hdc = GetDC(g_hWnd);
-	status = 0;
+	status = 1;
 	KeyManager::GetSingleton()->Init();
 	ImageManager::GetSingleton()->Init();
 
@@ -23,6 +23,18 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("StageTwoBoss", "Image/StageTwoBoss.bmp", 3152*2, 156*2,16,1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageOneBoss", "Image/StageOneBoss.bmp", 186*30, 186, 30, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageThreeBoss", "Image/StageThreeBoss.bmp", 163 * 24, 121, 24, 1, true, RGB(255, 255, 255));
+
+	ImageManager::GetSingleton()->AddImage("보스폭발", "Image/BossExplosion(16).bmp", 1019*2, 63*2, 16, 1, true, RGB(0, 248, 0));
+	ImageManager::GetSingleton()->AddImage("잡몹폭발", "Image/miniEnemyExplosion(12).bmp", 384, 32, 12, 1, true, RGB(0, 248, 0));
+
+	ImageManager::GetSingleton()->AddImage("타이머", "Image/timer.bmp", 535, 82, 10, 1, true, RGB(67, 77, 112));
+
+	/*ImageManager::GetSingleton()->AddImage("보스1엔딩", "Image/onebossEnding.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(67, 77, 112));
+	ImageManager::GetSingleton()->AddImage("보스2엔딩", "Image/twobossEnding.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(67, 77, 112));
+	ImageManager::GetSingleton()->AddImage("보스3엔딩", "Image/threebossEnding.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(67, 77, 112));*/
+
+	ImageManager::GetSingleton()->AddImage("엔딩", "Image/Ending.bmp", WINSIZE_X*3, WINSIZE_Y, 3, 1, true, RGB(67, 77, 112));
+
 	ImageManager::GetSingleton()->AddImage("오프닝", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y);
 	//ImageManager::GetSingleton()->AddImage("엔딩", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
 
@@ -46,6 +58,11 @@ HRESULT MainGame::Init()
 	backCloud = ImageManager::GetSingleton()->FindImage("구름");
 	openingImage = ImageManager::GetSingleton()->FindImage("오프닝");
 	endingImage = ImageManager::GetSingleton()->FindImage("엔딩");
+	//endingTimerImage = ImageManager::GetSingleton()->FindImage("타이머");
+	hundredSecondImg = ImageManager::GetSingleton()->FindImage("타이머");
+	tenSecondImg = ImageManager::GetSingleton()->FindImage("타이머");
+	oneSecondImg = ImageManager::GetSingleton()->FindImage("타이머");
+
 	//탱크
 	tank = new Tank();
 	tank->Init();
@@ -68,7 +85,12 @@ HRESULT MainGame::Init()
 
 	//초기화 확인
 	isInited = true;
+	currFrame = 0;
 
+	hundredSecond=0;
+	tenSecond=0;
+	oneSecond=0;
+	onetimesave = true;
 	return S_OK;
 }
 
@@ -84,12 +106,7 @@ void MainGame::Release()
 	SAFE_RELEASE(playerShip);
 	SAFE_RELEASE(bossManager);
 	SAFE_RELEASE(collisionCheck);
-<<<<<<< HEAD
 
-	//SAFE_RELEASE(openingImage); 
-	//SAFE_RELEASE(endingImage);
-=======
->>>>>>> 586d660f76e2e64037896e1473f7a3985eebcc29
 	
 	ReleaseDC(g_hWnd, hdc);
 
@@ -207,22 +224,64 @@ void MainGame::Render()
 		}
 	
 		//boss Manager
-		if (bossManager)
+		if (bossManager)  //보스가 아이템을 갖고있고 
 		{
 			bossManager->Render(hBackDC);
 		}
-		if (sceneManagerObserver->GetEnding())
+
+		if (bossManager->GetEnding() == true)
 		{
-			status++;
+			status =2;
 		}
 	}
-	else//엔딩 출력
+	else if(status == 2)//엔딩 출력
 	{
+		/*endingImage = ImageManager::GetSingleton()->FindImage("보스1엔딩");
+		endingImage = ImageManager::GetSingleton()->FindImage("보스2엔딩");
+		endingImage = ImageManager::GetSingleton()->FindImage("보스3엔딩");*/
+
+				
+		//endElaspedTimer = TimerManager::GetSingleton()->getElapsedTime();
+		//endTimer += endElaspedTimer;
+
+		endTimer++;//고성능 타이머가 터지는 이유가 뭘까?
+
+		//if ((int)endTimer%2 ==0) //ending 타이머
+		//{
+		//	
+		//}
+		if (endTimer >= 200)
+		{
+			currFrame ++;
+			endTimer = 0;
+
+		}
 		
+
 		if (endingImage)
 		{
-			endingImage->Render(hBackDC);
+			if (currFrame == 3)
+			{
+				currFrame = 0;
+			}
+			endingImage->FrameRender(hBackDC,0,0,currFrame,0,false);
 		}
+
+		if (onetimesave)
+		{
+			endingTime = TimerManager::GetSingleton()->getGameSecond();
+			onetimesave = false;
+		}
+		 //한번만 초기화 하려면 스태틱으로?
+
+		hundredSecond = endingTime / 100 ;
+		tenSecond = (endingTime % 100) / 10 ;
+		oneSecond = endingTime % 10 ;
+		
+
+		hundredSecondImg->FrameRender(hBackDC, 400, 600, hundredSecond, 0, true);
+		tenSecondImg->FrameRender(hBackDC, 450, 600, tenSecond, 0, true);
+		oneSecondImg->FrameRender(hBackDC, 500, 600, oneSecond, 0, true);
 	}
 
 	

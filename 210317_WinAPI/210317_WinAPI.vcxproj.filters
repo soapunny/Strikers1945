@@ -62,7 +62,6 @@
     <ClCompile Include="TornadoFire.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Subject.cpp" />
-    <ClCompile Include="LifeItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barrel.h" />
@@ -133,6 +132,5 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Subject.h" />
-    <ClInclude Include="LifeItem.h" />
   </ItemGroup>
 </Project>

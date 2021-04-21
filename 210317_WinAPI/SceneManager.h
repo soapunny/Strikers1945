@@ -13,7 +13,7 @@ private:
 	Image* endingImage;*/
 	int bossNumber = 0;
 	int endingStatus = 2;
-	bool endingTrue= false;
+	bool endingTrue =false ;
 public:
 	void Render(HDC hdc);
 	

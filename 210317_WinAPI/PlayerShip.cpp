@@ -13,6 +13,8 @@ HRESULT PlayerShip::Init(CollisionCheck* collisionCheck)
 {
 	this->collisionCheck = collisionCheck;
 	
+	explosionimage = ImageManager::GetSingleton()->FindImage("보스폭발");
+
 	image = ImageManager::GetSingleton()->FindImage("플레이어 우주선");
 	if (image == nullptr)
 	{
@@ -30,11 +32,13 @@ HRESULT PlayerShip::Init(CollisionCheck* collisionCheck)
 	isDying = false;
 	canMove = false;
 
-	playerLife = 100;
+	playerLife = 5;
 
 	collisionSize.x = 35;
 	collisionSize.y = 50;
 
+	explosionCurrFrame = 0;
+	explosionCount=0;
 	playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
 	collisionCheck->SetPlayerRect(playerRect);
 
@@ -90,10 +94,19 @@ void PlayerShip::Update()
 	}
 
 	//알파블랜드
-	if (isAlive && KeyManager::GetSingleton()->IsStayKeyDown(VK_RETURN))
+	if (isAlive && KeyManager::GetSingleton()->IsStayKeyDown(VK_RETURN))//죽고 등장하면 깜빡거림
 	{
 		isAlive = false;
 		isDying = true;
+	}
+
+	if (KeyManager::GetSingleton()->IsStayKeyDown('H'))//충돌처리 플레이어 죽으면 터지면서 다시등장
+	{
+		
+	//	pos.x = WINSIZE_X / 2;
+		//pos.y = WINSIZE_Y + 50;
+		canMove = false;
+		lifeDecrease = true;
 	}
 
 	//이동
@@ -141,10 +154,45 @@ void PlayerShip::Render(HDC hdc)
 	//이미지
 	if (image)
 	{
-		if(!isAlive)
-			image->AlphaRender(hdc, pos.x, pos.y, true);
-		if(isAlive)
+		if (!isAlive)
+		{
+			image->AlphaRender(hdc, pos.x, pos.y);
+
+			BLENDFUNCTION* blendFunc = image->GetBlendFunc();
+			blendFunc->SourceConstantAlpha = 100;
+		}
+
+			//image->AlphaRender(hdc, pos.x, pos.y, true);
+
+		if (isAlive)
+		{
 			image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
+		}
+			
+
+		
+	}
+
+	explosionCount++;
+
+	if (lifeDecrease == true )//폭발이미지 출력부분
+	{
+		explosionCurrFrame++; 
+		explosionimage->FrameRender(hdc,pos.x, pos.y - 20, explosionCurrFrame, 0, true);
+		explosionimage->FrameRender(hdc, pos.x, pos.y + 80, explosionCurrFrame, 0, true);
+		if (explosionCurrFrame > 10)
+		{
+			canMove = false;
+			pos.x = WINSIZE_X / 2;
+			pos.y = WINSIZE_Y + 50;
+		}
+		if (explosionCurrFrame > 16)
+		{
+			explosionCurrFrame = 0;
+			lifeDecrease = false;
+			
+			
+		}
 	}
 
 	// 포신
