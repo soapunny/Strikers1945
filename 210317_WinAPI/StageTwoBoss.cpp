@@ -177,7 +177,7 @@ void StageTwoBoss::Move()
    // 
    // 보스 이동 업데이트
     MoveInterface* currMoveInterface = nullptr;
-    currTime++;
+    currTime ++;
     
     switch (phase)
     {

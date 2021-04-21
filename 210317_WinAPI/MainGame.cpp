@@ -34,6 +34,10 @@ HRESULT MainGame::Init()
 	backBuffer = new Image();
 	backBuffer->Init(WINSIZE_X, WINSIZE_Y);
 
+	//옵서버 등록
+	sceneManagerObserver = new SceneManager;
+	RegisterObserver(sceneManagerObserver);
+
 	//배경 이미지
 	backGround = new Image();
 	backGround->Init("Image/Strikers_backGround.bmp", WINSIZE_X, 2694);
@@ -87,8 +91,8 @@ void MainGame::Release()
 	SAFE_RELEASE(bossManager);
 	SAFE_RELEASE(collisionCheck);
 
-	SAFE_RELEASE(openingImage); 
-	SAFE_RELEASE(endingImage);
+	//SAFE_RELEASE(openingImage); 
+	//SAFE_RELEASE(endingImage);
 	
 	ReleaseDC(g_hWnd, hdc);
 
@@ -133,7 +137,9 @@ void MainGame::Update()
 			collisionCheck->SetPlayerRect(playerShip->GetPlayerRect());
 			collisionCheck->Update();
 			CheckCollision();
-		}
+		} 
+		//status = sceneManagerObserver->GetNextStatus();
+		
 	}
 	
 
@@ -142,11 +148,11 @@ void MainGame::Update()
 }
 
 void MainGame::Render()
-{
+ {
 	HDC hBackDC = backBuffer->GetMemDC();
 	if (status == 0)//오프닝 상태
-	{
-		if (KeyManager::GetSingleton()->IsOnceKeyDown(' '))
+	{ 
+  		if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_SPACE))
 		{
 			status++;
 			//sceneManagerObserver->OpeningNotify(status);
@@ -176,7 +182,7 @@ void MainGame::Render()
 		TimerManager::GetSingleton()->Render(hBackDC);
 
 		//collsion
-		if (collisionCheck)
+		if (collisionCheck) 
 		{
 			collisionCheck->Render(hBackDC);
 		}
@@ -204,9 +210,14 @@ void MainGame::Render()
 		{
 			bossManager->Render(hBackDC);
 		}
+		if (sceneManagerObserver->GetEnding())
+		{
+			status++;
+		}
 	}
 	else//엔딩 출력
 	{
+		
 		if (endingImage)
 		{
 			endingImage->Render(hBackDC);

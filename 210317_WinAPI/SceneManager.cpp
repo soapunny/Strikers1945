@@ -23,6 +23,7 @@ void SceneManager::DeadNotify(bool OneBossAlive, bool twoBossAlive, bool threeBo
 	}
 	else if (threeBossAlive == false)
 	{
+		endingTrue = true;
 		//엔딩하라 알려주기
 	}
 	

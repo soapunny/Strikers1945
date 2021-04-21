@@ -164,6 +164,7 @@
     <ClCompile Include="LeftSinMove.cpp" />
     <ClCompile Include="LeftMove.cpp" />
     <ClCompile Include="LeftUpMove.cpp" />
+    <ClCompile Include="LifeItem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MeteorFire.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="LeftSinMove.h" />
     <ClInclude Include="LeftMove.h" />
     <ClInclude Include="LeftUpMove.h" />
+    <ClInclude Include="LifeItem.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MeteorFire.h" />
     <ClInclude Include="MeteorSkill.h" />
