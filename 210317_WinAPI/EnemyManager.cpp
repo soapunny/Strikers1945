@@ -1,53 +1,52 @@
 #include "EnemyManager.h"
+#include "SmallEnemyFactory.h"
+#include "MediumEnemyFactory.h"
+#include "BigEnemyFactory.h"
 #include "Enemy.h"
 
 HRESULT EnemyManager::Init()
 {
-    //// 1) 배열
-    //Enemy* enemys = new Enemy[10];
-    //for (int i = 0; i < 10; i++)
-    //{
-    //    enemys[i].Init();               //클래스니까 .
-    //}
+    vEnemyFactories.resize(ENEMY_FACTORY::END_ENEMY_FACTORY - 1);
+    vEnemyFactories[ENEMY_FACTORY::SMALL_ENEMY] = new SmallEnemyFactory;
+    vEnemyFactories[ENEMY_FACTORY::MEDIUM_ENEMY] = new MediumEnemyFactory;
+    vEnemyFactories[ENEMY_FACTORY::BIG_ENEMY] = new BigEnemyFactory;
 
-    //// 2) vector push_back()
-    //for (int i = 0; i < 10; i++)
-    //{
-    //    vEnemys.push_back(new Enemy());
-    //    vEnemys[i]->Init();             //포인터니까 ->
-    //}
+    vEnemyInitPos.resize(ENEMY_INIT_POS::ENEMY_INIT_END - 1);
+    vEnemyInitPos[ENEMY_INIT_POS::INIT_LEFT].x = WINSIZE_X/5;
+    vEnemyInitPos[ENEMY_INIT_POS::INIT_CENTER].x = WINSIZE_X/2;
+    vEnemyInitPos[ENEMY_INIT_POS::INIT_RIGHT].x = WINSIZE_X*4/5;
 
-    //// 3) vector resize()   :포인터 타입으로 enemy 개수 만큼 동적 할당 할 수 있는 공간을 잡아준다(메모리 공간을 잡고 타입까지 걸어준다)
-    //vEnemys.resize(10);     //vEnemys.push_back(nullptr); 이걸 10번 해 준다는 것이다
-    //for (int i = 0; i < 10; i++)
-    //{
-    //    vEnemys[i] = new Enemy();           //이거 바로 가능
-    //    vEnemys[i]->Init(); 
-    //}
+    vEnemyInitPos[ENEMY_INIT_POS::INIT_LEFT].y = -100;
+    vEnemyInitPos[ENEMY_INIT_POS::INIT_CENTER].y = -100;
+    vEnemyInitPos[ENEMY_INIT_POS::INIT_RIGHT].y = -100;
 
-    //// 4) vector reserve()  :포인터 없이 enemy 개수 만큼 동적 할당 할 수 있는 공간을 잡아준다(메모리 공간만 잡아둔다)
-    //vEnemys.reserve(10);
-    //for (int i = 0; i < 10; i++)
-    //{
-    //    vEnemys.push_back(new Enemy());  
-    //    vEnemys[i]->Init();
-    //}
 
-    /*
-    vEnemys.resize(10);   
-    for (int i = 0; i < 10; i++)
+    maxEnemyCnt = 30;
+    vEnemys.resize(maxEnemyCnt);
+    for (int i = 0; i < vEnemys.size(); i++)
     {
-        vEnemys[i] = new Enemy();          
-        vEnemys[i]->Init(100 + 100 * (i%5), 100 + 500 * (i / 5));
-    }
-    */
+        if(i/10 < ENEMY_FACTORY::SMALL_ENEMY){
+            vEnemys[i] = vEnemyFactories[ENEMY_FACTORY::SMALL_ENEMY]->CreateEnemy();
+            vEnemys[i]->SetEnemyType(ENEMY_TYPE::SMALL_ENEMY);
+        }
+        else if (i / 10 < ENEMY_FACTORY::MEDIUM_ENEMY) {
+            vEnemys[i] = vEnemyFactories[ENEMY_FACTORY::MEDIUM_ENEMY]->CreateEnemy();
+            vEnemys[i]->SetEnemyType(ENEMY_TYPE::MEDIUM_ENEMY);
+        }
+        else if (i / 10 < ENEMY_FACTORY::BIG_ENEMY) {
+            vEnemys[i] = vEnemyFactories[ENEMY_FACTORY::BIG_ENEMY]->CreateEnemy();
+            vEnemys[i]->SetEnemyType(ENEMY_TYPE::BIG_ENEMY);
+        }
+        else
+            break;
 
-    vEnemys.resize(1);
-    for (int i = 0; i < 1; i++)
-    {
-        vEnemys[i] = new Enemy();
-        vEnemys[i]->Init(300, 200);
+        vEnemys[i]->Init(vEnemyInitPos[i % (ENEMY_INIT_POS::ENEMY_INIT_END)].x, vEnemyInitPos[i % (ENEMY_INIT_POS::ENEMY_INIT_END)].y);
+        vEnemys[i]->SetIsAlive(false);
     }
+
+    time = 0.0f;
+    createCycle = 3.0f;
+    addEnemyToggle = false;
 
     return S_OK;
 }
@@ -55,36 +54,102 @@ HRESULT EnemyManager::Init()
 void EnemyManager::Release()
 {
     //반복자(iterator) :  STL 자료구조를 구성하는 원소의 메모리를 저장하는 객체
-    vector<Enemy*>::iterator myIt;
-    for (myIt = vEnemys.begin(); myIt != vEnemys.end(); myIt++)
+    for (int i =0;i<vEnemys.size(); i++)
     {
-        (*myIt)->Release();     //iterator를 통해서 얻어온 값이 Enemy*(포인터)니까 ->를 사용한다 (*(*myIt)).Release();로 적어줄 수도 있다
-        delete (*myIt);
-        (*myIt) = nullptr;
+        if (vEnemys[i])
+        {
+            SAFE_RELEASE(vEnemys[i]);
+        }
     }
     vEnemys.clear();
+
+    for (int i = 0; i < vEnemyFactories.size(); i++)
+    {
+        if (vEnemyFactories[i])
+        {
+            SAFE_DELETE(vEnemyFactories[i]);
+        }
+    }
+    vEnemyFactories.clear();
 }
 
 void EnemyManager::Update()
 {
-    /*vector<Enemy*>::iterator myIt;
-    for (myIt = vEnemys.begin(); myIt != vEnemys.end(); myIt++)
+
+    //Enemy Update
+    for (int i = 0; i < vEnemys.size(); i++)
     {
-        (*myIt)->Update();
-        (*myIt)->SetPlayerPos(this->playerPos);
+        if (vEnemys[i] && vEnemys[i]->GetIsAlive()){
+            vEnemys[i]->Update();
+            vEnemys[i]->SetPlayerPos(this->playerPos);
+
+            //Enemy가 밖으로 나갔을 경우
+            if (vEnemys[i]->GetPos().y > WINSIZE_Y || vEnemys[i]->GetPos().x < 0 || vEnemys[i]->GetPos().x > WINSIZE_X)
+            {
+                vEnemys[i]->SetIsAlive(false);
+            }
+        }
     }
-    }*/
+
+    float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
+    time += elapsedTime;
+    createCycle = (int)time;
+    if (time < 3)
+    {
+        if (!addEnemyToggle) {
+            AddEnemy(ENEMY_TYPE::SMALL_ENEMY);
+            AddEnemy(ENEMY_TYPE::SMALL_ENEMY);
+            AddEnemy(ENEMY_TYPE::SMALL_ENEMY);
+            addEnemyToggle = !addEnemyToggle;
+        }
+    }
+    else if (time < 6)
+    {
+        if (addEnemyToggle) {
+            AddEnemy(ENEMY_TYPE::SMALL_ENEMY);
+            AddEnemy(ENEMY_TYPE::MEDIUM_ENEMY);
+            AddEnemy(ENEMY_TYPE::SMALL_ENEMY);
+            addEnemyToggle = !addEnemyToggle;
+        }
+    }
+    else if (time < 9)
+    {
+        if (!addEnemyToggle) {
+            AddEnemy(ENEMY_TYPE::BIG_ENEMY);
+            AddEnemy(ENEMY_TYPE::MEDIUM_ENEMY);
+            AddEnemy(ENEMY_TYPE::SMALL_ENEMY);
+            addEnemyToggle = !addEnemyToggle;
+        }
+    }
+    else if (time < 12)
+    {
+        if (addEnemyToggle) {
+            AddEnemy(ENEMY_TYPE::BIG_ENEMY);
+            AddEnemy(ENEMY_TYPE::MEDIUM_ENEMY);
+            AddEnemy(ENEMY_TYPE::BIG_ENEMY);
+            addEnemyToggle = !addEnemyToggle;
+        }
+    }
 }
 
 void EnemyManager::Render(HDC hdc)
 {
-   /* vector<Enemy*>::iterator myIt;
-    for (myIt = vEnemys.begin(); myIt != vEnemys.end(); myIt++)
+    for (int i = 0; i < vEnemys.size(); i++)
     {
-        (*myIt)->Render(hdc);
-    }*/
+        if(vEnemys[i] && vEnemys[i]->GetIsAlive())
+            vEnemys[i]->Render(hdc);
+    }
 }
 
-void EnemyManager::AddEnemy(int size)
+
+void EnemyManager::AddEnemy(ENEMY_TYPE enemyType)
 {
+    for (int i = 0; i < vEnemys.size(); i++)
+    {
+        if (vEnemys[i] && vEnemys[i]->GetIsAlive() && vEnemys[i]->GetEnemyType() == enemyType && vEnemys[i]->GetIsAlive())
+        {
+            vEnemys[i]->Init(vEnemyInitPos[i % (ENEMY_INIT_POS::ENEMY_INIT_END)].x, vEnemyInitPos[i % (ENEMY_INIT_POS::ENEMY_INIT_END)].y);
+            vEnemys[i]->SetIsAlive(true);
+        }
+    }
 }

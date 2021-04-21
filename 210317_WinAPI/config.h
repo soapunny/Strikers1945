@@ -35,6 +35,8 @@ enum MOVETYPE {
 enum FIRETYPE { NormalFIRE, FallingKnivesFIRE, FIREWORKFIRE, GuidedFIRE, 
 	PlayerFIRE, ZigzagFIRE, MeteorFIRE, WormFIRE, TwoFIRE, NotFIRE,TornadoFIRE, END_FIRETYPE };
 
+enum ENEMY_TYPE { SMALL_ENEMY, MEDIUM_ENEMY, BIG_ENEMY, ENEMY_TYPE_END };
+
 typedef struct tagFPoint
 {
 	float x;
