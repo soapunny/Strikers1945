@@ -12,27 +12,41 @@ void ItemManager::Init()
 	dropPos.x = 0;
 	dropPos.y = 0;	
 	IsItemIsDrop = true;
-	itemFactory = new ItemLifeFactory(); //업
-	item = itemFactory->CreatItem();
-	item->Init();
+	
+	//vItemFactory.resize(DROPENEMY::ENDROP); //이거 왜 있지/
+	//vItemFactory[DROPENEMY::BOSSDROP] = new ItemLifeFactory(); //업
+
+	vItem.resize(ITEMTABLE::POWER);
+	vItem[ITEMTABLE::LIFE] = new ItemLife;
+	vItem[ITEMTABLE::LIFE]->Init();
 }
 
 void ItemManager::Update()
-{
-	if (IsItemIsDrop)
+{	
+	//for (int i = 0; i < ITEMTABLE::POWER; i++)
 	{
-		item->Update();
+		vItem[ITEMTABLE::LIFE]->SetDropPos(dropPos);
+	}
+	//if (dropEnemy ==BOSSDROP&& IsItemIsDrop)
+	{
+		vItem[ITEMTABLE::LIFE]->SetIsFired(true);
+		vItem[ITEMTABLE::LIFE]->Update();
 	}
 }
 
 void ItemManager::Render(HDC hdc)
 {
-	item->Render(hdc);
+	//if (dropEnemy == BOSSDROP&& IsItemIsDrop)
+	{
+		vItem[ITEMTABLE::LIFE]->Render(hdc);
+	}
 }
 
 void ItemManager::Release()
 {
-	item->Release();
-	delete item;
-	item = nullptr;
+	for (int i = 0; i < ITEMTABLE::POWER; i++)
+	{
+		SAFE_RELEASE(vItem[i]);
+	}
+	vItem.clear();
 }

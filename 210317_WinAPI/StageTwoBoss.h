@@ -41,7 +41,7 @@ public:
 	void changeNormalMove();
 	void phaseChangeMove();
 	void backMove();
-	inline FPOINT GetPos() { return pos; }
+	inline FPOINT GetPos() { return pos; }	
 
 };
 

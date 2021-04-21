@@ -26,6 +26,8 @@ HRESULT BossManager::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
 
     sceneManagerObserver = new SceneManager;
     RegisterObserver(sceneManagerObserver);
+    itemManagerObserver = new ItemManager;
+    RegisterObserver(itemManagerObserver);
     
     return S_OK;
 }
@@ -65,7 +67,10 @@ void BossManager::ItemnotifyObserve()
     if (itemManagerObserver) //보스가 죽으면 해당하는 아이템 생성
     {
         
-        if (!vBoss[1]->GetAlive()) { itemManagerObserver->SetDropNotify(BOSSDROP); itemManagerObserver->SetDropPos(vBoss[1]->GetPos()); }
+        if (vBoss[1]->GetAlive() == false)
+        {
+            itemManagerObserver->SetDropNotify(BOSSDROP); itemManagerObserver->SetDropPos(vBoss[1]->GetPos());
+        }
     }
 }
 
@@ -84,6 +89,7 @@ void BossManager::Release()
 void BossManager::Update()
 {
     vBoss[sceneManagerObserver->GetNextBoss()]->Update();
+    ItemnotifyObserve();
     notifyObserve();
 }
 

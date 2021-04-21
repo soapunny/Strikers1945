@@ -1,22 +1,19 @@
 #pragma once
 #include "GameNode.h"
 #include "Item.h"
+class Image;
 class ItemLife :
     public Item
 {
 private:
-	FPOINT ItemPos;
-	vector<MoveInterface*> vMoveInterfaces;		
-	MoveInterface* currMoveInterface;	
-	float moveSpeed;
-	float angle;
-	int size;
+	
 	
 public:
-	virtual HRESULT Init();
+	virtual HRESULT Init() { return S_OK; };
+	virtual HRESULT Init(CollisionCheck* collisionCheck, FPOINT position);
 	virtual void Update();
 	virtual void Render(HDC hdc);
-	virtual void Release();
+	virtual void Release();	
 	void RRRR();
 };
 

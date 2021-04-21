@@ -47,6 +47,8 @@ void CollisionCheck::Update()
 			}
 		}
 	}
+	
+	
 }
 
 void CollisionCheck::Render(HDC hdc)

@@ -3,5 +3,5 @@
 
 Item* ItemLifeFactory::CreatItem()
 {
-	return new ItemLife();
+	return new ItemLife;
 }

@@ -50,6 +50,7 @@ public:
 
 	inline int GetPlayerLife() { return playerLife; }
 	inline void SetPlayerLife() { this->playerLife -= 1; }
+	inline void SetPlusPlayerLife() { this->playerLife += 1; }
 	
 	inline RECT GetPlayerRect() { return playerRect; }
 	inline void SetPlayerLife(int life) { this->playerLife = life; }

@@ -25,6 +25,9 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("StageOneBoss", "Image/StageOneBoss.bmp", 186*30, 186, 30, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageThreeBoss", "Image/StageThreeBoss.bmp", 163 * 24, 121, 24, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("오프닝", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y);
+	ImageManager::GetSingleton()->AddImage("라이프아이템", "Image/Life.bmp", 820, 793,true, RGB(255, 255, 255));
+	ImageManager::GetSingleton()->AddImage("폭탄아이템", "Image/bombItem.bmp", 216, 32, 4, 1, true, RGB(0, 128, 128));
+	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/powerItem.bmp", 150, 18, 6, 1, true, RGB(0, 128, 128));
 	//ImageManager::GetSingleton()->AddImage("엔딩", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
 
 	// 메인게임의 초기화 함수
@@ -262,6 +265,12 @@ void MainGame::CheckCollision()
 		//보스 목숨 줄이자
 		collisionCheck->SetBossCollision(false);
 	}
+	//플레이어 Life추가
+	if (KeyManager::GetSingleton()->IsOnceKeyUp('H'))
+	{
+		playerShip->SetPlusPlayerLife();
+	}
+	
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)

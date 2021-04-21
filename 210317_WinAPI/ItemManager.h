@@ -10,12 +10,13 @@ private:
 	/*
 	Image* openingImage;
 	Image* endingImage;*/
-	Item* item;
-	ItemFactory* itemFactory;
+	vector<Item*> vItem;
+	vector<ItemFactory*> vItemFactory;
 	DROPENEMY dropEnemy;
 	FPOINT dropPos;
 	BossManager* bossManager;
 	bool IsItemIsDrop;
+	enum ITEMTABLE{LIFE,BOMB,POWER};
 	
 
 public:
@@ -24,7 +25,7 @@ public:
 	void Update();
 	void Render(HDC hdc);
 	void Release();	
-	virtual void SetDropNotify(DROPENEMY dropItem) { this->dropEnemy = dropItem; };
+	virtual void SetDropNotify(DROPENEMY dropItem) 	{ this->dropEnemy = dropItem; };
 	virtual void SetDropPos(FPOINT pos) { this->dropPos = dropPos; };
 	virtual void SetIsItem(bool IsItemIsDrop) { this->IsItemIsDrop = IsItemIsDrop; };
 };

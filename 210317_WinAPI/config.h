@@ -36,7 +36,7 @@ enum FIRETYPE { NormalFIRE, FallingKnivesFIRE, FIREWORKFIRE, GuidedFIRE,
 	PlayerFIRE, ZigzagFIRE, MeteorFIRE, WormFIRE, TwoFIRE, NotFIRE,TornadoFIRE, TargetFIRE, END_FIRETYPE };
 
 enum DROPENEMY {
-	NOTDROP,BOSSDROP, ENEMYDROP
+	NOTDROP,BOSSDROP, ENEMYDROP, ENDROP
 };
 
 typedef struct tagFPoint

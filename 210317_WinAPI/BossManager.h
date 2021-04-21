@@ -4,7 +4,7 @@
 #include "ItemSubject.h"
 class Boss;
 class CollisionCheck;
-class BossManager : public GameNode, public ItemSubject
+class BossManager : public GameNode
 {
 private:
 	CollisionCheck* collisionCheck;
@@ -28,7 +28,7 @@ public:
 	virtual void ItemUnRegisterObserver();
 	virtual void notifyObserve() ;
 	virtual void ItemnotifyObserve();
-	virtual DROPENEMY GetDropEnemy() { return BOSSDROP; }
+	//virtual DROPENEMY GetDropEnemy() { return BOSSDROP; }
 
 	void Release();
 	void Update();
