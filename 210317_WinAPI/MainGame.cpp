@@ -38,7 +38,7 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("보스2엔딩", "Image/twobossEnding.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(67, 77, 112));
 	ImageManager::GetSingleton()->AddImage("보스3엔딩", "Image/threebossEnding.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(67, 77, 112));*/
 	ImageManager::GetSingleton()->AddImage("엔딩", "Image/Ending.bmp", WINSIZE_X*3, WINSIZE_Y, 3, 1, true, RGB(67, 77, 112));
-	ImageManager::GetSingleton()->AddImage("오프닝", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y);
+	ImageManager::GetSingleton()->AddImage("오프닝", "Image/opening(2).bmp", WINSIZE_X, WINSIZE_Y);
 	ImageManager::GetSingleton()->AddImage("라이프아이템", "Image/Life.bmp", 820/10, 793/10,true, RGB(0, 0, 0));
 	ImageManager::GetSingleton()->AddImage("폭탄아이템", "Image/bombItem.bmp", 216, 32, 4, 1, true, RGB(0, 128, 128));
 	ImageManager::GetSingleton()->AddImage("파워아이템", "Image/powerItem.bmp", 150, 18, 6, 1, true, RGB(0, 128, 128));

@@ -84,9 +84,9 @@ void StageThreeBoss::Release()
 void StageThreeBoss::Update()
 {
     //충돌박스 넘겨주기
-    //bossRect = { (LONG)(pos.x - size / 2), (LONG)(pos.y - size / 2), (LONG)(pos.x + size / 2), (LONG)(pos.y + size / 2) };
-    //(this->collisionCheck)->SetBossRect(bossRect);
-    //(this->collisionCheck)->GetBossAlive(isAlive);
+    bossRect = { (LONG)(pos.x - size / 2), (LONG)(pos.y - size / 2), (LONG)(pos.x + size / 2), (LONG)(pos.y + size / 2) };
+    (this->collisionCheck)->SetBossRect(bossRect);
+    (this->collisionCheck)->GetBossAlive(isAlive);
 
     for (int i = 0; i < vBarrels.size(); i++)
     {
