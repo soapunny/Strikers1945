@@ -36,17 +36,11 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     updateCount = 0;
 
     //보스 
-    pos.x = WINSIZE_X - 200;          //위치
+    pos.x = WINSIZE_X/2;          //위치
     pos.y = WINSIZE_Y / 5;
     size = 186;                     //크기
     moveSpeed = 100.0f;               //이동 속도
     angle = PI / 3;
-
-    //pos.x = WINSIZE_X+50;          //위치
-    //pos.y = WINSIZE_Y / 2;
-    //size = 100;                     //크기
-    //moveSpeed = 100.0f;               //이동 속도
-    //angle = 0;
 
     //보스 이동 방법 정의
     vMoveInterfaces.resize(MOVETYPE::END_MOVE);
@@ -64,16 +58,10 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
             vMoveInterfaces[i]->SetMoveSpeed(moveSpeed);
     }
 
-    //moveManager->DoMove(&pos, &angle);
-
     //life = 100;
     life = 100;
     time = 0.0f;
 
-    ////moveManager->ChangeMove(new PointMove());
-    //moveManager->ChangeMove(new RightUpMove());
-    ////moveManager->ChangeMove(new ZigzagMove());
-    //moveManager->DoMove(&pos, &angle);
 
     this->playerPos = playerPos;
     
@@ -88,9 +76,10 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
         vBarrels[i]->Init(this->collisionCheck, pos.x, pos.y);
         vBarrels[i]->SetAngle(i * PI / 3 - PI * 2 / 3);
         vBarrels[i]->SetBarrelSize(50);
+        vBarrels[i]->SetBarrelPos(pos);
         vBarrels[i]->SetActivated(false);
         vBarrels[i]->SetFireType(FIRETYPE::FallingKnivesFIRE);
-        vBarrels[i]->SetMaxFireCount(10);
+        vBarrels[i]->SetMaxFireCount(100);
 
         //TODO 플레이어 위치 저장
     }
@@ -117,12 +106,10 @@ void StageOneBoss::Release()
 
 void StageOneBoss::Update()
 {
-    bossRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + 150), (LONG)(pos.y + 150) };
-
     if(isAlive){
+        bossRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + 150), (LONG)(pos.y + 150) };
+
         //보스 이동 업데이트
-        float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
-        time += elapsedTime;
 
         if (KeyManager::GetSingleton()->IsOnceKeyDown('U')) {
             life -= 25;
@@ -131,14 +118,15 @@ void StageOneBoss::Update()
         Move();
 
         //포신 위치
-        for (int i = 0; i < vBarrels.size(); i++)
+        for (Barrel* lpBarrel : vBarrels)
         {
-            if (vBarrels[i])
+            if (lpBarrel && lpBarrel->GetActivated())
             {
-                vBarrels[i]->SetBarrelPos(pos);
+                lpBarrel->SetBarrelPos(pos);//TODO pos가 말도 안되는 값 들어오는 이유 찾기
             }
         }
-        vBarrels[2]->SetBarrelPos(FPOINT{WINSIZE_X-pos.x, WINSIZE_Y-pos.y});
+        if(vBarrels[2] && vBarrels[2]->GetActivated())
+            vBarrels[2]->SetBarrelPos(FPOINT{WINSIZE_X-pos.x, WINSIZE_Y-pos.y});
 
         //애니메이션
         updateCount++;
@@ -154,7 +142,10 @@ void StageOneBoss::Update()
 void StageOneBoss::Move()
 {
     if(life > 75){
-        if ((int)(time / 10.0f) % 2 == 0 && currMoveInterface != vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE]) {
+        float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
+        time += elapsedTime;
+
+        if ((int)time / 5  % 2 == 0 && currMoveInterface != vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE]) {
             currMoveInterface = vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE];
             moveManager->ChangeMove(currMoveInterface);
             vBarrels[0]->SetActivated(true);
@@ -162,7 +153,7 @@ void StageOneBoss::Move()
             vBarrels[0]->SetFireType(FIRETYPE::NormalFIRE);
             vBarrels[1]->SetFireType(FIRETYPE::NormalFIRE);
         }
-        else if ((int)(time / 10.0f) % 2 && currMoveInterface != vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE]) {
+        else if ((int)time / 5 % 2 == 1 && currMoveInterface != vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE]) {
             currMoveInterface = vMoveInterfaces[MOVETYPE::LEFT_SIN_MOVE];
             moveManager->ChangeMove(currMoveInterface);
             vBarrels[0]->SetActivated(true);
@@ -229,13 +220,14 @@ void StageOneBoss::Render(HDC hdc)
 {
     if (isAlive)
     {
-        //RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
+        RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
 
         if (image)
         {
             if (!isAlive)
                 image->AlphaRender(hdc, pos.x, pos.y, true);
-            else if (isAlive){
+            else
+            {
                 image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
                 if(currMoveInterface == vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE]){ 
                     image->FrameRender(hdc, WINSIZE_X - pos.x, WINSIZE_Y - pos.y, currFrameX, 0, true);
@@ -244,11 +236,11 @@ void StageOneBoss::Render(HDC hdc)
         }
 
         //포신
-        for (int i = 0; i < vBarrels.size(); i++)
+        for (auto lpBarrel : vBarrels)
         {
-            if (vBarrels[i])
+            if (lpBarrel)
             {
-                vBarrels[i]->Render(hdc);
+                lpBarrel->Render(hdc);
             }
         }
         wsprintf(szText, "BOSS_LIFE: %d", life);
@@ -259,13 +251,14 @@ void StageOneBoss::Render(HDC hdc)
 void StageOneBoss::Attack()
 {
     //배럴 업데이트 및 미사일 발사
-    for (int i = 0; i < vBarrels.size(); i++)
+    for (auto lpBarrel: vBarrels)
     {
-        if (vBarrels[i])
+        if (lpBarrel)
         {
-            vBarrels[i]->Update();
-            if (pos.x > WINSIZE_X/5 && pos.x < WINSIZE_X*4/5 && vBarrels[i]->GetActivated()) {
-                vBarrels[i]->Attack();
+            lpBarrel->Update();
+            
+            if (lpBarrel->GetActivated() && (pos.x > WINSIZE_X/6 && pos.x < WINSIZE_X*5/6 || pos.y < WINSIZE_Y/2)) {
+                lpBarrel->Attack();
             }
         }
     }

@@ -7,13 +7,13 @@ void TornadoFire::DoFire(CollisionCheck* collisionCheck,vector<Missile*>* vMissi
     //   for (int j = 0; j < 5; j++)
 
            //지그재그 아래로 향하는 미사일 장전
-    for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
+    for (int i =0;i<vMissiles->size();i++)
     {
-        if ((*myIt)->GetIsFired() == false)
+        if ((*vMissiles)[i]->GetIsFired() == false)
         {
-            (*myIt)->SetType(Missile::SKILLTYPE::ZigzagSkill_TYPE);
-            (*myIt)->SetIsFired(true);
-            (*myIt)->SetAngle(DegToRad(a * 20));//각각의 각도설정
+            (*vMissiles)[i]->SetType(Missile::SKILLTYPE::ZigzagSkill_TYPE);
+            (*vMissiles)[i]->SetIsFired(true);
+            (*vMissiles)[i]->SetAngle(DegToRad(a * 20));//각각의 각도설정
             a++;
             break;
         }

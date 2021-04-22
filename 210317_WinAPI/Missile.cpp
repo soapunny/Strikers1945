@@ -35,7 +35,7 @@ HRESULT Missile::Init(CollisionCheck* collisionCheck, FPOINT position)
 	damage = 500;
 	isFired = false;
 
-	missileType = SKILLTYPE::FIREWORK_TYPE;
+	missileType = SKILLTYPE::NormalSkill_TYPE;
 
 	vSkillInterfaces.resize(SKILLTYPE::END_TYPE);
 	vSkillInterfaces[SKILLTYPE::CircularSkill_TYPE] = new CircularSkill;
@@ -198,18 +198,19 @@ void Missile::Render(HDC hdc)
 	if (isFired)
 	{
 		//충돌 박스
-		if (ownerType == OWNERTYPE::PLAYER)
+		if (ownerType == OWNERTYPE::PLAYER) {
 			playerMissileRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + size), (LONG)(pos.y + size) };
-		else if (ownerType == OWNERTYPE::ENEMY || ownerType == OWNERTYPE::BOSS)
-			enemyMissileRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + size), (LONG)(pos.y + size) };
-
-		if(ownerType == OWNERTYPE::PLAYER)
 			img = ImageManager::GetSingleton()->FindImage("플레이어 미사일");
-		else if(ownerType == OWNERTYPE::ENEMY || ownerType == OWNERTYPE::BOSS)
+		}
+		else if (ownerType == OWNERTYPE::ENEMY || ownerType == OWNERTYPE::BOSS){
+			enemyMissileRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + size), (LONG)(pos.y + size) };
 			img = ImageManager::GetSingleton()->FindImage("적 미사일");
+		}
+
 		img->Render(hdc, pos.x, pos.y, true);
 	}
 }
+
 
 void Missile::SetIsFired(bool isFired)
 {

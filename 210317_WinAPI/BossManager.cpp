@@ -69,10 +69,4 @@ void BossManager::Update()
 void BossManager::Render(HDC hdc)
 {
     vBoss[sceneManagerObserver->GetNextBoss()]->Render(hdc);
-    /*vector<Boss*>::iterator myIt;
-    for (myIt = vBoss.begin(); myIt != vBoss.end(); myIt++)
-    {
-        if ((*myIt)->GetAlive())
-            (*myIt)->Render(hdc);
-    }*/
 }

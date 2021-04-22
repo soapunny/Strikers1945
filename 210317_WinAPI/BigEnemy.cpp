@@ -1,5 +1,6 @@
 #include "BigEnemy.h"
 #include "MissileManager.h"
+#include "CollisionCheck.h"
 
 HRESULT BigEnemy::Init(int posX, int posY)
 {//ufo
@@ -17,17 +18,19 @@ HRESULT BigEnemy::Init(int posX, int posY)
     size = 200;
     name = "BigEnemy";
     shape = { 0, 0, 0, 0 };
-    moveSpeed = 3.3f;
+    moveSpeed = 20.0f;
     isAlive = true;
-    angle = 0.0f;
+    angle = -PI / 2;
     target = nullptr;
     dir = 1;
 
+    collisionCheck = new CollisionCheck;
     // ¹Ì»çÀÏ
     myMissile = new MissileManager();
-    myMissile->Init(pos);
-    fireCount = 0;
+    myMissile->Init(collisionCheck, pos);
     fireCount2 = 0;
+
+    fireType = FIRETYPE::TwoFIRE;
 
     return S_OK;
 }

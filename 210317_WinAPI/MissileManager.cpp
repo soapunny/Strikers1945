@@ -20,15 +20,15 @@ HRESULT MissileManager::Init(CollisionCheck* collisionCheck, FPOINT pos)
 {
     this->collisionCheck = collisionCheck;
 
-    totalMissileNum = 2000;
+    totalMissileNum = 500;
     vMissiles.resize(totalMissileNum);
-    vector<Missile*>::iterator myIt;
-    for (myIt = vMissiles.begin(); myIt != vMissiles.end(); myIt++)
+    
+    for (int i =0;i<vMissiles.size();i++)
     {
-        (*myIt) = new Missile();
-        (*myIt)->Init(this->collisionCheck, pos);
-        (*myIt)->SetPos(pos);
-        (*myIt)->SetStartPos(pos);
+        vMissiles[i] = new Missile();
+        vMissiles[i]->Init(this->collisionCheck, pos);
+        vMissiles[i]->SetPos(pos);
+        vMissiles[i]->SetStartPos(pos);
     }
     missileSize = 25;
 
@@ -51,6 +51,7 @@ HRESULT MissileManager::Init(CollisionCheck* collisionCheck, FPOINT pos)
     fireManager = new FireManager();
     currFire = vFireInterfaces[FIRETYPE::NormalFIRE];
     fireManager->ChangeMove(currFire);
+    ownerType = OWNERTYPE::Enemy;
 
     return S_OK;
 }
@@ -78,42 +79,39 @@ void MissileManager::Release()
 
 void MissileManager::Update()
 {
-    for (int i = 0; i < vMissiles.size(); i++)
+    for (auto lpMissile : vMissiles)
     {
-        vMissiles[i]->SetPlayerPos(this->playerPos);
-        vMissiles[i]->SetStartPos(this->missilePos);
-        if(this->fireType == FIRETYPE::PlayerFIRE)
-            vMissiles[i]->SetAngle(this->missileAngle);
-        vMissiles[i]->Update();
-        vMissiles[i]->SetSize(missileSize);
+        //lpMissile->SetPlayerPos(this->playerPos);
+        ////lpMissile->SetPos(this->missilePos);
+        //lpMissile->SetStartPos(this->missilePos);
+        //if(this->fireType == FIRETYPE::PlayerFIRE)
+        //    lpMissile->SetAngle(this->missileAngle);
+        //lpMissile->Update();
+        //lpMissile->SetSize(missileSize);
 
-        if (vMissiles[i]->GetIsFired())
+        lpMissile->SetStartPos(this->missilePos);
+        if (lpMissile->GetIsFired())
         {
-            for (int j = 0; j < 3; j++)
-            {
-                if (ownerType == j)
-                {
-                    vMissiles[i]->SetOwnerType((Missile::OWNERTYPE)j);
-                }
-
-            }
-
-            vMissiles[i]->SetPlayerPos(this->playerPos);
-            vMissiles[i]->SetStartPos(this->missilePos);
+            lpMissile->SetOwnerType((Missile::OWNERTYPE)ownerType);
+            
+            lpMissile->SetPlayerPos(this->playerPos);
+            lpMissile->SetSize(missileSize);
+            //vMissiles[i]->SetPos(this->missilePos);
             if (this->fireType == FIRETYPE::PlayerFIRE)
             {
-                vMissiles[i]->SetAngle(this->missileAngle);
+                lpMissile->SetAngle(this->missileAngle);
             }
-            vMissiles[i]->Update();
+
+            lpMissile->Update();
         }
     }
 }
 
 void MissileManager::Render(HDC hdc)
 {
-    for (int i = 0; i < vMissiles.size(); i++)
+    for (auto lpMissile : vMissiles)
     {
-        vMissiles[i]->Render(hdc);
+        lpMissile->Render(hdc);
     }
 }
 
@@ -127,7 +125,6 @@ void MissileManager::Fire(FIRETYPE fireType)
         if(currFire != vFireInterfaces[FIRETYPE::NormalFIRE]){
             currFire = vFireInterfaces[FIRETYPE::NormalFIRE];
             fireManager->ChangeMove(currFire);
-            
         }
         break;
     case FIRETYPE::FallingKnivesFIRE:

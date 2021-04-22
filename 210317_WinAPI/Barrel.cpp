@@ -12,20 +12,13 @@ HRESULT Barrel::Init(CollisionCheck* collisionCheck, int posX, int posY)
     barrelStart.y = pos.y;
     barrelAngle = -3.14f / 2.0f; //지금은 45도 
     maxFireCount = 1;
-    //barrelSize = 10;
-    //barrelStart.x = posX;
-    //barrelStart.y = posY;
-    //barrelAngle = DegToRad(-90); //지금은 45도 
-    //isAlive = true;
-    //target = nullptr;
     dir = 1;
     missileSize = 25;
     // 미사일
     myMissile = new MissileManager();   //동적 필요
-    myMissile->Init(this->collisionCheck, pos);       //
+    myMissile->Init(this->collisionCheck, pos);
     fireCount = 0;
-    maxFireCount = 1;
-    isActivated = true;
+    isActivated = false;
 
     return S_OK;
 }
@@ -42,10 +35,6 @@ void Barrel::Release()
 
 void Barrel::Update()
 {
-    
-    // 포신 각도에 따른 좌표 계산
-    barrelEnd.x = barrelStart.x + cosf(barrelAngle) * barrelSize;
-    barrelEnd.y = barrelStart.y - (sinf(barrelAngle) * barrelSize);
 
     if (myMissile)
     {
@@ -53,60 +42,6 @@ void Barrel::Update()
         myMissile->Update();
         myMissile->SetSize(missileSize);
     }
-    //Attack();
-
-    //myMissile->SetPos(barrelEnd);
-    //if (isAlive)
-    //{
-    //    //애니메이션
-    //    updateCount++;
-    //    if (updateCount >= 5)
-    //    {
-    //        currFrameX = (currFrameX + 1) % 10;
-    //        updateCount = 0;
-    //    }
-
-    myMissile->SetPos(barrelEnd);
-  
-     barrelEnd.x = barrelStart.x + cosf(barrelAngle) * barrelSize;
-     barrelEnd.y = barrelStart.y - sinf(barrelAngle) * barrelSize;
-    
-    /*
- 
-    myMissile->SetPos(barrelEnd);
-    if (myMissile)
-    {
-       myMissile->Update();
-
-        if (KeyManager::GetSingleton()->IsStayKeyDown('W')) 
-        {
-            fireCount++;
-            if (fireCount % 20 == 0)
-            {
-                myMissile->Fire(MissileManager::FIRETYPE::NormalFIRE);
-                fireCount = 0;
-            }
-        }
-        if (KeyManager::GetSingleton()->IsStayKeyDown('Q'))
-        {
-            fireCount++;
-            if (fireCount % 20 == 0)
-            {
-                myMissile->Fire(MissileManager::FIRETYPE::ZigzagFIRE);
-                fireCount = 0;
-            }
-        }
-        if (KeyManager::GetSingleton()->IsStayKeyDown('E'))
-        {
-            fireCount++;
-            if (fireCount % 20 == 0)
-            {
-                myMissile->Fire(MissileManager::FIRETYPE::NormalFIRE);
-                fireCount = 0;
-            }
-        }
-        
-    }*/
 
 }
 
@@ -114,8 +49,6 @@ void Barrel::Render(HDC hdc)
 {
     // 포신
     myMissile->Render(hdc);
-    //MoveToEx(hdc, barrelStart.x, barrelStart.y, NULL);
-    //LineTo(hdc, barrelEnd.x, barrelEnd.y );
 
     //미사일
     if (myMissile)
@@ -128,11 +61,15 @@ void Barrel::Attack()
 {
     if (myMissile)
     {
+        // 포신 각도에 따른 좌표 계산
+        barrelEnd.x = barrelStart.x + cosf(barrelAngle) * barrelSize;
+        barrelEnd.y = barrelStart.y - (sinf(barrelAngle) * barrelSize);
+        myMissile->SetPos(barrelEnd);
+
         //myMissile->Update();
          
-        fireCount++;
-        myMissile->SetPos(barrelEnd);
-        if (fireCount % maxFireCount == 0 && isActivated)
+        fireCount += TimerManager::GetSingleton()->getElapsedTime();
+        if ((int)(fireCount) % (maxFireCount) == 1 && isActivated)
         {
             myMissile->Fire(fireType);
             fireCount = 0;

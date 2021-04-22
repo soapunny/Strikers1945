@@ -6,146 +6,130 @@
 
 HRESULT Enemy::Init(int posX, int posY)
 {
-    //ufo
-    image = ImageManager::GetSingleton()->FindImage("Enemy");
-    if (image == nullptr)
-    {
-        MessageBox(g_hWnd, "enemy에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
-        return E_FAIL;
-    }
-    currFrameX = 0;
-    updateCount = 0;
+	//ufo
+	image = ImageManager::GetSingleton()->FindImage("Enemy");
+	if (image == nullptr)
+	{
+		MessageBox(g_hWnd, "enemy에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
+		return E_FAIL;
+	}
+	currFrameX = 0;
+	updateCount = 0;
 
-    pos.x = posX;
-    pos.y = posY;
-    size = 80;
-    name = "NormalEnemy";
-    shape = { 0, 0, 0, 0 };
-    moveSpeed = 3.3f;
-    isAlive = true;
-    angle = 0.0f;
-    target = nullptr;
-    dir = 1;
+	fireType = FIRETYPE::NormalFIRE;
 
-    // 미사일
-    //myMissile = new MissileManager();
-    //myMissile->Init(pos);
-    fireCount = 0;
-    fireCount2 = 0;
-    
-    return S_OK;
+	pos.x = posX;
+	pos.y = posY;
+	size = 80;
+	name = "NormalEnemy";
+	shape = { 0, 0, 0, 0 };
+	moveSpeed = 100.0f;
+	isAlive = true;
+	angle = -PI / 2.0f;
+	target = nullptr;
+	dir = 1;
+
+	// 미사일
+	//myMissile = new MissileManager();
+	//myMissile->Init(pos);
+	fireTimer1 = 0.0f;
+	fireTimer2 = 0.0f;
+	fireCount2 = 0;
+
+	return S_OK;
 }
 
 void Enemy::Release()
 {
-    if (myMissile)
-    {
-        myMissile->Release();
-        delete myMissile;
-        myMissile = nullptr;
-    }
+	if (myMissile)
+	{
+		myMissile->Release();
+		delete myMissile;
+		myMissile = nullptr;
+	}
+
+}
+
+void Enemy::Attack()
+{
+	if (myMissile)
+	{
+		//myMissile->Update();
+
+		fireTimer1 += TimerManager::GetSingleton()->getElapsedTime();
+		if ((int)fireTimer1 / 2 == 1)
+		{
+			//FPOINT barrelPos = { pos.x, pos.y + size};
+			//myMissile->SetPos(barrelPos);
+			myMissile->Fire(fireType);
+			fireTimer1 = 0.0f;
+		}
+	}
 }
 
 void Enemy::Update()
 {
-    if (myMissile)
-    {
-        myMissile->SetPlayerPos(playerPos);
-        myMissile->SetPos(pos);
-        myMissile->SetAngle(DegToRad(-90));
-    }
+	if (isAlive)
+	{
+		if (myMissile)
+		{
+			fireTimer2 += TimerManager::GetSingleton()->getElapsedTime();
+			if ((int)fireTimer2 / 1 == 1)
+			{
+				//myMissile->SetPlayerPos(pos);
+				myMissile->SetOwnerType(MissileManager::OWNERTYPE::Enemy);
+				myMissile->SetAngle(DegToRad(-90));
 
-    if (isAlive)
-    {
-        //애니메이션
-        updateCount++;
-        if (updateCount >= 5)
-        {
-            currFrameX = (currFrameX + 1) % 10;
-            updateCount = 0;
-        }
+				fireTimer2 = 0.0f;
+			}
+			FPOINT barrelPos = { pos.x, pos.y + size/2 };
+			myMissile->SetPos(barrelPos);
+			myMissile->Update();
+		}
 
-        //미사일 발사
-        //if (myMissile)
-        //{
-        //    myMissile->Update();
-        //    
-        //    //일직선 아래로
-        //    if (KeyManager::GetSingleton()->IsStayKeyDown('W'))
-        //    {
-        //        fireCount++;
-        //        if (fireCount % 20 == 0)
-        //        {
-        //            myMissile->Fire(FIRETYPE::FallingKnivesFIRE);
-        //            //myMissile->Fire(MissileManager::FIRETYPE::ZigzagFIRE);
-        //            fireCount = 0;
-        //        }
-        //    }
-        //    if (KeyManager::GetSingleton()->IsStayKeyDown('Q'))
-        //    {
-        //        fireCount++;
-        //        if (fireCount % 20 == 0)
-        //        {
-        //            myMissile->Fire(FIRETYPE::MeteorFIRE);
-        //            fireCount = 0;
-        //        }
-        //    }
-
-        //    //유도탄
-        //    if (KeyManager::GetSingleton()->IsStayKeyDown('E'))
-        //    {
-        //        fireCount++;
-        //        if (fireCount % 20 == 0)
-        //        {
-        //            myMissile->Fire(FIRETYPE::GuidedFIRE);
-        //            fireCount = 0;
-        //        }
-        //    }
-        //}
-    }
+		//애니메이션
+		updateCount++;
+		if (updateCount >= 5)
+		{
+			//currFrameX = (currFrameX + 1) % 10;
+			updateCount = 0;
+		}
+		Move();
+	}
 }
 
 void Enemy::Render(HDC hdc)
 {
-    if (isAlive)
-    {
-        RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
+	if (isAlive)
+	{
+		//RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
 
-        if (image)
-        {
-            image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
-        }
+		if (image)
+		{
+			image->Render(hdc, size, pos.x, pos.y, true);
+		}
 
-        //미사일
-        if (myMissile)
-        {
-            myMissile->Render(hdc);
-        }
-    }
+		//미사일
+		if (myMissile)
+		{
+			myMissile->Render(hdc);
+		}
+	}
 }
 
 void Enemy::Move()
 {
-    if (target)
-    {
-        FPOINT targetPos = target->GetPos();
+	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
 
-        // 현재 위치에서 타겟 위치로 이동할 수 있는 각도 구하기
-        float x = targetPos.x - pos.x;
-        float y = targetPos.y - pos.y;
-
-        angle = atan2(y, x);
-
-        pos.x += cosf(angle) * moveSpeed;
-        pos.y += sinf(angle) * moveSpeed;
-    }
+	pos.x += cosf(angle) * moveSpeed * elapsedTime;
+	pos.y -= sinf(angle) * moveSpeed * elapsedTime;
 }
 
 void Enemy::HorizonMove()
 {
-    if (pos.x > WINSIZE_X || pos.x < 0)
-    {
-        dir *= -1;
-    }
-    pos.x += moveSpeed * dir;
+	if (pos.x > WINSIZE_X || pos.x < 0)
+	{
+		dir *= -1;
+	}
+	pos.x += moveSpeed * dir;
 }

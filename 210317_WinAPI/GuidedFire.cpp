@@ -13,14 +13,14 @@ void GuidedFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissi
             for (int j = 0; j < 9; j++)
             {
                 //부채꼴
-                for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
+                for (int i =0;i<vMissiles->size();i++)
                 {
-                    if ((*myIt)->GetIsFired() == false)
+                    if ((*vMissiles)[i]->GetIsFired() == false)
                     {
-                        (*myIt)->SetType(Missile::SKILLTYPE::CircularSkill_TYPE);
-                        (*myIt)->SetIsFired(true);
+                        (*vMissiles)[i]->SetType(Missile::SKILLTYPE::CircularSkill_TYPE);
+                        (*vMissiles)[i]->SetIsFired(true);
                         //float angle = DegToRad(-135 + 10 * j);
-                        (*myIt)->SetAngle(DegToRad(-135 + 10 * j));
+                        (*vMissiles)[i]->SetAngle(DegToRad(-135 + 10 * j));
                         break;
                     }
                 }
@@ -30,11 +30,11 @@ void GuidedFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissi
     else
     {
         //타겟 따라
-        for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
+        for (int i = 0; i < vMissiles->size(); i++)
         {
-            if ((*myIt)->GetType() == Missile::SKILLTYPE::CircularSkill_TYPE)
+            if ((*vMissiles)[i]->GetType() == Missile::SKILLTYPE::CircularSkill_TYPE)
             {
-                (*myIt)->SetType(Missile::SKILLTYPE::Guided_Skill_TYPE);
+                (*vMissiles)[i]->SetType(Missile::SKILLTYPE::Guided_Skill_TYPE);
             }
         }
     }

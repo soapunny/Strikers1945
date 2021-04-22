@@ -12,15 +12,15 @@ void MeteorFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissi
     for (int i = 0; i < 36; i++)
     {
         if (firedCount > 36) firedCount = 0;
-        for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
+        for (int i=0;i<vMissiles->size();i++)
         {
 
-            if ((*myIt)->GetIsFired() == false)
+            if ((*vMissiles)[i]->GetIsFired() == false)
             {
                 firedCount++;
-                (*myIt)->SetType(Missile::SKILLTYPE::MeteorSkill_TYPE);
-                (*myIt)->SetIsFired(true);
-                (*myIt)->SetAngle(DegToRad((firedCount * 10)));
+                (*vMissiles)[i]->SetType(Missile::SKILLTYPE::MeteorSkill_TYPE);
+                (*vMissiles)[i]->SetIsFired(true);
+                (*vMissiles)[i]->SetAngle(DegToRad((firedCount * 10)));
                 break;
 
             }

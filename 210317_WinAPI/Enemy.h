@@ -5,6 +5,7 @@
 class Image;
 class Tank;
 class MissileManager;
+class CollisionCheck;
 
 class Enemy : public GameNode
 {
@@ -27,10 +28,14 @@ protected:
 
 	// ¹Ì»çÀÏ
 	MissileManager* myMissile;
-	int fireCount;
+	float fireTimer1;
+	float fireTimer2;
 	int fireCount2;
 	
 	ENEMY_TYPE enemyType;
+	FIRETYPE fireType;
+
+	CollisionCheck* collisionCheck;
 
 public:
 	virtual HRESULT Init(int posX = 0, int posY = 0);
@@ -39,8 +44,9 @@ public:
 	virtual void Update();		
 	virtual void Render(HDC hdc);
 
-	void Move();
+	virtual void Move();
 	void HorizonMove();
+	void Attack();
 
 	inline virtual void SetEnemyType(ENEMY_TYPE enemyType) { this->enemyType = enemyType; }
 	inline void SetPlayerPos(FPOINT pos) { this->playerPos = pos; }

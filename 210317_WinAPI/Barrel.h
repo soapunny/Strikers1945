@@ -31,11 +31,9 @@ private:
 	int maxFireCount;
 
 
-
-
 	// �̻���
 	MissileManager* myMissile; //���� �ʿ�
-	int fireCount;
+	float fireCount;
 	
 public:
 	HRESULT Init(CollisionCheck* collisionCheck, int posX = 0, int posY = 0);

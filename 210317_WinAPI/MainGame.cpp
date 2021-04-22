@@ -20,8 +20,8 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("플레이어 미사일","Image/bullet(4).bmp", 20, 20, true, RGB(0, 65, 126));
 	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/playerJet.bmp", 489/2, 131/2, 3, 1, true, RGB(248, 0, 248));
 	ImageManager::GetSingleton()->AddImage("SmallEnemy", "Image/Enemy1.bmp", 320, 426, 1, 1, true, RGB(0, 255, 0));
-	ImageManager::GetSingleton()->AddImage("MediumEnemy", "Image/Enemy2.bmp", 265, 355, 1, 1, true, RGB(0, 255, 0));
-	ImageManager::GetSingleton()->AddImage("BigEnemy", "Image/Enemy3.bmp", 252, 374, 1, 1, true, RGB(0, 255, 0));
+	ImageManager::GetSingleton()->AddImage("MediumEnemy", "Image/Enemy2.bmp", 265, 355, 1, 1, true, RGB(0, 248, 0));
+	ImageManager::GetSingleton()->AddImage("BigEnemy", "Image/Enemy3.bmp", 252, 374, 1, 1, true, RGB(0, 248, 0));
 	ImageManager::GetSingleton()->AddImage("구름", "Image/cloud.bmp", WINSIZE_X, 1360, true, RGB(246, 246, 246));
 	ImageManager::GetSingleton()->AddImage("EnemyMissile","Image/구슬.bmp", 20, 20, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("StageTwoBoss", "Image/StageTwoBoss.bmp", 3152*2, 156*2,16,1, true, RGB(255, 255, 255));
@@ -54,13 +54,13 @@ HRESULT MainGame::Init()
 	collisionCheck = new CollisionCheck();
 	collisionCheck->Init();
 
-	// 에너미 메니저
-	enemyManager = new EnemyManager();
-	enemyManager->Init();
-
 	//플레이어
 	playerShip = new PlayerShip();
 	playerShip->Init(collisionCheck);
+	
+	// 에너미 메니저
+	enemyManager = new EnemyManager();
+	enemyManager->Init();
 
 	//보스
 	bossManager = new BossManager();
@@ -109,6 +109,12 @@ void MainGame::Update()
 			tank->Update();
 		}
 
+		//플레이어
+		if (playerShip)
+		{
+			playerShip->Update();
+		}
+
 		//적
 		if (enemyManager)
 		{
@@ -116,11 +122,6 @@ void MainGame::Update()
 			enemyManager->Update();
 		}
 
-		//플레이어
-		if (playerShip)
-		{
-			playerShip->Update();
-		}
 
 		//플레이어
 		if (bossManager)

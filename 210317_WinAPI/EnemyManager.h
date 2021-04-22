@@ -29,7 +29,7 @@ public:
 	void Update();
 	void Render(HDC hdc);
 
-	void AddEnemy(ENEMY_TYPE enemyType);
+	void AddEnemy(ENEMY_TYPE enemyType, ENEMY_INIT_POS enemyInitPos);
 	inline void SetPlayerPos(FPOINT pos) { this->playerPos = pos; }
 };
 
