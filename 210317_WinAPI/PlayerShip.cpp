@@ -12,14 +12,30 @@ HRESULT PlayerShip::Init()
 HRESULT PlayerShip::Init(CollisionCheck* collisionCheck)
 {
 	this->collisionCheck = collisionCheck;
+
+	playerPower = 1;
+	attackValue = 1;
 	
+	explosionImage = ImageManager::GetSingleton()->FindImage("보스폭발");
+	blinkImage = ImageManager::GetSingleton()->FindImage("플레이어 깜빡임 우주선");
 	image = ImageManager::GetSingleton()->FindImage("플레이어 우주선");
+	retryImage = ImageManager::GetSingleton()->FindImage("패배엔딩");
 	if (image == nullptr)
 	{
 		MessageBox(g_hWnd, "플레이어 우주선 이미지 로드 실패", "실패", MB_OK);
 		return E_FAIL;
 	}
 	currFrameX = 1;
+
+	explosionImage = ImageManager::GetSingleton()->FindImage("폭발 아이템 사용");
+	if (explosionImage == nullptr)
+	{
+		MessageBox(g_hWnd, "폭발 아이템 사용 이미지 로드 실패", "실패", MB_OK);
+		return E_FAIL;
+	}
+	currFrameX_ex = 0;
+	imageTime = 0;
+	bombUse = false;
 
 	pos.x = WINSIZE_X / 2;
 	pos.y = WINSIZE_Y + 50;
@@ -29,31 +45,49 @@ HRESULT PlayerShip::Init(CollisionCheck* collisionCheck)
 	isAlive = true;
 	isDying = false;
 	canMove = false;
-
-	playerLife = 100;
+	reAppear = false;
+	playerLife = 5;
 
 	collisionSize.x = 35;
 	collisionSize.y = 50;
 
+	explosionCurrFrame = 0;
+	blinkCount = 0;
+	explosionCount=0;
 	playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
 	collisionCheck->SetPlayerRect(playerRect);
 
+	//playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
+	//collisionCheck->SetPlayerRect(playerRect);
 	//포신
 	barrelSize = 1;
+	
 	barrelEnd[0] = { (pos.x - 10.0f) ,  pos.y - barrelSize * 2 };
 	barrelEnd[1] = { (pos.x + 10.0f) ,  pos.y - barrelSize * 2 };
 	barrelEnd[2] = { (pos.x + cosf(barrelAngle[2]) * barrelSize) ,  pos.y - barrelSize * 2 };
 	barrelEnd[3] = { (pos.x + cosf(barrelAngle[3]) * barrelSize) ,  pos.y - barrelSize * 2 };
+	barrelEnd[4] = { (pos.x) ,  pos.y - barrelSize * 2 };
+
 	barrelAngle[0] = PI / 2;
 	barrelAngle[1] = PI / 2;
 	barrelAngle[2] = 3 * (PI / 4);
 	barrelAngle[3] = PI / 4;
+	barrelAngle[4] = PI / 2;
+
+	barrelAlive[0] = false;
+	barrelAlive[1] = false;
+	barrelAlive[2] = false;
+	barrelAlive[3] = false;
+	barrelAlive[4] = true;
 
 	//미사일
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		myMissile[i] = new MissileManager();
-		myMissile[i]->Init(this->collisionCheck, barrelEnd[i]);
+		if (barrelAlive[i])
+			myMissile[i]->Init(this->collisionCheck, barrelEnd[i]);
+		else
+			myMissile[i]->Init(this->collisionCheck, {-100, -100});
 	}
 	fireCount = 0;
 
@@ -62,7 +96,7 @@ HRESULT PlayerShip::Init(CollisionCheck* collisionCheck)
 
 void PlayerShip::Release()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		if (myMissile[i])
 		{
@@ -77,7 +111,9 @@ void PlayerShip::Update()
 {
 	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
 
-	playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
+	//충돌
+	//playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
+	playerRect = { (LONG)(pos.x - collisionSize.x / 3), (LONG)(pos.y - collisionSize.y / 3), (LONG)(pos.x + collisionSize.x / 3), (LONG)(pos.y + collisionSize.y / 3) };
 	collisionCheck->SetPlayerRect(playerRect);
 
 	//첫 등장 (아래에서 위로)
@@ -89,11 +125,25 @@ void PlayerShip::Update()
 			canMove = true;
 	}
 
+	if (playerLife <= 0)
+	{
+		isAlive = false;
+	}
+
 	//알파블랜드
-	if (isAlive && KeyManager::GetSingleton()->IsStayKeyDown(VK_RETURN))
+	if (isAlive && KeyManager::GetSingleton()->IsStayKeyDown(VK_RETURN))//죽고 등장하면 깜빡거림
 	{
 		isAlive = false;
 		isDying = true;
+	}
+
+	if (KeyManager::GetSingleton()->IsStayKeyDown('J'))//충돌처리 플레이어 죽으면 터지면서 다시등장
+	{
+		
+	//	pos.x = WINSIZE_X / 2;
+		//pos.y = WINSIZE_Y + 50;
+		canMove = false;
+		lifeDecrease = true;
 	}
 
 	//이동
@@ -117,23 +167,46 @@ void PlayerShip::Update()
 		barrelEnd[i] = { ((pos.x - 10.0f + (20.0f * (i - 2))) + cosf(barrelAngle[i])* barrelSize) , pos.y - barrelSize };
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 4; i < 5; i++)
+	{
+		barrelEnd[i] = { (pos.x), (pos.y - barrelSize) };
+	}
+
+	for (int i = 0; i < 5; i++)
 	{
 		if (myMissile[i])
 		{
 			myMissile[i]->SetOwnerType(MissileManager::OWNERTYPE::Player);
-			myMissile[i]->SetPlayerPos(this->pos);
-			myMissile[i]->SetPos(barrelEnd[i]);
+			myMissile[i]->SetPlayerPos(this->pos); 
+			if (barrelAlive[i])
+				myMissile[i]->SetPos(barrelEnd[i]);
 			myMissile[i]->SetAngle(barrelAngle[i]);
+			myMissile[i]->SetPlayerPower(this->playerPower);
 			myMissile[i]->Update();
 			//공격
 			Attack(i);
+		}
+	}
+	if (!isAlive)
+	{
+		if (KeyManager::GetSingleton()->IsStayKeyDown('R')) //죽엇을때 다시시작할건지 묻기 R을 누르면 진행되던 스테이지에서 그대로 시작
+		{
+			playerLife = 5;
+			isAlive = true;
 		}
 	}
 }
 
 void PlayerShip::Render(HDC hdc)
 {
+	//파워 표시
+	wsprintf(szText, "Player Power: %d", playerPower);
+	TextOut(hdc, WINSIZE_X - 150, 160, szText, strlen(szText));
+
+	//파워 표시
+	wsprintf(szText, "Attack Value: %d", attackValue);
+	TextOut(hdc, WINSIZE_X - 150, 180, szText, strlen(szText));
+
 	//life 표시
 	wsprintf(szText, "LIFE: %d",playerLife);
 	TextOut(hdc, WINSIZE_X - 150, 80, szText, strlen(szText));
@@ -141,33 +214,153 @@ void PlayerShip::Render(HDC hdc)
 	//이미지
 	if (image)
 	{
-		if(!isAlive)
-			image->AlphaRender(hdc, pos.x, pos.y, true);
-		if(isAlive)
-			image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
+		if (reAppear == true)//깜박이며 다시등장하기 AlphaRender는 프레임이 없어서 좀 고쳐야할듯
+		{
+			blinkImage->AlphaRender(hdc, pos.x, pos.y, true);//AlphaRender 고쳐되 괜찮은지 묻기
+
+			BLENDFUNCTION* blendFunc = blinkImage->GetBlendFunc();//하나짜리 프레임의 비행기 이미지띄우는걸로 결정 ㅎㅎ
+			blinkCount++;
+			if (blinkCount % 2 == 0)
+			{
+				blendFunc->SourceConstantAlpha = 0;
+			}
+			else
+			{
+				blendFunc->SourceConstantAlpha = 255;
+			}
+
+			if (blinkCount > 175)
+			{
+				blinkCount = 0;
+				reAppear = false;
+			}
+
+		}
+		else
+		{
+
+			if (isAlive)
+			{
+				image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
+			}
+			else //죽으면 다시도전할수 있는 화면 띄우기
+			{
+				retryImage->Render(hdc);
+
+			}
+		}
+			//image->AlphaRender(hdc, pos.x, pos.y, true);
+	}
+
+
+
+	if (lifeDecrease == true )//폭발이미지 출력부분
+	{	
+		explosionCount++;
+		if (explosionCount > 3)
+		{
+			explosionCurrFrame++; 
+			explosionCount = 0;
+		}
+		
+		explosionImage->FrameRender(hdc,pos.x, pos.y , explosionCurrFrame, 0, true);
+		//explosionimage->FrameRender(hdc, pos.x, pos.y + 80, explosionCurrFrame, 0, true);
+		if (explosionCurrFrame > 10)
+		{
+			canMove = false;
+			pos.x = WINSIZE_X / 2;
+			pos.y = WINSIZE_Y + 50;
+		}
+		if (explosionCurrFrame > 16)
+		{
+			explosionCurrFrame = 0;
+			lifeDecrease = false;
+			playerLife -= 1;
+			reAppear = true;
+			
+			
+		}
 	}
 
 	// 포신
-	MoveToEx(hdc, pos.x-10, pos.y, NULL);
-	LineTo(hdc, barrelEnd[0].x, barrelEnd[0].y);
+	if (playerPower == 1)
+	{
+		MoveToEx(hdc, pos.x, pos.y, NULL);
+		LineTo(hdc, barrelEnd[4].x, barrelEnd[4].y);
+	}
+	if (playerPower >= 2)
+	{
+		barrelAlive[4] = false;
+		barrelEnd[4] = { -100, -100 };
 
-	MoveToEx(hdc, pos.x+10, pos.y, NULL);
-	LineTo(hdc, barrelEnd[1].x, barrelEnd[1].y);
+		barrelAlive[0] = true;
+		barrelAlive[1] = true;
 
-	MoveToEx(hdc, pos.x - 10, pos.y, NULL);
-	LineTo(hdc, barrelEnd[2].x, barrelEnd[2].y);
+		MoveToEx(hdc, pos.x - 10, pos.y, NULL);
+		LineTo(hdc, barrelEnd[0].x, barrelEnd[0].y);
 
-	MoveToEx(hdc, pos.x + 10, pos.y, NULL);
-	LineTo(hdc, barrelEnd[3].x, barrelEnd[3].y);
+		MoveToEx(hdc, pos.x + 10, pos.y, NULL);
+		LineTo(hdc, barrelEnd[1].x, barrelEnd[1].y);
+
+		if (playerPower >= 3)
+		{
+			barrelAlive[2] = true;
+			barrelAlive[3] = true;
+
+			MoveToEx(hdc, pos.x - 10, pos.y, NULL);
+			LineTo(hdc, barrelEnd[2].x, barrelEnd[2].y);
+
+			MoveToEx(hdc, pos.x + 10, pos.y, NULL);
+			LineTo(hdc, barrelEnd[3].x, barrelEnd[3].y);
+		}
+
+	}
 
 	//미사일
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		if (myMissile[i])
 		{
 			myMissile[i]->Render(hdc);
 		}
 	}
+
+	//폭발 아이템 사용/////////////////////////////////////
+	if (KeyManager::GetSingleton()->IsOnceKeyDown('E'))
+	{
+		exPos = pos;
+		tempSize = 0;
+		bombUse = true;
+	}
+	if (bombUse)
+	{
+		if (currFrameX_ex < 5)
+			tempSize = 30 * currFrameX_ex;
+		else
+			tempSize = 150;
+
+		bombRect = { (LONG)(exPos.x - tempSize), (LONG)((exPos.y - 150) - tempSize),
+		(LONG)(exPos.x + tempSize), (LONG)((exPos.y - 150) + tempSize) };
+		collisionCheck->SetBombRect(bombRect);
+
+		explosionImage->FrameRender(hdc, exPos.x, exPos.y - 150, currFrameX_ex, 0, true);
+
+		imageTime += TimerManager::GetSingleton()->getElapsedTime();
+		if (imageTime > 0.1f)
+		{
+			if (currFrameX_ex < 12)
+				currFrameX_ex++;
+			else
+			{
+				currFrameX_ex = 0;
+				bombUse = false;
+				//
+			}
+			imageTime = 0;
+		}
+	}
+
+	(this->collisionCheck)->SetBombUse(this->bombUse);
 }
 
 void PlayerShip::Move()
@@ -224,11 +417,12 @@ void PlayerShip::Attack(int i)
 	if (KeyManager::GetSingleton()->IsStayKeyDown('Z'))
 	{
 		fireCount++;
-		if (fireCount % 100 == 0)
+		if (fireCount % 50 == 0)
 		{
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 5; i++)
 			{
-				myMissile[i]->Fire(FIRETYPE::PlayerFIRE);
+				if(barrelAlive[i])
+					myMissile[i]->Fire(FIRETYPE::PlayerFIRE);
 			}
 			fireCount = 0;
 		}

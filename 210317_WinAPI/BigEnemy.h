@@ -3,6 +3,6 @@
 class BigEnemy : public Enemy
 {
 public:
-	virtual HRESULT Init(int posX = 0, int posY = 0);
+	virtual HRESULT Init(CollisionCheck* collisionCheck, int posX = 0, int posY = 0);
 };
 

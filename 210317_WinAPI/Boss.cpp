@@ -35,6 +35,10 @@ void Boss::Render(HDC hdc)
 void Boss::OnDead()
 {
 }
+
+void Boss::Life(int attackValue)
+{
+}
 //상태 1: NORMAL / 와리                     지속시간5 쿨3 우선순위3
 //상태 2 : TWO / 좌우                       지속시간5 쿨3 우선순위3
 //상태 3 : METEOR / 중앙                    지속시간5 쿨3 우선순위3

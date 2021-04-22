@@ -15,6 +15,7 @@
 #include "ZigzagFire.h"
 #include "FallingKnivesFire.h"
 #include "TornadoFire.h"
+#include "TargetFire.h"
 
 HRESULT MissileManager::Init(CollisionCheck* collisionCheck, FPOINT pos)
 {
@@ -44,8 +45,7 @@ HRESULT MissileManager::Init(CollisionCheck* collisionCheck, FPOINT pos)
     vFireInterfaces[FIRETYPE::WormFIRE] = new WormFire();
     vFireInterfaces[FIRETYPE::ZigzagFIRE] = new ZigzagFire();
     vFireInterfaces[FIRETYPE::TornadoFIRE] = new TornadoFire();
-
-
+    vFireInterfaces[FIRETYPE::TargetFIRE] = new TargetFire();
 
     //어떤 미사일을 장전 시킬 것인가
     fireManager = new FireManager();
@@ -81,13 +81,6 @@ void MissileManager::Update()
 {
     for (auto lpMissile : vMissiles)
     {
-        //lpMissile->SetPlayerPos(this->playerPos);
-        ////lpMissile->SetPos(this->missilePos);
-        //lpMissile->SetStartPos(this->missilePos);
-        //if(this->fireType == FIRETYPE::PlayerFIRE)
-        //    lpMissile->SetAngle(this->missileAngle);
-        //lpMissile->Update();
-        //lpMissile->SetSize(missileSize);
 
         lpMissile->SetStartPos(this->missilePos);
         if (lpMissile->GetIsFired())
@@ -103,6 +96,43 @@ void MissileManager::Update()
             }
 
             lpMissile->Update();
+        //vMissiles[i]->SetPlayerPos(this->playerPos);
+        //vMissiles[i]->SetPlayerPower(this->playerPower);
+        //vMissiles[i]->SetStartPos(this->missilePos);
+        //if(this->fireType == FIRETYPE::PlayerFIRE)
+        //    vMissiles[i]->SetAngle(this->missileAngle);
+        //vMissiles[i]->SetSize(missileSize);
+        //vMissiles[i]->Update();
+
+        //if (vMissiles[i]->GetIsFired())
+        //{
+        //    for (int j = 0; j < 3; j++)
+        //    {
+        //        if (ownerType == j)
+        //        {
+        //            vMissiles[i]->SetOwnerType((Missile::OWNERTYPE)j);
+        //        }
+        //    }
+
+        //    /*vMissiles[i]->SetPlayerPos(this->playerPos);
+        //    vMissiles[i]->SetPlayerPower(this->playerPower);
+        //    vMissiles[i]->SetStartPos(this->missilePos);
+        //    if (this->fireType == FIRETYPE::PlayerFIRE)
+        //        vMissiles[i]->SetAngle(this->missileAngle);
+        //    vMissiles[i]->SetSize(missileSize);*/
+        //    vMissiles[i]->Update();
+
+        }
+        else
+        {
+            if (this->fireType == FIRETYPE::PlayerFIRE)
+            {
+                (this->collisionCheck)->DeletePlayerMissile(lpMissile);
+            }
+            else
+            {
+                (this->collisionCheck)->DeleteBossMissile(lpMissile);
+            }
         }
     }
 }
@@ -111,7 +141,8 @@ void MissileManager::Render(HDC hdc)
 {
     for (auto lpMissile : vMissiles)
     {
-        lpMissile->Render(hdc);
+        if(lpMissile->GetIsFired())
+            lpMissile->Render(hdc);
     }
 }
 
@@ -185,6 +216,12 @@ void MissileManager::Fire(FIRETYPE fireType)
     case FIRETYPE::TornadoFIRE:
         if (currFire != vFireInterfaces[FIRETYPE::TornadoFIRE]) {
             currFire = vFireInterfaces[FIRETYPE::TornadoFIRE];
+            fireManager->ChangeMove(currFire);
+        }
+        break;
+    case FIRETYPE::TargetFIRE:
+        if (currFire != vFireInterfaces[FIRETYPE::TargetFIRE]) {
+            currFire = vFireInterfaces[FIRETYPE::TargetFIRE];
             fireManager->ChangeMove(currFire);
         }
         break;

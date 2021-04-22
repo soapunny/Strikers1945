@@ -27,6 +27,7 @@ private:
 	FireInterface* currFire;
 
 	FPOINT playerPos;
+	int playerPower;
 
 	FIRETYPE fireType;
 	OWNERTYPE ownerType;
@@ -55,5 +56,6 @@ public:
 	inline vector<Missile*> GetMissileVector() { return vMissiles; }
 	inline vector<RECT*>* GetMissileRect() { return vMissilesRect; }
 
+	inline void SetPlayerPower(int power) { this->playerPower = power; }
 };
 

@@ -10,6 +10,10 @@ private:
 	CollisionCheck* collisionCheck;
 
 	Image* image;
+	Image* blinkImage;
+	Image* retryImage;
+	Image* explosionImage;
+
 	FPOINT pos;
 	float moveSpeed;	//초당 이동거리
 	bool isDying;
@@ -18,21 +22,39 @@ private:
 
 	int currFrameX;
 
+	int explosionCurrFrame;
+	bool lifeDecrease;
+
+	int currFrameX_ex;
+	FPOINT exPos;
+	float imageTime;
+	bool bombUse;
+
 	int size;
-	float attackValue;
+	int attackValue;
+
+	int explosionCount;
+
+	int blinkCount;
+	bool reAppear;
 
 	char szText[128];
 	int playerLife;
 
 	FPOINT collisionSize;
 	int barrelSize;
-	FPOINT barrelEnd[4];
-	float barrelAngle[4];
+	FPOINT barrelEnd[5];
+	bool barrelAlive[5];
+	float barrelAngle[5];
 
-	MissileManager* myMissile[4];
+	MissileManager* myMissile[5];
 	int fireCount;
 
 	RECT playerRect;
+	int playerPower;
+
+	RECT bombRect;
+	int tempSize;
 
 public:
 	HRESULT Init();
@@ -51,7 +73,12 @@ public:
 	inline int GetPlayerLife() { return playerLife; }
 	inline void SetPlayerLife() { this->playerLife -= 1; }
 
+	inline void SetPlusPlayerLife() { this->playerLife += 1; }
+
+	inline int GetPlayerAttackValue() { return this->attackValue; }
+	inline void SetPlayerAttackValue(int attackValue) { this->attackValue = attackValue; this->playerPower = attackValue; }
+
 	inline RECT GetPlayerRect() { return playerRect; }
-	inline void SetPlayerLife(int life) { this->playerLife = life; }
 };
+
 

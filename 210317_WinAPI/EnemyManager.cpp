@@ -3,9 +3,11 @@
 #include "MediumEnemyFactory.h"
 #include "BigEnemyFactory.h"
 #include "Enemy.h"
+#include "CollisionCheck.h"
 
-HRESULT EnemyManager::Init()
+HRESULT EnemyManager::Init(CollisionCheck* collisionCheck)
 {
+    this->collisionCheck = collisionCheck;
     vEnemyFactories.resize(ENEMY_FACTORY::END_ENEMY_FACTORY);
     vEnemyFactories[ENEMY_FACTORY::SMALL_ENEMY] = new SmallEnemyFactory;
     vEnemyFactories[ENEMY_FACTORY::MEDIUM_ENEMY] = new MediumEnemyFactory;
@@ -40,7 +42,7 @@ HRESULT EnemyManager::Init()
         else
             break;
 
-        vEnemys[i]->Init(vEnemyInitPos[i % (ENEMY_INIT_POS::ENEMY_INIT_END)].x, vEnemyInitPos[i % (ENEMY_INIT_POS::ENEMY_INIT_END)].y);
+        vEnemys[i]->Init(collisionCheck, vEnemyInitPos[i % (ENEMY_INIT_POS::ENEMY_INIT_END)].x, vEnemyInitPos[i % (ENEMY_INIT_POS::ENEMY_INIT_END)].y);
         vEnemys[i]->SetIsAlive(false);
     }
 

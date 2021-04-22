@@ -2,8 +2,9 @@
 #include "MissileManager.h"
 #include "CollisionCheck.h"
 
-HRESULT MediumEnemy::Init(int posX, int posY)
+HRESULT MediumEnemy::Init(CollisionCheck* collisionCheck, int posX, int posY)
 {
+    this->collisionCheck = collisionCheck;
     //ufo
     image = ImageManager::GetSingleton()->FindImage("MediumEnemy");
     if (image == nullptr)
@@ -25,10 +26,10 @@ HRESULT MediumEnemy::Init(int posX, int posY)
     target = nullptr;
     dir = 1;
 
-    collisionCheck = new CollisionCheck;
+ 
     // ¹Ì»çÀÏ
     myMissile = new MissileManager();
-    myMissile->Init(collisionCheck, pos);
+    myMissile->Init(this->collisionCheck, pos);
     fireCount2 = 0;
 
     fireType = FIRETYPE::TwoFIRE;

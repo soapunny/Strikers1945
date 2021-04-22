@@ -4,8 +4,10 @@
 
 void GuidedFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
+    this->collisionCheck = collisionCheck;
+
     time += 1.0f;
-    vector<Missile*>::iterator myIt;
+
     if (time <= 30)
     {
         if (time < 10)
@@ -13,14 +15,16 @@ void GuidedFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissi
             for (int j = 0; j < 9; j++)
             {
                 //부채꼴
-                for (int i =0;i<vMissiles->size();i++)
+                for (auto lpMissile : *vMissiles)
                 {
-                    if ((*vMissiles)[i]->GetIsFired() == false)
+                    if (lpMissile->GetIsFired() == false)
                     {
-                        (*vMissiles)[i]->SetType(Missile::SKILLTYPE::CircularSkill_TYPE);
-                        (*vMissiles)[i]->SetIsFired(true);
+                        lpMissile->SetType(Missile::SKILLTYPE::CircularSkill_TYPE);
+                        lpMissile->SetIsFired(true);
+                        (this->collisionCheck)->SetBossMissile(lpMissile);
+
                         //float angle = DegToRad(-135 + 10 * j);
-                        (*vMissiles)[i]->SetAngle(DegToRad(-135 + 10 * j));
+                        lpMissile->SetAngle(DegToRad(-135 + 10 * j));
                         break;
                     }
                 }
@@ -30,11 +34,13 @@ void GuidedFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissi
     else
     {
         //타겟 따라
-        for (int i = 0; i < vMissiles->size(); i++)
+        for (auto lpMissile : *vMissiles)
         {
-            if ((*vMissiles)[i]->GetType() == Missile::SKILLTYPE::CircularSkill_TYPE)
+            if (lpMissile->GetType() == Missile::SKILLTYPE::CircularSkill_TYPE)
             {
-                (*vMissiles)[i]->SetType(Missile::SKILLTYPE::Guided_Skill_TYPE);
+
+                lpMissile->SetType(Missile::SKILLTYPE::Guided_Skill_TYPE);
+                (this->collisionCheck)->SetBossMissile(lpMissile);
             }
         }
     }

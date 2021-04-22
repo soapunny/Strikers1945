@@ -4,6 +4,8 @@
 
 void FallingKnivesFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
+    this->collisionCheck = collisionCheck;
+
     int fireCnt = 12;
 
     for (auto lpMissile : *vMissiles)
@@ -14,8 +16,11 @@ void FallingKnivesFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>*
             lpMissile->SetAngle(DegToRad(-30 * fireCnt));
 
             lpMissile->SetIsFired(true);
+            (this->collisionCheck)->SetBossMissile(lpMissile);
+
             fireCnt--;
-            if (fireCnt <= 0) break;
+            if (fireCnt <= 0) 
+                break;
         }
     }
 }

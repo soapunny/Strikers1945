@@ -62,12 +62,24 @@
     <ClCompile Include="TornadoFire.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Subject.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="BigEnemy.cpp" />
     <ClCompile Include="MediumEnemy.cpp" />
     <ClCompile Include="SmallEnemy.cpp" />
     <ClCompile Include="SmallEnemyFactory.cpp" />
     <ClCompile Include="BigEnemyFactory.cpp" />
     <ClCompile Include="MediumEnemyFactory.cpp" />
+=======
+    <ClCompile Include="TargetFire.cpp" />
+    <ClCompile Include="TargetSkill.cpp" />
+    <ClCompile Include="BackMove.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
+    <ClCompile Include="ItemLifeFactory.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemLife.cpp" />
+    <ClCompile Include="ItemBomb.cpp" />
+    <ClCompile Include="ItemPower.cpp" />
+>>>>>>> 1db91ea8375c9db019e38343ab10f85c799b0a5f
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barrel.h" />
@@ -138,6 +150,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Subject.h" />
+<<<<<<< HEAD
     <ClInclude Include="BigEnemy.h" />
     <ClInclude Include="MediumEnemy.h" />
     <ClInclude Include="SmallEnemy.h" />
@@ -145,5 +158,17 @@
     <ClInclude Include="SmallEnemyFactory.h" />
     <ClInclude Include="BigEnemyFactory.h" />
     <ClInclude Include="MediumEnemyFactory.h" />
+=======
+    <ClInclude Include="TargetFire.h" />
+    <ClInclude Include="TargetSkill.h" />
+    <ClInclude Include="BackMove.h" />
+    <ClInclude Include="ItemManager.h" />
+    <ClInclude Include="ItemFactory.h" />
+    <ClInclude Include="ItemLifeFactory.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemLife.h" />
+    <ClInclude Include="ItemBomb.h" />
+    <ClInclude Include="ItemPower.h" />
+>>>>>>> 1db91ea8375c9db019e38343ab10f85c799b0a5f
   </ItemGroup>
 </Project>

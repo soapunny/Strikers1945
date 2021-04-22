@@ -4,25 +4,25 @@
 
 void MeteorFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
-    vector<Missile*>::iterator myIt;
-
+    this->collisionCheck = collisionCheck;
     //일정 범위 안에서 위로 쭉 쏘아 올리고 
     //작아지면서 해당 위치에 쏘기 그리고 사라짐
     srand(std::time(NULL));
     for (int i = 0; i < 36; i++)
     {
+       
         if (firedCount > 36) firedCount = 0;
-        for (int i=0;i<vMissiles->size();i++)
+        for (auto lpMissile : *vMissiles)
         {
-
-            if ((*vMissiles)[i]->GetIsFired() == false)
+            if (lpMissile->GetIsFired() == false)
             {
                 firedCount++;
-                (*vMissiles)[i]->SetType(Missile::SKILLTYPE::MeteorSkill_TYPE);
-                (*vMissiles)[i]->SetIsFired(true);
-                (*vMissiles)[i]->SetAngle(DegToRad((firedCount * 10)));
+                lpMissile->SetType(Missile::SKILLTYPE::MeteorSkill_TYPE);
+                lpMissile->SetIsFired(true);
+                lpMissile->SetAngle(DegToRad((firedCount * 10)));
+                lpMissile->SetMoveSpeed(170);
+                (this->collisionCheck)->SetBossMissile(lpMissile);
                 break;
-
             }
         }
     }

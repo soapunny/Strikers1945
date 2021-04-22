@@ -7,13 +7,13 @@ void PlayerFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissi
     this->collisionCheck = collisionCheck;
 
 	//일직선 위로 향하는 미사일 장전
-	for (int i=0;i< vMissiles->size();i++)
+	for (auto lpMissile : *vMissiles)
 	{
-		if ((*vMissiles)[i]->GetIsFired() == false)
+		if (lpMissile->GetIsFired() == false)
 		{
-			(*vMissiles)[i]->SetType(Missile::SKILLTYPE::PlayerSkill_TYPE);
-			(*vMissiles)[i]->SetIsFired(true);
-			(this->collisionCheck)->SetPlayerMissile((*vMissiles)[i]);
+			lpMissile->SetType(Missile::SKILLTYPE::PlayerSkill_TYPE);
+			lpMissile->SetIsFired(true);
+			(this->collisionCheck)->SetPlayerMissile(lpMissile);
 			break;
 		}
 	}

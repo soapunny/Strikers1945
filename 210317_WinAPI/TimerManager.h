@@ -17,5 +17,7 @@ public:
 	void Render(HDC hdc);
 
 	float getElapsedTime();
+	int  getGameSecond();
+
 };
 

@@ -4,29 +4,31 @@
 #include "CollisionCheck.h"
 void TwoFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
-    vector<Missile*>::iterator myIt;
+    this->collisionCheck = collisionCheck;
+
 
     //일정 범위 안에서 위로 쭉 쏘아 올리고 
     //작아지면서 해당 위치에 쏘기 그리고 사라짐
     srand(std::time(NULL));
 
     int i = 0;
-    for (int  i =0;i<vMissiles->size();i++)
+    for (auto lpMissile : *vMissiles)
     {
-        if ((*vMissiles)[i]->GetIsFired() == false)
+
+        if (lpMissile->GetIsFired() == false)
         {
             randAngle = (rand() % 168 - 18) * 100;
-            (*vMissiles)[i]->SetType(Missile::SKILLTYPE::TwoSKill_TYPE);
-            (*vMissiles)[i]->SetIsFired(true);
-            (*vMissiles)[i]->SetAngle(DegToRad(k));
-            
-            i++;
-            if(i >= 2)
-                break;
-            
-        }
+            lpMissile->SetType(Missile::SKILLTYPE::TwoSKill_TYPE);
+            lpMissile->SetIsFired(true);
+            lpMissile->SetAngle(DegToRad(k));
+            lpMissile->SetMoveSpeed(200);
+            (this->collisionCheck)->SetBossMissile(lpMissile);
 
+            i++;
+            if(i >= 3)
+                break;  
+        }
          k+=20;
-        if (k > -80) k = -100;
+        if (k > -70) k = -110;
     }
 }

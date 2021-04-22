@@ -3,6 +3,7 @@
 
 class Enemy;
 class EnemyFactory;
+class CollisionCheck;
 class EnemyManager: public GameNode
 {
 public:
@@ -23,8 +24,11 @@ private:
 	float createCycle;
 	bool addEnemyToggle;
 
+	CollisionCheck* collisionCheck;
+
 public:
-	HRESULT Init();		// 오버라이딩 : 다형성
+	HRESULT Init() { return S_OK; }		// 오버라이딩 : 다형성
+	HRESULT Init(CollisionCheck* collisionCheck);		// 오버라이딩 : 다형성
 	void Release();
 	void Update();
 	void Render(HDC hdc);

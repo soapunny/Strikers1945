@@ -3,7 +3,7 @@
 #include "Singleton.h"
 
 class Image;
-
+class CollisionCheck;
 class ImageManager: public Singleton<ImageManager>
 {
 private:
@@ -13,11 +13,16 @@ private:
 
 public:
 	HRESULT Init();
+
 	void Release();
 
 	//정적 이미지
 	Image* AddImage(string key, const char* fileName,
 		int width, int height, 
+		bool isTransparent = FALSE, COLORREF transColor = FALSE);
+	//정적 각도 이미지
+	Image* AddAngleImage(string key, const char* fileName,
+		int width, int height,
 		bool isTransparent = FALSE, COLORREF transColor = FALSE);
 	//프레임 있는 동적 이미지
 	Image* AddImage(string key, const char* fileName,

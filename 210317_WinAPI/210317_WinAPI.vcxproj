@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BackMove.cpp" />
     <ClCompile Include="Barrel.cpp" />
     <ClCompile Include="BigEnemy.cpp" />
     <ClCompile Include="BigEnemyFactory.cpp" />
@@ -161,6 +162,12 @@
     <ClCompile Include="GuidedSkill.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemBomb.cpp" />
+    <ClCompile Include="ItemLife.cpp" />
+    <ClCompile Include="ItemLifeFactory.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
+    <ClCompile Include="ItemPower.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="LeftDownMove.cpp" />
     <ClCompile Include="LeftSinMove.cpp" />
@@ -197,6 +204,8 @@
     <ClCompile Include="StageTwoBoss.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="TargetFire.cpp" />
+    <ClCompile Include="TargetSkill.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
     <ClCompile Include="TornadoFire.cpp" />
@@ -210,6 +219,7 @@
     <ClCompile Include="ZigzagSkill.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackMove.h" />
     <ClInclude Include="Barrel.h" />
     <ClInclude Include="BigEnemy.h" />
     <ClInclude Include="BigEnemyFactory.h" />
@@ -233,6 +243,13 @@
     <ClInclude Include="FireworkFire.h" />
     <ClInclude Include="FireworkSkill.h" />
     <ClInclude Include="GameNode.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemBomb.h" />
+    <ClInclude Include="ItemFactory.h" />
+    <ClInclude Include="ItemLife.h" />
+    <ClInclude Include="ItemLifeFactory.h" />
+    <ClInclude Include="ItemManager.h" />
+    <ClInclude Include="ItemPower.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LeftDownMove.h" />
     <ClInclude Include="LeftSinMove.h" />
@@ -274,6 +291,8 @@
     <ClInclude Include="StageTwoBoss.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="Tank.h" />
+    <ClInclude Include="TargetFire.h" />
+    <ClInclude Include="TargetSkill.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerManager.h" />
     <ClInclude Include="TornadoFire.h" />

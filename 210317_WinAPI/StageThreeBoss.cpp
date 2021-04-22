@@ -20,7 +20,7 @@ HRESULT StageThreeBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     currMoveInterface = nullptr;
     image = ImageManager::GetSingleton()->FindImage("StageThreeBoss");
     if (image == nullptr)
-    {
+    { 
         MessageBox(g_hWnd, "enemy에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
         return E_FAIL;
     }
@@ -33,7 +33,7 @@ HRESULT StageThreeBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     pos.x = WINSIZE_X / 2 ;
     pos.y = -150;
     size = 150;
-    BossHp = 100;
+    life = 100;
     moveSpeed = 100.0f;
     TornadoFireCount = 30;
     isAlive = true;
@@ -56,12 +56,9 @@ HRESULT StageThreeBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
         vBarrels[i] = new Barrel();
         vBarrels[i]->Init(this->collisionCheck, pos.x, pos.y);
         //vBarrels[i]->Init(pos);
-
         //RotateBarrel(vBarrels[i] , i);
        // vBarrels[i]->SetbarrelEnd();
     }
-
-  
 
     return S_OK;
 }
@@ -86,44 +83,45 @@ void StageThreeBoss::Release()
 
 void StageThreeBoss::Update()
 {
+    //충돌박스 넘겨주기
+    //bossRect = { (LONG)(pos.x - size / 2), (LONG)(pos.y - size / 2), (LONG)(pos.x + size / 2), (LONG)(pos.y + size / 2) };
+    //(this->collisionCheck)->SetBossRect(bossRect);
+    //(this->collisionCheck)->GetBossAlive(isAlive);
+
     for (int i = 0; i < vBarrels.size(); i++)
     {
         if (vBarrels[i])
-        {
-           
+        {           
             if (i < isActBarrelCount)
             {
                 vBarrels[i]->SetActivated(true);
-
             }
             else
             {
                 vBarrels[i]->SetActivated(false);
-
             }
             vBarrels[i]->SetBarrelPos(pos);
-           // RotateBarrel(vBarrels[i], i); //포신의 끝점을 설정
+            // RotateBarrel(vBarrels[i], i); //포신의 끝점을 설정
             //vBarrels[i]->SetPos(pos);
         }
     }
-    if (BossHp <= 75)
-    {
-        isActBarrelCount = 2;
-       // Attackstatus = 1;
-    }
-  
+
     Move();
     
-
     //미사일 발사
     Attack();
+
+    if (KeyManager::GetSingleton()->IsOnceKeyDown('G'))
+    {
+        life -= 25;
+    }
 }
 
 void StageThreeBoss::Render(HDC hdc)
 {
     if (isAlive)
     {
-        RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
+        //RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
 
         if (image)
         {
@@ -138,8 +136,6 @@ void StageThreeBoss::Render(HDC hdc)
         {
             if (vBarrels[i])
             {
-            
-
                 vBarrels[i]->Render(hdc);
             }
         }
@@ -161,6 +157,7 @@ void StageThreeBoss::Attack()
         }
         AttackElapesdTimer = TimerManager::GetSingleton()->getElapsedTime();
         AttackTimer += AttackElapesdTimer;
+       
         //미사일 발사
         if (Attackstatus == 1)
         {
@@ -187,7 +184,6 @@ void StageThreeBoss::Attack()
             {
                 for (int i = 0; i < 1; i++)
                 {
-            
                     if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
                     {
                         //if(BossHp/4*3>)
@@ -198,22 +194,16 @@ void StageThreeBoss::Attack()
                     }
                 }
             }
-        }
-        
-
-        
+        } 
     }
 
     //myMissile->SetPos(pos);
 }
 
 void StageThreeBoss::Move()
-{
-    
+{    
     MoveElapesdTimer =TimerManager::GetSingleton()->getElapsedTime();//똑같은 속도로 나선형으로 도는방법 중심점만 밀어주면 되나?
     MoveTimer += MoveElapesdTimer;
-
-   
 
     if (Movestatus == 0)//등장 이동
     {  
@@ -232,10 +222,9 @@ void StageThreeBoss::Move()
        {
            Attackstatus = 2;
            Movestatus++;
-       }
-      
-      
+       }      
     }
+
     if (Movestatus == 1)
     {
        moveSpeed = 2;
@@ -261,9 +250,7 @@ void StageThreeBoss::Move()
        moveSpeed -= 0.001;
        moveManager->SetMoveSpeed(moveSpeed);
     }
-        
-   
-    
+         
     moveManager->DoMove(&pos, &angle);
     
 }
@@ -293,6 +280,12 @@ void StageThreeBoss::OnDead()
         else
         {
             isAlive = false;
+            (this->collisionCheck)->GetBossAlive(isAlive);
         }
     }
+}
+
+void StageThreeBoss::Life(int attackValue)
+{
+    life -= attackValue;
 }

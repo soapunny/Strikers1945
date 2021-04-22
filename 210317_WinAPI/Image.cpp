@@ -1,4 +1,5 @@
-#include "Image.h"
+ #include "Image.h"
+#include "wingdi.h"			//각도 회전
 
 HRESULT Image::Init(int width, int height)
 {
@@ -6,7 +7,7 @@ HRESULT Image::Init(int width, int height)
 
     imageInfo = new IMAGE_INFO();
     imageInfo->resID = 0;
-    imageInfo->hMemDC = CreateCompatibleDC(hdc);
+    imageInfo->hMemDC = CreateCompatibleDC                                                                                              (hdc);
     imageInfo->hBitmap = CreateCompatibleBitmap(hdc, width, height);
     imageInfo->hOldBit = 
         (HBITMAP)SelectObject(imageInfo->hMemDC, imageInfo->hBitmap);
@@ -28,8 +29,7 @@ HRESULT Image::Init(int width, int height)
     return S_OK;
 }
 
-HRESULT Image::Init(const char* fileName, int width, int height,
-    bool isTransparent/* = FALSE*/, COLORREF transColor/* = FALSE*/)
+HRESULT Image::Init(const char* fileName, int width, int height, bool isTransparent/* = FALSE*/, COLORREF transColor/* = FALSE*/)
 {
     HDC hdc = GetDC(g_hWnd);
 
@@ -76,6 +76,84 @@ HRESULT Image::Init(const char* fileName, int width, int height,
     this->blendFunc.SourceConstantAlpha = 255;
 
     return S_OK;
+}
+
+HRESULT Image::AngleInit(const char* fileName, int width, int height, bool isTransparent, COLORREF transColor)
+{
+    //이미지 정보 초기화
+    HDC hdc = GetDC(g_hWnd);
+    int reSize = (int)ceil(sqrt(width * width + height * height));
+
+    imageInfo = new IMAGE_INFO();
+    imageInfo->resID = 0;
+    
+    imageInfo->hAngleBitmap[0] = (HBITMAP)LoadImage(g_hInstance, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+    imageInfo->hAngleBitmap[1] = (HBITMAP)LoadImage(g_hInstance, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+    imageInfo->hAngleOldBit[0] = (HBITMAP)SelectObject(imageInfo->hMemDC, imageInfo->hBitmap);
+    imageInfo->hAngleOldBit[1] = (HBITMAP)SelectObject(imageInfo->hMemDC,  imageInfo->hBitmap);
+
+    imageInfo->width = width;   //회전 전 이미지 크기
+    imageInfo->height = height;
+    imageInfo->loadType = IMAGE_LOAD_KIND::FILE;
+
+    //배경 이미지 가져와서 저장할, 비어있는 DC(hTempDC) 만들기
+    imageInfo->hTempDC = CreateCompatibleDC(hdc);
+    imageInfo->hTempBitmap = (HBITMAP)LoadImage(g_hInstance, fileName, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+    imageInfo->hTempBrush = CreateSolidBrush(RGB(255, 0, 255));
+    DeleteObject(SelectObject(imageInfo->hTempDC, imageInfo->hTempBitmap));
+
+    //각도 회전 (2개만 만들거임)
+    XFORM xForm[2] = { 0.0f };
+    XFORM xOldForm;
+    //135도
+    xForm[0].eM11 = (float)cos(3 * (PI / 4));   xForm[0].eM12 = (float)sin(3 * (PI / 4));
+    xForm[0].eM21 = (float)-sin(3 * (PI / 4));  xForm[0].eM22 = (float)cos(3 * (PI / 4));
+    //xForm[0].eDx = ??;   xForm[0].eDy = ??;  
+    //45도
+    xForm[1].eM11 = (float)cos(PI / 4);   xForm[1].eM12 = (float)sin(PI / 4);
+    xForm[1].eM21 = (float)-sin(PI / 4);  xForm[1].eM22 = (float)cos(PI / 4);
+    //xForm[1].eDx = ? ? ;   xForm[1].eDy = ? ? ;
+
+    for (int i = 0; i < 2; i++)
+    {
+        //각도 회전 이미지 저장할, 비어있는 DC(hTempDC) 만들기
+        //imageInfo->hAngleDC[i] = CreateCompatibleDC()
+        //SetGraphicsMode(imageInfo->hMemDC, GM_ADVANCED);
+        SetWorldTransform(imageInfo->hMemDC, &xForm[i]);
+    }
+    DeleteObject(imageInfo->hAngleTempDC);
+    DeleteObject(imageInfo->hAngleTempBitmap);
+    DeleteObject(imageInfo->hAngleTempBrush);
+
+
+    imageInfo->hAngleDC[0] = CreateCompatibleDC(imageInfo->hTempDC);
+    imageInfo->hAngleDC[1] = CreateCompatibleDC(imageInfo->hTempDC);
+    imageInfo->hAngleDC[1] = CreateCompatibleDC(imageInfo->hTempDC);
+
+
+
+    //회전 후 이미지 크기 정보 저장
+    imageInfo->width = reSize;
+    imageInfo->height = reSize;
+
+    // 릴리즈
+    ReleaseDC(g_hWnd, hdc);
+
+    if (imageInfo->hBitmap == NULL)
+    {
+        Release();
+        return E_FAIL;
+    }
+
+    this->isTransparent = isTransparent;
+    this->transColor = transColor;
+
+    this->blendFunc.AlphaFormat = 0;
+    this->blendFunc.BlendFlags = 0;
+    this->blendFunc.BlendOp = AC_SRC_OVER;
+    this->blendFunc.SourceConstantAlpha = 255;
+
+    return S_OK;;
 }
 
 HRESULT Image::Init(const char* fileName, int width, int height, int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
@@ -209,8 +287,6 @@ void Image::Render(HDC hdc, int size, int destX, int destY, bool isCenterRenderr
             SRCCOPY             // 복사 옵션
         );
     }
-
-
 }
 
 //프레임 조절이 필요 있을 때 사용
@@ -404,6 +480,7 @@ void Image::AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring)
     );*/
   
 }
+
 //void Image::AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring, int currFrameX, int size)
 //{
 //    imageInfo->currFrameX = currFrameX;
@@ -464,6 +541,71 @@ void Image::AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring)
 //    );  //BLENDFUNCTION()
 //
 //}
+
+//이미지 angle 만큼 회전 시킬 때 사용
+void Image::AngleRender(HDC hdc, int destX, int destY, float angle, bool isCenterRenderring)
+{
+    int x = destX;
+    int y = destY;
+    if (isCenterRenderring)
+    {
+        x -= (imageInfo->width) / 2;
+        y -= (imageInfo->height) / 2;
+    }
+
+    //배경 이미지 가져와서 저장할, 비어있는 DC(hTempDC) 만들기
+    if (!imageInfo->hTempDC)
+    {
+        reSize = (int)ceil(sqrt(imageInfo->width * imageInfo->width + imageInfo->height * imageInfo->height));
+        imageInfo->hTempDC = CreateCompatibleDC(imageInfo->hMemDC);
+        imageInfo->hTempBitmap = CreateCompatibleBitmap(imageInfo->hMemDC, reSize, reSize);
+        imageInfo->hTempBrush = CreateSolidBrush(transColor);
+        DeleteObject(SelectObject(imageInfo->hTempDC, imageInfo->hTempBitmap));
+        DeleteObject(SelectObject(imageInfo->hTempDC, imageInfo->hTempBrush));
+        PatBlt(imageInfo->hTempDC, 0, 0, reSize, reSize, PATCOPY);
+    }
+
+    // 휘어질 각도 저장하기
+    XFORM xForm = { 0.0f };
+    xForm.eM11 = (float)cos(angle); xForm.eM12 = (float)sin(angle);
+    xForm.eM21 = (float)-sin(angle); xForm.eM22 = (float)cos(angle);
+    xForm.eDx = (reSize - (float)cos(angle)* imageInfo->width + (float)sin(angle) * imageInfo->height)/2;    
+    xForm.eDy = (reSize - (float)cos(angle) * imageInfo->height - (float)sin(angle) * imageInfo->width) / 2;
+    XFORM xOldForm = { 0.0f };
+    SetGraphicsMode(imageInfo->hTempDC, GM_ADVANCED);
+    SetWorldTransform(imageInfo->hTempDC, &xForm);
+
+    //번경된 크기로 늘려주기
+    GetWorldTransform(imageInfo->hTempDC, &xOldForm);
+    StretchBlt(
+        imageInfo->hTempDC,
+        0, 0,
+        imageInfo->width, imageInfo->height,
+        imageInfo->hMemDC,
+        imageInfo->width, imageInfo->height,
+        0,0,
+        SRCCOPY
+    );
+    SetWorldTransform(imageInfo->hTempDC, &xOldForm);
+
+    //색 빼기
+    if(isTransparent)
+    {
+        // 출력할 이미지 hMemDC의 내용(우주선 이미지)을 지정한 색상(마젠타)을 제외하면서 BlendDC에 복사
+        GdiTransparentBlt(
+            hdc,
+            x, y,
+            reSize, reSize,
+            imageInfo->hTempDC,
+            0, 0,
+            reSize, reSize,
+            transColor
+        );
+    }
+
+    //원본 DC(hdc) 한테 각도 변했고+색뺐다고 알려주기
+    SetGraphicsMode(hdc, GM_COMPATIBLE);
+}
 
 void Image::Release()
 {

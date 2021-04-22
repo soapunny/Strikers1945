@@ -3,9 +3,11 @@
 #include "Tank.h"
 #include "Image.h"
 #include "MissileManager.h"
-
-HRESULT Enemy::Init(int posX, int posY)
+#include "CollisionCheck.h"
+HRESULT Enemy::Init(CollisionCheck* collisionCheck, int posX, int posY)
 {
+	this->collisionCheck = collisionCheck;
+
 	//ufo
 	image = ImageManager::GetSingleton()->FindImage("Enemy");
 	if (image == nullptr)

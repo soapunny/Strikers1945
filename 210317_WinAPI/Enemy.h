@@ -38,7 +38,7 @@ protected:
 	CollisionCheck* collisionCheck;
 
 public:
-	virtual HRESULT Init(int posX = 0, int posY = 0);
+	virtual HRESULT Init(CollisionCheck* collisionCheck, int posX = 0, int posY = 0);
 	virtual HRESULT Init() { return E_FAIL; };
 	virtual void Release();		
 	virtual void Update();		

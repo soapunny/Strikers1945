@@ -35,14 +35,12 @@ void Barrel::Release()
 
 void Barrel::Update()
 {
-
     if (myMissile)
     {
         myMissile->SetOwnerType(MissileManager::Boss);
         myMissile->Update();
         myMissile->SetSize(missileSize);
     }
-
 }
 
 void Barrel::Render(HDC hdc)

@@ -2,8 +2,9 @@
 #include "MissileManager.h"
 #include "CollisionCheck.h"
 
-HRESULT SmallEnemy::Init(int posX, int posY)
+HRESULT SmallEnemy::Init(CollisionCheck* collisionCheck, int posX, int posY)
 {
+    this->collisionCheck = collisionCheck;
     //ufo
     image = ImageManager::GetSingleton()->FindImage("SmallEnemy");
     if (image == nullptr)
@@ -25,11 +26,9 @@ HRESULT SmallEnemy::Init(int posX, int posY)
     target = nullptr;
     dir = 1;
 
-    collisionCheck = new CollisionCheck;
-
     // ¹Ì»çÀÏ
     myMissile = new MissileManager();
-    myMissile->Init(collisionCheck, pos);
+    myMissile->Init(this->collisionCheck, pos);
     fireCount2 = 0;
 
     fireType = FIRETYPE::NormalFIRE;

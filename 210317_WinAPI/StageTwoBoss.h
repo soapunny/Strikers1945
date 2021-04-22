@@ -2,6 +2,7 @@
 #include "GameNode.h"
 #include "Boss.h"
 
+class ItemManager;
 class StageTwoBoss :public Boss
 {
 private:
@@ -15,7 +16,9 @@ private:
 	int hp;
 	MoveInterface* currMoveInterface;
 	FPOINT barrelPos;
+	
 	int currTime;
+	int currElapesdTimer;
 public:
 	virtual HRESULT Init();
 	virtual HRESULT Init(CollisionCheck* collisionCheck, FPOINT* playerPos);
@@ -23,7 +26,7 @@ public:
 	virtual void Update();
 	virtual void Render(HDC hdc);
 
-	virtual void Attack();
+	virtual void Attack();	 
 	virtual void Move();
 	virtual void RotateBarrel(float angle);
 	virtual void OnDead();
@@ -38,7 +41,11 @@ public:
 	void changeLeftSinMove();
 	void changeCenterMove();
 	void changeNormalMove();
-	
 
+	void phaseChangeMove();
+	void backMove();
+	inline FPOINT GetPos() { return pos; }	
+
+	virtual void Life(int attackValue);
 };
 
