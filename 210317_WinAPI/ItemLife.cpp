@@ -19,7 +19,7 @@ HRESULT ItemLife::Init(CollisionCheck* collisionCheck)
 	moveManager = new MoveManager;
 	moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
 	currMoveInterface = vMoveInterfaces[MOVETYPE::NORMAL_MOVE];
-	moveSpeed = 500.0f;
+	moveSpeed = 300.0f;
 	angle = 0;
 	size = 50;
 	isFired = false;/*
@@ -44,11 +44,17 @@ void ItemLife::Update()
 
 	if (ItemPos.x < 0 || ItemPos.y < 0 || ItemPos.x > WINSIZE_X || ItemPos.y > WINSIZE_Y)
 	{
+		moveSpeed = 300.0f;
 		isFired = false;
-		why = false;
-		
 		//this->collisionCheck->DeletePlayerMissile();
 		//fireStep = 0;
+		why = false;
+	}
+	updateCount++;
+	if (updateCount >= 5)
+	{
+		currFrameX = (currFrameX + 1) % 4;
+		updateCount = 0;
 	}
 	
 }

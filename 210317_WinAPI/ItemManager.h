@@ -19,7 +19,7 @@ private:
 
 	bool boss1Item;
 	bool boss2Item;
-	bool boss3Item;
+	bool enemyItem;
 	enum ITEMTABLE{LIFEITEM,BOMBITEM,POWERITEM,ENDITEM};
 	int randomItem;
 

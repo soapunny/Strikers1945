@@ -97,7 +97,7 @@ HRESULT MainGame::Init()
 	bossManager->Init(collisionCheck, playerShip->GetLpPos());
 
 	////æ∆¿Ã≈€
-	vItemManager.resize(10);
+	vItemManager.resize(4);
 	for (int i = 0; i < vItemManager.size(); i++)
 	{
 		vItemManager[i] = new ItemManager;
@@ -192,9 +192,9 @@ void MainGame::Update()
 		}
 		ItemMake();
 		
-		//for (int i = 0; i < vItemManager.size(); i++)
+		for (int i = 0; i < vItemManager.size(); i++)
 		{			
-			vItemManager[1]->Update();
+			vItemManager[i]->Update();
 		}
 	} 
 		//status = sceneManagerObserver->GetNextStatus();	
@@ -241,13 +241,12 @@ void MainGame::Render()
 			collisionCheck->Render(hBackDC);
 		}
 
-		//for (int i = 0; i < vItemManager.size(); i++)
+		for (int i = 0; i < vItemManager.size(); i++)
 		{
-			//if(vItemManager[i])
-			//if (vItemManager[1]->GetIsItem())
+			if(vItemManager[i])			
 			{
 
-				vItemManager[1]->Render(hBackDC);
+				vItemManager[i]->Render(hBackDC);
 				//vItemManager[1]->SetIsItem(false);
 			}
 				
@@ -379,35 +378,33 @@ void MainGame::CheckCollision()
 
 void MainGame::ItemMake()
 {
-	srand(time(NULL));
-	/*
 	if (!bossManager->GetisBoss1Alive()&& !oneTimeDrop[0])
 	{
-		vItemManager[0]->SetDropEnemy(BOSSDROP);
-		vItemManager[0]->SetDropPos(bossManager->GetBoss1Pos());
+		vItemManager[0]->SetDropEnemy(BOSSONE);		
 		vItemManager[0]->SetIsItem(true);
+		vItemManager[0]->SetDropPos(bossManager->GetBoss1Pos());
+		vItemManager[0]->SetRandItem(1);
 		oneTimeDrop[0] = true;
-	}
-	*/
+	}	
 	if (!bossManager->GetisBoss2Alive() && !oneTimeDrop[1])
 	{
-		vItemManager[1]->SetDropEnemy(BOSSDROP);
+		vItemManager[1]->SetDropEnemy(BOSSTWO);
 		vItemManager[1]->SetIsItem(true);		
-		vItemManager[1]->SetDropPos(bossManager->GetBoss2Pos());
-		randomItem = rand() % 3;
-		vItemManager[1]->SetRandItem(randomItem);
+		vItemManager[1]->SetDropPos(bossManager->GetBoss2Pos());		
+		vItemManager[1]->SetRandItem(0);
 		//randomItem = 1;
 		oneTimeDrop[1] = true;
 		//vItemManager[1]->SetIsItem(false);
 	}
-	/*
+	
 	if (!bossManager->GetisBoss3Alive() && !oneTimeDrop[2])
 	{
-		vItemManager[2]->SetDropEnemy(BOSSDROP);
-		vItemManager[2]->SetDropPos(bossManager->GetBoss3Pos());
+		vItemManager[2]->SetDropEnemy(ENEMYDROP);		
 		vItemManager[2]->SetIsItem(true);	
+		vItemManager[2]->SetDropPos(bossManager->GetBoss3Pos());
+		vItemManager[2]->SetRandItem(2);
 		oneTimeDrop[2] = true;
-	}*/
+	}
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)

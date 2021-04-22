@@ -121,7 +121,7 @@ void StageTwoBoss::Update()
     //미사일 발사
     Attack();
 
-    if (KeyManager::GetSingleton()->IsOnceKeyUp('M'))
+    if (KeyManager::GetSingleton()->IsOnceKeyUp('U'))
     {
         life -= 30;
     }

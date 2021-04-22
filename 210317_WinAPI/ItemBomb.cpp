@@ -20,7 +20,7 @@ HRESULT ItemBomb::Init(CollisionCheck* collisionCheck)
 	moveManager = new MoveManager;
 	moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
 	currMoveInterface = vMoveInterfaces[MOVETYPE::NORMAL_MOVE];
-	moveSpeed = 500.0f;
+	moveSpeed = 300.0f;
 	angle = 0;
 	size = 50;
 	isFired = false;/*

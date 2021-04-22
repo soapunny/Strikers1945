@@ -65,7 +65,7 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     }
 
     //moveManager->DoMove(&pos, &angle);
-
+     
     //life = 100;
     life = 1000;
     time = 0.0f;
