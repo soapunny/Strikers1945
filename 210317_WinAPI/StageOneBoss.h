@@ -18,4 +18,6 @@ public:
 	virtual void Attack();
 	virtual void OnDead();
 	void Move();
+
+	virtual void Life(int attackValue);
 };

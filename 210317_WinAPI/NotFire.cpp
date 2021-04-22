@@ -4,6 +4,7 @@
 
 void NotFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
+    this->collisionCheck = collisionCheck;
     vector<Missile*>::iterator myIt;
     for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
     {
@@ -11,6 +12,7 @@ void NotFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles
         {
             randAngle = (rand() % 168 - 18) * 100;
             (*myIt)->SetType(Missile::SKILLTYPE::NotSkill_TYPE);
+            (this->collisionCheck)->SetBossMissile((*myIt));
         }
     }
 }

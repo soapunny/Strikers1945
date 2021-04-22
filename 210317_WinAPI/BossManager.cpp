@@ -76,3 +76,8 @@ void BossManager::Render(HDC hdc)
             (*myIt)->Render(hdc);
     }*/
 }
+
+void BossManager::SetBossLife()
+{
+    vBoss[sceneManagerObserver->GetNextBoss()]->Life(attackValue);
+}

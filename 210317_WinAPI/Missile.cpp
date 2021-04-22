@@ -67,6 +67,7 @@ HRESULT Missile::Init(CollisionCheck* collisionCheck, FPOINT position)
 		return E_FAIL;
 	}
 
+	playerPower = 1;
 
     return S_OK;
 }
@@ -85,6 +86,12 @@ void Missile::Release()
 
 void Missile::Update()
 {
+	//충돌 박스
+	if (ownerType == OWNERTYPE::PLAYER)
+		playerMissileRect = { (LONG)(pos.x - 31 / 3), (LONG)(pos.y - 52 / 2), (LONG)(pos.x + 31 / 3), (LONG)(pos.y + 52 / 2) };
+	else if (ownerType == OWNERTYPE::ENEMY || ownerType == OWNERTYPE::BOSS)
+		enemyMissileRect = { (LONG)(pos.x - size / 4), (LONG)(pos.y - size / 4), (LONG)(pos.x + size / 4), (LONG)(pos.y + size / 4) };
+
 	//장전 시킨 미사일 타입의, 발사 스킬 가져오기
 	if (isFired)
 	{
@@ -168,16 +175,19 @@ void Missile::Update()
 		}
 		skillManager->UseSkill(this, lpTargetPos);
 
-		if (pos.x < 0 || pos.y < 0 || pos.x > WINSIZE_X || pos.y > WINSIZE_Y)
+		if (pos.x < 0 - size || pos.y < 0 - size || pos.x > WINSIZE_X + size || pos.y > WINSIZE_Y + size)
 		{
 			moveSpeed = 500.0f;
 			skillManager->Renew();
 			isFired = false;
-			this->collisionCheck->DeletePlayerMissile(this);
+			if (ownerType == OWNERTYPE::PLAYER)
+				this->collisionCheck->DeletePlayerMissile(this);
+			else if (ownerType == OWNERTYPE::ENEMY || ownerType == OWNERTYPE::BOSS)
+				this->collisionCheck->DeleteBossMissile(this);
 			fireStep = 0;
 		}
 
-		if (missileType == SKILLTYPE::PlayerSkill_TYPE)
+		if (ownerType == OWNERTYPE::PLAYER)
 		{
 			if (pos.y > GetPlayerPos().y)
 			{
@@ -197,17 +207,33 @@ void Missile::Render(HDC hdc)
 {
 	if (isFired)
 	{
-		//충돌 박스
-		if (ownerType == OWNERTYPE::PLAYER)
-			playerMissileRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + size), (LONG)(pos.y + size) };
+		//미사일 (angle 값에 따른 이미지 렌더 각도)
+		if (ownerType == OWNERTYPE::PLAYER && playerPower == 1)
+		{
+			img = ImageManager::GetSingleton()->FindImage("플레이어 미사일(1)");
+			img->Render(hdc, pos.x, pos.y, true);
+		}
+		else if (ownerType == OWNERTYPE::PLAYER && playerPower == 2)
+		{
+			if (angle == PI / 2)
+				img = ImageManager::GetSingleton()->FindImage("플레이어 미사일(2)");
+			img->Render(hdc, pos.x, pos.y, true);
+		}
+		else if (ownerType == OWNERTYPE::PLAYER && playerPower == 3)
+		{
+			if (angle == PI / 2)
+				img = ImageManager::GetSingleton()->FindImage("플레이어 미사일(3)");
+			else if (angle == PI / 4)
+				img = ImageManager::GetSingleton()->FindImage("플레이어 미사일(3)_R");
+			else if (angle == 3 * (PI / 4))
+				img = ImageManager::GetSingleton()->FindImage("플레이어 미사일(3)_L");
+			img->Render(hdc, pos.x, pos.y, true);
+		}
 		else if (ownerType == OWNERTYPE::ENEMY || ownerType == OWNERTYPE::BOSS)
-			enemyMissileRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + size), (LONG)(pos.y + size) };
-
-		if(ownerType == OWNERTYPE::PLAYER)
-			img = ImageManager::GetSingleton()->FindImage("플레이어 미사일");
-		else if(ownerType == OWNERTYPE::ENEMY || ownerType == OWNERTYPE::BOSS)
+		{
 			img = ImageManager::GetSingleton()->FindImage("적 미사일");
-		img->Render(hdc, pos.x, pos.y, true);
+			img->Render(hdc, pos.x, pos.y, true);
+		}
 	}
 }
 

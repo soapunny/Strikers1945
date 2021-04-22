@@ -39,6 +39,6 @@ public:
 	void changeCenterMove();
 	void changeNormalMove();
 	
-
+	virtual void Life(int attackValue);
 };
 

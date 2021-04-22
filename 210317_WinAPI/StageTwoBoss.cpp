@@ -14,6 +14,7 @@
 #include "CenterMove.h"
 #include "LeftSinMove.h"
 #include "RightSinMove.h"
+#include "CollisionCheck.h"
 
 HRESULT StageTwoBoss::Init() 
 {
@@ -59,8 +60,8 @@ HRESULT StageTwoBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
             vMoveInterfaces[i]->SetMoveSpeed(moveSpeed);
     }
 
-    phase = Phase0;
-    state = STATENOT;
+    phase = PHASE::Phase0;
+    state = STATE::STATENOT;
     LeftMoving = true;
     //생존여부
     isAlive = true;
@@ -73,7 +74,6 @@ HRESULT StageTwoBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
         vBarrels[i]->Init(this->collisionCheck, pos.x,pos.y);
         vBarrels[i]->SetActivated(true);
     }
-    
     
     return S_OK;
 }
@@ -98,6 +98,12 @@ void StageTwoBoss::Release()
 
 void StageTwoBoss::Update()
 {
+    //충돌박스 넘겨주기
+    bossRect = { (LONG)(pos.x - (size / 2) * 0.55), (LONG)(pos.y - (size / 2) * 0.7), 
+        (LONG)(pos.x + (size / 2) * 0.55), (LONG)(pos.y + (size / 2) * 0.7) };
+    (this->collisionCheck)->SetBossRect(bossRect);
+    (this->collisionCheck)->GetBossAlive(isAlive);
+
     for (int i = 0; i < vBarrels.size(); i++)
     {
         vBarrels[i]->Update();
@@ -107,10 +113,10 @@ void StageTwoBoss::Update()
     //미사일 발사
     Attack();
 
-    if (KeyManager::GetSingleton()->IsStayKeyDown('M'))
+    /*if (KeyManager::GetSingleton()->IsOnceKeyDown('M'))
     {
         life -= 300;
-    }
+    }*/
 
     for (int i = 0; i < vBarrels.size(); i++)
     {
@@ -153,7 +159,7 @@ void StageTwoBoss::Render(HDC hdc)
                 vBarrels[i]->Render(hdc);
             }
         }
-        wsprintf(szText, "BOSS_LIFE: %d", life);
+        wsprintf(szText, "BOSS[2]LIFE: %d", life);
         TextOut(hdc, WINSIZE_X - 150, 120, szText, strlen(szText));
     }
 }
@@ -239,10 +245,19 @@ void StageTwoBoss::Move()
            else if (currTime > 2000 && currTime < 2500)  StateType(STATE7);
            else if (currTime > 2500 && currTime < 3000)  StateType(STATE8);
            else StateType(STATENOT);
-           if (currTime >= 3000)  currTime = 0;
+           //if (currTime >= 3000)  currTime = 0;
+           if (life <= 0) { phase = Dead; currTime = 0; }
        }
        break;
    case StageTwoBoss::Dead:
+       vBarrels[0]->SetActivated(false);
+       vBarrels[1]->SetActivated(false);
+       vBarrels[2]->SetActivated(false);
+       vBarrels[3]->SetActivated(false);
+       vBarrels[4]->SetActivated(false);
+       vBarrels[5]->SetActivated(false);
+       isAlive = false;
+       (this->collisionCheck)->GetBossAlive(isAlive);
        break;
    default:
        break;
@@ -604,4 +619,9 @@ void StageTwoBoss::changeNormalMove()
 {
     moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
     currMoveInterface = vMoveInterfaces[MOVETYPE::NORMAL_MOVE];
+}
+
+void StageTwoBoss::Life(int attackValue)
+{
+    life -= attackValue;
 }

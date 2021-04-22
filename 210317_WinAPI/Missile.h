@@ -40,7 +40,7 @@ protected:
 
 	Enemy* target;
 	FPOINT* lpTargetPos;
-	float destAngle;
+	//float destAngle;
 
 	SkillManager* skillManager;
 	vector<SkillInterface*> vSkillInterfaces;
@@ -50,6 +50,8 @@ protected:
 	RECT enemyMissileRect;
 
 	CollisionCheck* collisionCheck;
+
+	int playerPower;
 
 public:
 	HRESULT Init(CollisionCheck* collisionCheck, FPOINT position);
@@ -92,5 +94,8 @@ public:
 	inline void SetSize(int size) { this->size = size; }
 
 	inline RECT* GetPlayerMissileRect() { return &(this->playerMissileRect); }
+	inline void SetPlayerMissileRect(RECT rect) { this->playerMissileRect = rect; }
 	inline RECT* GetEnemyMissileRect() { return &(this->enemyMissileRect); }
+
+	inline void SetPlayerPower(int power) { this->playerPower = power; }
 };

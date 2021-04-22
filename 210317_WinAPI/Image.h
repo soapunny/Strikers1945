@@ -31,7 +31,17 @@ public:
 
 		HDC hTempDC;			// 
 		HBITMAP hTempBitmap;	// 
-		HBITMAP hOldhTempBit;	// 
+		HBITMAP hOldhTempBit;	//
+		HBRUSH hTempBrush;
+
+		HDC hAngleTempDC[2];
+		HBITMAP hAngleTempBitmap[2];
+		HBITMAP hAngleOldTempBit[2];	
+		HBRUSH hAngleTempBrush[2];
+
+		HDC hAngleDC[2];
+		HBITMAP hAngleBitmap[2];
+		HBITMAP hAngleOldBit[2];
 
 		// 애니메이션 관련 (프레임데이터)
 		int maxFrameX;
@@ -55,6 +65,23 @@ public:
 			hTempDC = NULL;
 			hTempBitmap = NULL;
 			hOldhTempBit = NULL;
+			hTempBrush = NULL;
+
+			hAngleTempDC[0] = NULL;
+			hAngleTempDC[1] = NULL;
+			hAngleTempBitmap[0] = NULL;
+			hAngleTempBitmap[1] = NULL;
+			hAngleOldTempBit[0] = NULL;
+			hAngleOldTempBit[1] = NULL;
+			hAngleTempBrush[0] = NULL;
+			hAngleTempBrush[1] = NULL;
+
+			hAngleDC[0] = NULL;
+			hAngleDC[1] = NULL;
+			hAngleBitmap[0] = NULL;
+			hAngleBitmap[1] = NULL;
+			hAngleOldBit[0] = NULL;
+			hAngleOldBit[1] = NULL;
 
 			width = 0;
 			height = 0;
@@ -74,6 +101,7 @@ private:
 	//LPIMAGE_INFO imageInfo;
 	bool isTransparent;
 	COLORREF transColor;
+	int reSize;
 
 	BLENDFUNCTION blendFunc;
 
@@ -81,11 +109,14 @@ public:
 	// 빈 비트맵 이미지를 만드는 함수
 	HRESULT Init(int width, int height);
 
-	// 파일로부터 이미지를 로드하는 함수
+	// 파일로부터 정적 이미지를 로드하는 함수
 	HRESULT Init(const char* fileName, int width, int height, bool isTransparent = FALSE, COLORREF transColor = FALSE);
 
-	// 파일로부터 이미지를 로드하는 함수
-	HRESULT Init(const char* fileName, int width, int height, 
+	//파일로부터 정적 각도 이미지를 로드하는 함수
+	HRESULT AngleInit(const char* fileName, int width, int height, bool isTransparent = FALSE, COLORREF transColor = FALSE);
+
+	// 파일로부터 동적 이미지를 로드하는 함수
+	HRESULT Init(const char* fileName, int width, int height,
 		int maxFrameX, int maxFrameY,
 		bool isTransparent = FALSE, COLORREF transColor = FALSE);
 
@@ -96,6 +127,8 @@ public:
 	void FrameRender(HDC hdc, int destX, int destY, int currFrameX, int currFrameY, bool isCenterRenderring, int size);
 	void AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring = false);
 	void AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring, int currFrameX, int size);
+	// 각도 렌더
+	void AngleRender(HDC hdc, int destX, int destY, float angle, bool isCenterRenderring);
 
 	void Release();
 

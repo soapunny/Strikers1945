@@ -13,6 +13,8 @@ private:
 	SceneManager* sceneManagerObserver; //옵서버 등록어떻게 시키더라?
 	RECT bossRect;			//boss 3마리 rect
 
+	int attackValue;
+
 public:
 
 	HRESULT Init();
@@ -25,6 +27,9 @@ public:
 	void Release();
 	void Update();
 	void Render(HDC hdc);
+
+	void SetBossLife();
+	inline void SetAttackValue(int attackValue) { this->attackValue = attackValue; }
 
 	inline RECT GetBossRect() { return bossRect; }
 };

@@ -4,6 +4,7 @@
 
 void MeteorFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
+    this->collisionCheck = collisionCheck;
     vector<Missile*>::iterator myIt;
 
     //일정 범위 안에서 위로 쭉 쏘아 올리고 
@@ -14,15 +15,14 @@ void MeteorFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissi
         if (firedCount > 36) firedCount = 0;
         for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
         {
-
             if ((*myIt)->GetIsFired() == false)
             {
                 firedCount++;
                 (*myIt)->SetType(Missile::SKILLTYPE::MeteorSkill_TYPE);
                 (*myIt)->SetIsFired(true);
                 (*myIt)->SetAngle(DegToRad((firedCount * 10)));
+                (this->collisionCheck)->SetBossMissile((*myIt));
                 break;
-
             }
         }
     }
