@@ -10,7 +10,9 @@ private:
 	CollisionCheck* collisionCheck;
 
 	Image* image;
+	Image* blinkImage;
 	Image* explosionimage;
+	Image* retryImage;
 	FPOINT pos;
 	float moveSpeed;	//초당 이동거리
 	bool isDying;
@@ -24,6 +26,9 @@ private:
 	float attackValue;
 
 	int explosionCount;
+
+	int blinkCount;
+	bool reAppear;
 
 	char szText[128];
 	int playerLife;

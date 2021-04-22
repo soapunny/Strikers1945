@@ -18,11 +18,13 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("적 미사일", "Image/bullet.bmp", 20, 20, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("플레이어 미사일","Image/bullet(4).bmp", 20, 20, true, RGB(0, 65, 126));
 	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/playerJet.bmp", 489/2, 131/2, 3, 1, true, RGB(248, 0, 248));
+	ImageManager::GetSingleton()->AddImage("플레이어 깜빡임 우주선", "Image/blinkPlayer.bmp", 489 / 6, 131 / 2, 1, 1, true, RGB(248, 0, 248));
 	ImageManager::GetSingleton()->AddImage("구름", "Image/cloud.bmp", WINSIZE_X, 1360, true, RGB(246, 246, 246));
 	ImageManager::GetSingleton()->AddImage("EnemyMissile","Image/구슬.bmp", 20, 20, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("StageTwoBoss", "Image/StageTwoBoss.bmp", 3152*2, 156*2,16,1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageOneBoss", "Image/StageOneBoss.bmp", 186*30, 186, 30, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageThreeBoss", "Image/StageThreeBoss.bmp", 163 * 24, 121, 24, 1, true, RGB(255, 255, 255));
+	ImageManager::GetSingleton()->AddImage("패배엔딩", "Image/gameover.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(0, 0, 0));
 
 	ImageManager::GetSingleton()->AddImage("보스폭발", "Image/BossExplosion(16).bmp", 1019*2, 63*2, 16, 1, true, RGB(0, 248, 0));
 	ImageManager::GetSingleton()->AddImage("잡몹폭발", "Image/miniEnemyExplosion(12).bmp", 384, 32, 12, 1, true, RGB(0, 248, 0));
@@ -62,7 +64,7 @@ HRESULT MainGame::Init()
 	hundredSecondImg = ImageManager::GetSingleton()->FindImage("타이머");
 	tenSecondImg = ImageManager::GetSingleton()->FindImage("타이머");
 	oneSecondImg = ImageManager::GetSingleton()->FindImage("타이머");
-
+	
 	//탱크
 	tank = new Tank();
 	tank->Init();
@@ -283,6 +285,7 @@ void MainGame::Render()
 		tenSecondImg->FrameRender(hBackDC, 450, 600, tenSecond, 0, true);
 		oneSecondImg->FrameRender(hBackDC, 500, 600, oneSecond, 0, true);
 	}
+	
 
 	
 	

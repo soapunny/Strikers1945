@@ -27,6 +27,7 @@ private:
 	
 	Image* openingImage;
 	Image* endingImage;
+	
 	Image* endingTimerImage;
 
 	Image* hundredSecondImg;
