@@ -41,9 +41,11 @@ public:
 	void changeLeftSinMove();
 	void changeCenterMove();
 	void changeNormalMove();
+
 	void phaseChangeMove();
 	void backMove();
 	inline FPOINT GetPos() { return pos; }	
 
+	virtual void Life(int attackValue);
 };
 

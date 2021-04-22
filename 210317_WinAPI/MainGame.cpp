@@ -10,40 +10,42 @@
 HRESULT MainGame::Init()
 {
 	hdc = GetDC(g_hWnd);
-	status = 1;
+	status = 0;
 	KeyManager::GetSingleton()->Init();
 	ImageManager::GetSingleton()->Init();
 
 	//이미지를 미리 로드 해두자
 	ImageManager::GetSingleton()->AddImage("Enemy","Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
-	ImageManager::GetSingleton()->AddImage("적 미사일", "Image/bullet.bmp", 20, 20, true, RGB(255, 0, 255));
-	ImageManager::GetSingleton()->AddImage("플레이어 미사일","Image/bullet(4).bmp", 20, 20, true, RGB(0, 65, 126));
-	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/playerJet.bmp", 489/2, 131/2, 3, 1, true, RGB(248, 0, 248));
 	ImageManager::GetSingleton()->AddImage("플레이어 깜빡임 우주선", "Image/blinkPlayer.bmp", 489 / 6, 131 / 2, 1, 1, true, RGB(248, 0, 248));
-	ImageManager::GetSingleton()->AddImage("구름", "Image/cloud.bmp", WINSIZE_X, 1360, true, RGB(246, 246, 246));
-	ImageManager::GetSingleton()->AddImage("EnemyMissile","Image/구슬.bmp", 20, 20, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("적 미사일", "Image/bullet(5)_white.bmp", 25, 25, true, RGB(255, 255, 255));
+	//ImageManager::GetSingleton()->AddAngleImage("플레이어 미사일(1)","Image/bullet(6).bmp", 31, 53, true, RGB(255, 0, 255));
+	//ImageManager::GetSingleton()->AddAngleImage("플레이어 미사일(2)", "Image/bullet(7).bmp", 31, 52, true, RGB(255, 0, 255));
+	//ImageManager::GetSingleton()->AddAngleImage("플레이어 미사일(3)", "Image/bullet(8).bmp", 31, 53, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("플레이어 미사일(1)","Image/bullet(6).bmp", 31, 53, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("플레이어 미사일(2)", "Image/bullet(7).bmp", 31, 52, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("플레이어 미사일(3)", "Image/bullet(8).bmp", 31, 53, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("플레이어 미사일(3)_L", "Image/bullet(8)_L.bmp", 44, 46, true, RGB(255, 255, 255));
+	ImageManager::GetSingleton()->AddImage("플레이어 미사일(3)_R", "Image/bullet(8)_R.bmp", 44, 46, true, RGB(255, 255, 255));
+	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/playerJet.bmp", 489/3*2, 131/3*2, 3, 1, true, RGB(248, 0, 248));
 	ImageManager::GetSingleton()->AddImage("StageTwoBoss", "Image/StageTwoBoss.bmp", 3152*2, 156*2,16,1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageOneBoss", "Image/StageOneBoss.bmp", 186*30, 186, 30, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageThreeBoss", "Image/StageThreeBoss.bmp", 163 * 24, 121, 24, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("패배엔딩", "Image/gameover.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(0, 0, 0));
-
 	ImageManager::GetSingleton()->AddImage("보스폭발", "Image/BossExplosion(16).bmp", 1019*2, 63*2, 16, 1, true, RGB(0, 248, 0));
 	ImageManager::GetSingleton()->AddImage("잡몹폭발", "Image/miniEnemyExplosion(12).bmp", 384, 32, 12, 1, true, RGB(0, 248, 0));
-
 	ImageManager::GetSingleton()->AddImage("타이머", "Image/timer.bmp", 535, 82, 10, 1, true, RGB(67, 77, 112));
-
 	/*ImageManager::GetSingleton()->AddImage("보스1엔딩", "Image/onebossEnding.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(67, 77, 112));
 	ImageManager::GetSingleton()->AddImage("보스2엔딩", "Image/twobossEnding.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(67, 77, 112));
 	ImageManager::GetSingleton()->AddImage("보스3엔딩", "Image/threebossEnding.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(67, 77, 112));*/
-
 	ImageManager::GetSingleton()->AddImage("엔딩", "Image/Ending.bmp", WINSIZE_X*3, WINSIZE_Y, 3, 1, true, RGB(67, 77, 112));
-
 	ImageManager::GetSingleton()->AddImage("오프닝", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y);
 	ImageManager::GetSingleton()->AddImage("라이프아이템", "Image/Life.bmp", 820/10, 793/10,true, RGB(0, 0, 0));
 	ImageManager::GetSingleton()->AddImage("폭탄아이템", "Image/bombItem.bmp", 216, 32, 4, 1, true, RGB(0, 128, 128));
 	ImageManager::GetSingleton()->AddImage("파워아이템", "Image/powerItem.bmp", 150, 18, 6, 1, true, RGB(0, 128, 128));
 	//ImageManager::GetSingleton()->AddImage("엔딩", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
-
+	ImageManager::GetSingleton()->AddImage("힛 모션", "Image/hitEffect.bmp", 209 * 2, 36 * 2, 6, 1, true, RGB(255, 255, 255));
+	ImageManager::GetSingleton()->AddImage("폭발 아이템 사용", "Image/itemExplotion(12).bmp", 1536*2.5, 128*2.5, 12, 1, true, RGB(0, 248, 0));
+	
 	// 메인게임의 초기화 함수
 	//hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 
@@ -51,7 +53,7 @@ HRESULT MainGame::Init()
 	backBuffer = new Image();
 	backBuffer->Init(WINSIZE_X, WINSIZE_Y);
 
-	isItemMake[10] = false;
+	//isItemMake[10] = false;
 	oneTimeDrop[0] = false;
 	oneTimeDrop[1] = false;
 	oneTimeDrop[2] = false;
@@ -62,9 +64,9 @@ HRESULT MainGame::Init()
 
 	//배경 이미지
 	backGround = new Image();
-	backGround->Init("Image/Strikers_backGround(2).bmp", WINSIZE_X, 3604);
+	backGround->Init("Image/backGround(3).bmp", WINSIZE_X, 1887);
 	backGroundPos.x = 0;
-	backGroundPos.y = -3604 + WINSIZE_Y;
+	backGroundPos.y = -1887 + WINSIZE_Y;
 	backCloud = new Image();
 	backCloud = ImageManager::GetSingleton()->FindImage("구름");
 	openingImage = ImageManager::GetSingleton()->FindImage("오프닝");
@@ -145,7 +147,7 @@ void MainGame::Update()
 		backGroundPos.y += elapsedTime * 100.0f;
 		if (backGroundPos.y >= 0)
 		{
-			backGroundPos.y = -3604 + WINSIZE_Y;
+			backGroundPos.y = -1887 + WINSIZE_Y;
 		}
 
 		//탱크(플레이어)
@@ -161,15 +163,24 @@ void MainGame::Update()
 			enemyManager->Update();
 		}
 
-		//플레이어
-		if (playerShip)
+		//적 플레이어 충돌 검사
+		if (collisionCheck)
 		{
-			playerShip->Update();
+			collisionCheck->Update();
+			CheckCollision();
 		}
 
 		//플레이어
+		if (playerShip)
+		{
+			playerShip->SetPlayerAttackValue(collisionCheck->GetPlayerAttackValue());
+			playerShip->Update();
+		}
+
+		//보스
 		if (bossManager)
 		{
+			bossManager->SetAttackValue(playerShip->GetPlayerAttackValue());
 			bossManager->Update();
 		}
 
@@ -186,14 +197,8 @@ void MainGame::Update()
 			vItemManager[1]->Update();
 		}
 	} 
-		//status = sceneManagerObserver->GetNextStatus();
-		
+		//status = sceneManagerObserver->GetNextStatus();	
 }
-	
-	
-	
-	
-	//InvalidateRect(g_hWnd, NULL, false); //화면갱신
 
 void MainGame::Render()
  {
@@ -327,8 +332,6 @@ void MainGame::Render()
 	}
 	
 
-	
-	
 	backBuffer->Render(hdc);
 }
 
@@ -362,7 +365,7 @@ void MainGame::CheckCollision()
 	//"플레이어 미사일"과 "보스"가 출동했다면
 	if (collisionCheck->GetBossCollision())
 	{
-		//보스 목숨 줄이자
+		bossManager->SetBossLife();				//보스 목숨 줄이자
 		collisionCheck->SetBossCollision(false);
 	}
 	//플레이어 Life추가

@@ -4,6 +4,8 @@
 #include "CollisionCheck.h"
 void TwoFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
+    this->collisionCheck = collisionCheck;
+
     vector<Missile*>::iterator myIt;
 
     //일정 범위 안에서 위로 쭉 쏘아 올리고 
@@ -21,12 +23,11 @@ void TwoFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles
             (*myIt)->SetIsFired(true);            
             (*myIt)->SetAngle(DegToRad(k));
             (*myIt)->SetMoveSpeed(200);
+            (this->collisionCheck)->SetBossMissile((*myIt));
             i++;
             if(i >= 3)
-                break;
-            
+                break;  
         }
-
          k+=20;
         if (k > -70) k = -110;
     }

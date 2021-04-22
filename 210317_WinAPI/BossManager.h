@@ -33,6 +33,8 @@ private:
 	int currBossNumber;
 	int printNumber;
 
+	int attackValue;
+
 public:
 
 	HRESULT Init();
@@ -54,6 +56,8 @@ public:
 	inline void SetBossPos(FPOINT bossPos) { this->bossPos = bossPos; }
 	
 	bool GetEnding();
+	void SetBossLife();
+	inline void SetAttackValue(int attackValue) { this->attackValue = attackValue; }
 
 	inline RECT GetBossRect() { return bossRect; }
 	inline FPOINT GetBossPos() { return bossPos; }

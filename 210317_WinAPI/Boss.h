@@ -11,6 +11,7 @@ class Boss : public GameNode
 {
 protected:
 	CollisionCheck* collisionCheck;
+	RECT bossRect;
 
 	char szText[128];
 	Image* image;
@@ -28,8 +29,6 @@ protected:
 	FPOINT* playerPos;
 
 	MoveManager* moveManager;
-
-	RECT bossRect;
 
 public:
 	virtual HRESULT Init();
@@ -58,4 +57,6 @@ public:
 	inline int GetLife() { return this->life; }
 
 	inline RECT GetBossRect() { return bossRect; }
+
+	virtual void Life(int attackValue);
 };

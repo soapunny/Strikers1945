@@ -3,6 +3,8 @@
 #include "CollisionCheck.h"
 void WormFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* lpTargetPos)
 {
+    this->collisionCheck = collisionCheck;
+
     vector<Missile*>::iterator myIt;
 
     //일정 범위 안에서 위로 쭉 쏘아 올리고 
@@ -12,7 +14,6 @@ void WormFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissile
     float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
     for (int i = 0; i < 10; i++)
     {
-
         for (myIt = vMissiles->begin(); myIt != vMissiles->end(); myIt++)
         {
             if ((*myIt)->GetIsFired() == false)
@@ -22,9 +23,7 @@ void WormFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissile
                 (*myIt)->SetIsFired(true);
                 (*myIt)->SetAngle(DegToRad(k)/** elapsedTime*1000*/);
                 (*myIt)->SetMoveSpeed(100);
-                    break;
-                
-                    
+                    break;   
             }
         }
         k -= 12;

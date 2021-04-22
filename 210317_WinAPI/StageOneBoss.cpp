@@ -38,7 +38,7 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     //보스 
     pos.x = WINSIZE_X - 200;          //위치
     pos.y = WINSIZE_Y / 5;
-    size = 186;                     //크기
+    size = 150;                     //크기
     moveSpeed = 100.0f;               //이동 속도
     angle = PI / 3;
 
@@ -67,7 +67,7 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     //moveManager->DoMove(&pos, &angle);
 
     //life = 100;
-    life = 100;
+    life = 1000;
     time = 0.0f;
 
     ////moveManager->ChangeMove(new PointMove());
@@ -119,13 +119,18 @@ void StageOneBoss::Update()
 {
     bossRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + 150), (LONG)(pos.y + 150) };
     
+    //충돌박스 넘겨주기
+    bossRect = { (LONG)(pos.x - size / 2), (LONG)(pos.y - size / 3), (LONG)(pos.x + size / 2), (LONG)(pos.y + size / 3) };
+    (this->collisionCheck)->SetBossRect(bossRect);
+    (this->collisionCheck)->GetBossAlive(isAlive);
+
     if(isAlive){
         //보스 이동 업데이트
         float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
         time += elapsedTime;
 
         if (KeyManager::GetSingleton()->IsOnceKeyDown('U')) {
-            life -= 25;
+            life -= 250;
         }
 
         Move();
@@ -153,7 +158,7 @@ void StageOneBoss::Update()
 }
 void StageOneBoss::Move()
 {
-    if(life > 75){
+    if(life > 750){
         if ((int)(time / 10.0f) % 2 == 0 && currMoveInterface != vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE]) {
             currMoveInterface = vMoveInterfaces[MOVETYPE::RIGHT_SIN_MOVE];
             moveManager->ChangeMove(currMoveInterface);
@@ -171,7 +176,7 @@ void StageOneBoss::Move()
             vBarrels[1]->SetFireType(FIRETYPE::NormalFIRE);
         }
     }
-    else if (life > 50) {
+    else if (life > 500) {
         if(currMoveInterface != vMoveInterfaces[MOVETYPE::SPEAR_MOVE]){
             currMoveInterface = vMoveInterfaces[MOVETYPE::SPEAR_MOVE];
             currMoveInterface->Renew();
@@ -187,7 +192,7 @@ void StageOneBoss::Move()
             vBarrels[4]->SetMaxFireCount(50);
         }
     }
-    else if (life > 25) {
+    else if (life > 250) {
         if (currMoveInterface != vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE]) {
             currMoveInterface = vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE];
             moveManager->ChangeMove(currMoveInterface);
@@ -220,9 +225,16 @@ void StageOneBoss::Move()
         vBarrels[3]->SetActivated(false);
         vBarrels[4]->SetActivated(false); 
         vBarrels[5]->SetActivated(false);
-       // isAlive = false;
+
+        isAlive = false;
+        (this->collisionCheck)->GetBossAlive(isAlive);
     }
     moveManager->DoMove(&pos, &angle);
+}
+
+void StageOneBoss::Life(int attackValue)
+{
+    life -= attackValue;
 }
 
 void StageOneBoss::Render(HDC hdc)
@@ -251,7 +263,7 @@ void StageOneBoss::Render(HDC hdc)
                 vBarrels[i]->Render(hdc);
             }
         }
-        wsprintf(szText, "BOSS_LIFE: %d", life);
+        wsprintf(szText, "BOSS[1] LIFE: %d", life);
         TextOut(hdc, WINSIZE_X - 150, 120, szText, strlen(szText));
     }
 }

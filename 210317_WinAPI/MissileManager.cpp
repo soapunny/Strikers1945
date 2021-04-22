@@ -47,8 +47,6 @@ HRESULT MissileManager::Init(CollisionCheck* collisionCheck, FPOINT pos)
     vFireInterfaces[FIRETYPE::TornadoFIRE] = new TornadoFire();
     vFireInterfaces[FIRETYPE::TargetFIRE] = new TargetFire();
 
-
-
     //어떤 미사일을 장전 시킬 것인가
     fireManager = new FireManager();
     currFire = vFireInterfaces[FIRETYPE::NormalFIRE];
@@ -83,11 +81,12 @@ void MissileManager::Update()
     for (int i = 0; i < vMissiles.size(); i++)
     {
         vMissiles[i]->SetPlayerPos(this->playerPos);
+        vMissiles[i]->SetPlayerPower(this->playerPower);
         vMissiles[i]->SetStartPos(this->missilePos);
         if(this->fireType == FIRETYPE::PlayerFIRE)
             vMissiles[i]->SetAngle(this->missileAngle);
-        vMissiles[i]->Update();
         vMissiles[i]->SetSize(missileSize);
+        vMissiles[i]->Update();
 
         if (vMissiles[i]->GetIsFired())
         {
@@ -97,16 +96,26 @@ void MissileManager::Update()
                 {
                     vMissiles[i]->SetOwnerType((Missile::OWNERTYPE)j);
                 }
-
             }
 
-            vMissiles[i]->SetPlayerPos(this->playerPos);
+            /*vMissiles[i]->SetPlayerPos(this->playerPos);
+            vMissiles[i]->SetPlayerPower(this->playerPower);
             vMissiles[i]->SetStartPos(this->missilePos);
             if (this->fireType == FIRETYPE::PlayerFIRE)
-            {
                 vMissiles[i]->SetAngle(this->missileAngle);
-            }
+            vMissiles[i]->SetSize(missileSize);*/
             vMissiles[i]->Update();
+        }
+        else
+        {
+            if (this->fireType == FIRETYPE::PlayerFIRE)
+            {
+                (this->collisionCheck)->DeletePlayerMissile(vMissiles[i]);
+            }
+            else
+            {
+                (this->collisionCheck)->DeleteBossMissile(vMissiles[i]);
+            }
         }
     }
 }
@@ -115,7 +124,8 @@ void MissileManager::Render(HDC hdc)
 {
     for (int i = 0; i < vMissiles.size(); i++)
     {
-        vMissiles[i]->Render(hdc);
+        if(vMissiles[i]->GetIsFired())
+            vMissiles[i]->Render(hdc);
     }
 }
 

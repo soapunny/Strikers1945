@@ -4,6 +4,7 @@
 
 void FireworkFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
+    this->collisionCheck = collisionCheck;
 
     vector<Missile*>::iterator it;
     int fireCnt = 10;
@@ -19,6 +20,7 @@ void FireworkFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMis
             (*it)->SetAngle(DegToRad(360/initFireCnt * (fireCnt - 1)));
             
             (*it)->SetIsFired(true);
+            (this->collisionCheck)->SetBossMissile((*it));
             fireCnt--;
             if (fireCnt <= 0) break;
         }

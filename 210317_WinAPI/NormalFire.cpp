@@ -4,6 +4,7 @@
 
 void NormalFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissiles, FPOINT* targetPos)
 {
+    this->collisionCheck = collisionCheck;
     vector<Missile*>::iterator myIt;
    // for (int j = 0; j < 5; j++)
     {
@@ -15,6 +16,7 @@ void NormalFire::DoFire(CollisionCheck* collisionCheck, vector<Missile*>* vMissi
                 (*myIt)->SetType(Missile::SKILLTYPE::NormalSkill_TYPE);
                 (*myIt)->SetIsFired(true);
                 (*myIt)->SetAngle(DegToRad(-90));
+                (this->collisionCheck)->SetBossMissile((*myIt));
                 break;
             }
         }
