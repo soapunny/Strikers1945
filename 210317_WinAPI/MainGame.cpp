@@ -1,3 +1,4 @@
+#pragma once
 #include "MainGame.h"
 #include "Tank.h"
 #include "EnemyManager.h"
@@ -19,6 +20,9 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("Enemy","Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("미사일","Image/bullet(4).bmp", 20, 20, true, RGB(0, 65, 126));
 	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/playerJet.bmp", 489/2, 131/2, 3, 1, true, RGB(248, 0, 248));
+	ImageManager::GetSingleton()->AddImage("SmallEnemy", "Image/Enemy1.bmp", 320, 426, 1, 1, true, RGB(0, 255, 0));
+	ImageManager::GetSingleton()->AddImage("MediumEnemy", "Image/Enemy2.bmp", 265, 355, 1, 1, true, RGB(0, 255, 0));
+	ImageManager::GetSingleton()->AddImage("BigEnemy", "Image/Enemy3.bmp", 252, 374, 1, 1, true, RGB(0, 255, 0));
 	ImageManager::GetSingleton()->AddImage("구름", "Image/cloud.bmp", WINSIZE_X, 1360, true, RGB(246, 246, 246));
 	ImageManager::GetSingleton()->AddImage("EnemyMissile","Image/구슬.bmp", 20, 20, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("StageTwoBoss", "Image/StageTwoBoss.bmp", 3152*2, 156*2,16,1, true, RGB(255, 255, 255));
