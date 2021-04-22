@@ -25,9 +25,9 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("StageOneBoss", "Image/StageOneBoss.bmp", 186*30, 186, 30, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageThreeBoss", "Image/StageThreeBoss.bmp", 163 * 24, 121, 24, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("오프닝", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y);
-	ImageManager::GetSingleton()->AddImage("라이프아이템", "Image/Life.bmp", 820, 793,true, RGB(255, 255, 255));
+	ImageManager::GetSingleton()->AddImage("라이프아이템", "Image/Life.bmp", 820/10, 793/10,true, RGB(0, 0, 0));
 	ImageManager::GetSingleton()->AddImage("폭탄아이템", "Image/bombItem.bmp", 216, 32, 4, 1, true, RGB(0, 128, 128));
-	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/powerItem.bmp", 150, 18, 6, 1, true, RGB(0, 128, 128));
+	ImageManager::GetSingleton()->AddImage("파워아이템", "Image/powerItem.bmp", 150, 18, 6, 1, true, RGB(0, 128, 128));
 	//ImageManager::GetSingleton()->AddImage("엔딩", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
 
 	// 메인게임의 초기화 함수
@@ -36,7 +36,10 @@ HRESULT MainGame::Init()
 	// 백버퍼 이미지
 	backBuffer = new Image();
 	backBuffer->Init(WINSIZE_X, WINSIZE_Y);
-
+	isItemMake[10] = false;
+	oneTimeDrop[0] = false;
+	oneTimeDrop[1] = false;
+	oneTimeDrop[2] = false;
 	//배경 이미지
 	backGround = new Image();
 	backGround->Init("Image/Strikers_backGround(2).bmp", WINSIZE_X, 3604);
@@ -66,13 +69,17 @@ HRESULT MainGame::Init()
 	bossManager = new BossManager();
 	bossManager->Init(collisionCheck, playerShip->GetLpPos());
 
-	//아이템
-	itemManagerObserver = new ItemManager();
-	itemManagerObserver->Init();
+	////아이템
+	vItemManager.resize(10);
+	for (int i = 0; i < vItemManager.size(); i++)
+	{
+		vItemManager[i] = new ItemManager;
+		vItemManager[i]->Init(collisionCheck);
+	}
 
 	//초기화 확인
 	isInited = true;
-
+	itemTime = 0;
 	return S_OK;
 }
 
@@ -138,13 +145,18 @@ void MainGame::Update()
 			collisionCheck->Update();
 			CheckCollision();
 		}
-		if (itemManagerObserver)
-		{
-			itemManagerObserver->Update();
+		ItemMake();
+		
+		//for (int i = 0; i < vItemManager.size(); i++)
+		{			
+			vItemManager[1]->Update();
 		}
+		
 	}
 	
-
+	
+	
+	
 	//InvalidateRect(g_hWnd, NULL, false); //화면갱신
 }
 
@@ -188,9 +200,17 @@ void MainGame::Render()
 		{
 			collisionCheck->Render(hBackDC);
 		}
-		if (itemManagerObserver)
+
+		//for (int i = 0; i < vItemManager.size(); i++)
 		{
-			itemManagerObserver->Render(hBackDC);
+			//if(vItemManager[i])
+			//if (vItemManager[1]->GetIsItem())
+			{
+
+				vItemManager[1]->Render(hBackDC);
+				//vItemManager[1]->SetIsItem(false);
+			}
+				
 		}
 		//tank
 		if (tank)
@@ -234,10 +254,7 @@ void MainGame::RegisterObserver(SceneManager* scenemanager)
 	sceneManagerObserver = scenemanager;
 }
 
-void MainGame::RegisterObserver(ItemManager* itemmanager)
-{
-	itemManagerObserver = itemmanager;
-}
+
 
 void MainGame::UnRegisterObserver()
 {
@@ -270,7 +287,41 @@ void MainGame::CheckCollision()
 	{
 		playerShip->SetPlusPlayerLife();
 	}
+
 	
+}
+
+void MainGame::ItemMake()
+{
+	srand(time(NULL));
+	/*
+	if (!bossManager->GetisBoss1Alive()&& !oneTimeDrop[0])
+	{
+		vItemManager[0]->SetDropEnemy(BOSSDROP);
+		vItemManager[0]->SetDropPos(bossManager->GetBoss1Pos());
+		vItemManager[0]->SetIsItem(true);
+		oneTimeDrop[0] = true;
+	}
+	*/
+	if (!bossManager->GetisBoss2Alive() && !oneTimeDrop[1])
+	{
+		vItemManager[1]->SetDropEnemy(BOSSDROP);
+		vItemManager[1]->SetIsItem(true);		
+		vItemManager[1]->SetDropPos(bossManager->GetBoss2Pos());
+		randomItem = rand() % 3;
+		vItemManager[1]->SetRandItem(randomItem);
+		//randomItem = 1;
+		oneTimeDrop[1] = true;
+		//vItemManager[1]->SetIsItem(false);
+	}
+	/*
+	if (!bossManager->GetisBoss3Alive() && !oneTimeDrop[2])
+	{
+		vItemManager[2]->SetDropEnemy(BOSSDROP);
+		vItemManager[2]->SetDropPos(bossManager->GetBoss3Pos());
+		vItemManager[2]->SetIsItem(true);	
+		oneTimeDrop[2] = true;
+	}*/
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)

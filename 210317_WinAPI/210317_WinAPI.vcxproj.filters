@@ -69,6 +69,8 @@
     <ClCompile Include="ItemLifeFactory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemLife.cpp" />
+    <ClCompile Include="ItemBomb.cpp" />
+    <ClCompile Include="ItemPower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barrel.h" />
@@ -143,11 +145,11 @@
     <ClInclude Include="TargetSkill.h" />
     <ClInclude Include="BackMove.h" />
     <ClInclude Include="ItemManager.h" />
-    <ClInclude Include="ItemSubject.h" />
-    <ClInclude Include="ItemObserver.h" />
     <ClInclude Include="ItemFactory.h" />
     <ClInclude Include="ItemLifeFactory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemLife.h" />
+    <ClInclude Include="ItemBomb.h" />
+    <ClInclude Include="ItemPower.h" />
   </ItemGroup>
 </Project>

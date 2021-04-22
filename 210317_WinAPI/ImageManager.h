@@ -3,7 +3,7 @@
 #include "Singleton.h"
 
 class Image;
-
+class CollisionCheck;
 class ImageManager: public Singleton<ImageManager>
 {
 private:
@@ -13,6 +13,7 @@ private:
 
 public:
 	HRESULT Init();
+
 	void Release();
 
 	//정적 이미지

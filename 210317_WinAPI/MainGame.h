@@ -22,7 +22,7 @@ private:
 	HANDLE hTimer;
 	POINT ptMouse{ 0, 0 };
 	char szText[128] = "";
-
+	bool isItemMake[10];
 	Image* backBuffer;
 	Image* backGround;
 	
@@ -33,21 +33,22 @@ private:
 	Image* backCloud;
 
 	Tank* tank;
-
+	bool oneTimeDrop[3];
 	//int enemyCount;
 	//Enemy* enemy;
 	EnemyManager* enemyManager;
 
 	SceneManager* sceneManagerObserver;//옵저버 씬매니저
 
-	ItemManager* itemManagerObserver;
+	vector<ItemManager*> vItemManager;
 
 	PlayerShip* playerShip;
 
 	BossManager* bossManager;
 
 	CollisionCheck* collisionCheck;
-
+	int randomItem;
+	int itemTime;
 	
 public:
 	virtual HRESULT Init();		// 오버라이딩 : 다형성
@@ -58,11 +59,12 @@ public:
 	virtual void Render(HDC hdc) {};
 
 	virtual void RegisterObserver(SceneManager* scenemanager);
-	virtual void RegisterObserver(ItemManager* scenemanager);
+
 	virtual void UnRegisterObserver() ;
 	virtual void notifyObserve();
 
 	void CheckCollision();
+	void ItemMake();
 
 	LRESULT MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 

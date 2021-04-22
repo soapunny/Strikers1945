@@ -1,10 +1,10 @@
 #pragma once
-#include "ItemObserver.h"
 #include "config.h"
 class Item;
 class ItemFactory;
-class BossManager;
-class ItemManager : public ItemObserver
+
+class CollisionCheck;
+class ItemManager
 {
 private:
 	/*
@@ -14,18 +14,26 @@ private:
 	vector<ItemFactory*> vItemFactory;
 	DROPENEMY dropEnemy;
 	FPOINT dropPos;
-	BossManager* bossManager;
-	bool IsItemIsDrop;
-	enum ITEMTABLE{LIFE,BOMB,POWER};
-	
+
+	bool IsItemDrop;
+
+	bool boss1Item;
+	bool boss2Item;
+	bool boss3Item;
+	enum ITEMTABLE{LIFEITEM,BOMBITEM,POWERITEM,ENDITEM};
+	int randomItem;
 
 public:
 	//void Render(HDC hdc);
-	void Init();
+	HRESULT Init() { return S_OK; };
+	HRESULT Init(CollisionCheck* collisionCheck);
 	void Update();
 	void Render(HDC hdc);
 	void Release();	
-	virtual void SetDropNotify(DROPENEMY dropItem) 	{ this->dropEnemy = dropItem; };
-	virtual void SetDropPos(FPOINT pos) { this->dropPos = dropPos; };
-	virtual void SetIsItem(bool IsItemIsDrop) { this->IsItemIsDrop = IsItemIsDrop; };
+	
+	virtual void SetIsItem(bool IsItemIsDrop) { this->IsItemDrop = IsItemIsDrop; };
+	inline void SetDropPos(FPOINT dropPos) { this->dropPos = dropPos; }
+	inline void SetDropEnemy(DROPENEMY dropEnemy) { this->dropEnemy = dropEnemy; }
+	inline void SetRandItem(int a) { this->randomItem = a;}
+	
 };

@@ -1,21 +1,22 @@
-#include "ItemLife.h"
+#include "ItemPower.h"
 #include "CommonFunction.h"
 #include "Image.h"
 #include "NormalMove.h"
 #include "CollisionCheck.h"
 #include "MoveManager.h"
-HRESULT ItemLife::Init(CollisionCheck* collisionCheck)
+HRESULT ItemPower::Init(CollisionCheck* collisionCheck)
 {
-	img = ImageManager::GetSingleton()->FindImage("라이프아이템");
+	currFrameX = 0;
+	img = ImageManager::GetSingleton()->FindImage("파워아이템");
 	if (img == nullptr)
 	{
 		MessageBox(g_hWnd, "미사일에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
 		return E_FAIL;
 	}
-	//ItemPos.x = WINSIZE_X/2;
-	//ItemPos.y = 0;
+	ItemPos.x = dropPos.x;
+	ItemPos.y = dropPos.y;
 	vMoveInterfaces.resize(MOVETYPE::END_MOVE);
-	vMoveInterfaces[MOVETYPE::NORMAL_MOVE] = new NormalMove;	
+	vMoveInterfaces[MOVETYPE::NORMAL_MOVE] = new NormalMove;
 	moveManager = new MoveManager;
 	moveManager->ChangeMove(vMoveInterfaces[MOVETYPE::NORMAL_MOVE]);
 	currMoveInterface = vMoveInterfaces[MOVETYPE::NORMAL_MOVE];
@@ -27,9 +28,9 @@ HRESULT ItemLife::Init(CollisionCheck* collisionCheck)
 	dropPos.x = ItemPos.x;*/
 	why = true;
 	return S_OK;
-}	
+}
 
-void ItemLife::Update()
+void ItemPower::Update()
 {
 	if (!isFired)
 	{
@@ -41,30 +42,35 @@ void ItemLife::Update()
 		moveManager->SetMoveSpeed(moveSpeed);
 		moveManager->DoMove(&ItemPos, &angle);
 	}
-
 	if (ItemPos.x < 0 || ItemPos.y < 0 || ItemPos.x > WINSIZE_X || ItemPos.y > WINSIZE_Y)
 	{
+		moveSpeed = 300.0f;
 		isFired = false;
 		why = false;
-		
 		//this->collisionCheck->DeletePlayerMissile();
 		//fireStep = 0;
 	}
-	
-}
-
-void ItemLife::Render(HDC hdc)
-{	
-	if (isFired)
+	updateCount++;
+	if (updateCount >= 5)
 	{
-		Rectangle(hdc, ItemPos.x - size / 2, ItemPos.y - size / 2, ItemPos.x +  size / 2, ItemPos.y + size/2);
-		img->Render(hdc, ItemPos.x, ItemPos.y, true);
+		currFrameX = (currFrameX + 1) % 6;
+		updateCount = 0;
 	}
 	
 }
 
+void ItemPower::Render(HDC hdc)
+{
+	if (isFired)
+	{
+		Rectangle(hdc, ItemPos.x-size / 2, ItemPos.y - size / 2, ItemPos.x + size/2, ItemPos.y + size/2);
+		img->FrameRender(hdc, ItemPos.x, ItemPos.y, currFrameX, 0, true);
+	}
 
-void ItemLife::Release()
+}
+
+
+void ItemPower::Release()
 {
 	for (int i = 0; i < vMoveInterfaces.size(); i++) {
 		if (vMoveInterfaces[i])
@@ -72,6 +78,6 @@ void ItemLife::Release()
 	}
 }
 
-void ItemLife::RRRR()
+void ItemPower::RRRR()
 {
 }

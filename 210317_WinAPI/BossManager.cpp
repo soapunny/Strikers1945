@@ -26,9 +26,12 @@ HRESULT BossManager::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
 
     sceneManagerObserver = new SceneManager;
     RegisterObserver(sceneManagerObserver);
-    itemManagerObserver = new ItemManager;
-    RegisterObserver(itemManagerObserver);
-    
+    isBoss1Alive=true;
+    isBoss2Alive=true;
+    isBoss3Alive=true;
+    AisBoss1Alive = true;
+    AisBoss2Alive = true;;
+    AisBoss3Alive = true;;
     return S_OK;
 }
 
@@ -37,10 +40,7 @@ void BossManager::RegisterObserver(SceneManager* scenemanager)
     scenemanager = sceneManagerObserver;
 }
 
-void BossManager::RegisterObserver(ItemManager* itemManager)
-{
-    itemManager = itemManagerObserver;
-}
+
 
 void BossManager::UnRegisterObserver()
 {
@@ -48,11 +48,6 @@ void BossManager::UnRegisterObserver()
     sceneManagerObserver = nullptr;
 }
 
-void BossManager::ItemUnRegisterObserver()
-{
-    delete itemManagerObserver;
-    itemManagerObserver = nullptr;
-}
 
 void BossManager::notifyObserve()
 {
@@ -62,17 +57,6 @@ void BossManager::notifyObserve()
     }
 }
 
-void BossManager::ItemnotifyObserve()
-{
-    if (itemManagerObserver) //보스가 죽으면 해당하는 아이템 생성
-    {
-        
-        if (vBoss[1]->GetAlive() == false)
-        {
-            itemManagerObserver->SetDropNotify(BOSSDROP); itemManagerObserver->SetDropPos(vBoss[1]->GetPos());
-        }
-    }
-}
 
 void BossManager::Release()
 {
@@ -89,7 +73,11 @@ void BossManager::Release()
 void BossManager::Update()
 {
     vBoss[sceneManagerObserver->GetNextBoss()]->Update();
-    ItemnotifyObserve();
+    vBoss[1]->Update();
+    if (!vBoss[0]->GetAlive() && AisBoss1Alive) { isBoss1Alive = false; bossPosItem[0] = vBoss[0]->GetPos(); AisBoss1Alive = false; }
+    if (!vBoss[1]->GetAlive() && AisBoss2Alive) { isBoss2Alive = false; bossPosItem[1] = vBoss[1]->GetPos(); AisBoss2Alive = false;}
+    if (!vBoss[2]->GetAlive() && AisBoss3Alive) { isBoss3Alive = false; bossPosItem[2] = vBoss[2]->GetPos(); AisBoss3Alive = false;}
+
     notifyObserve();
 }
 
