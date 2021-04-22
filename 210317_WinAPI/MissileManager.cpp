@@ -123,7 +123,7 @@ void MissileManager::Update()
         //    vMissiles[i]->Update();
 
         }
-        else
+        /*else
         {
             if (this->fireType == FIRETYPE::PlayerFIRE)
             {
@@ -133,7 +133,7 @@ void MissileManager::Update()
             {
                 (this->collisionCheck)->DeleteBossMissile(lpMissile);
             }
-        }
+        }*/
     }
 }
 

@@ -76,7 +76,7 @@ void Enemy::Update()
 		if (myMissile)
 		{
 			fireTimer2 += TimerManager::GetSingleton()->getElapsedTime();
-			if ((int)fireTimer2 / 1 == 1)
+			if (fireTimer2 >= 1.0f)
 			{
 				//myMissile->SetPlayerPos(pos);
 				myMissile->SetOwnerType(MissileManager::OWNERTYPE::Enemy);
@@ -89,13 +89,6 @@ void Enemy::Update()
 			myMissile->Update();
 		}
 
-		//애니메이션
-		updateCount++;
-		if (updateCount >= 5)
-		{
-			//currFrameX = (currFrameX + 1) % 10;
-			updateCount = 0;
-		}
 		Move();
 	}
 }

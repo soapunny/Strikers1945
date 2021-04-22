@@ -14,6 +14,7 @@ class SceneManager;
 class MainGame : public GameNode, public Subject  //두개를 상속받을수 있다.
 {
 private:
+	enum SCENE_STATUS{OPENING_SCENE, INGAME_SCENE, ENDING_SCENE, END_SCENE_STATUS};
 	
 	bool isInited;
 	int status;
@@ -42,7 +43,7 @@ private:
 
 	bool oneTimeDrop[3];
 
-	 int endingTime;
+	int endingTime;
 
 	int hundredSecond;
 	int tenSecond;
@@ -51,7 +52,7 @@ private:
 	int currFrame;
 	float endElaspedTimer;
 	float endTimer;
-	bool onetimesave;
+	bool oneTimeSave;
 
 	//int enemyCount;
 	//Enemy* enemy;

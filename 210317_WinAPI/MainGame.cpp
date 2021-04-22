@@ -35,8 +35,8 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("플레이어 미사일(3)_R", "Image/bullet(8)_R.bmp", 44, 46, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("플레이어 우주선", "Image/playerJet.bmp", 489/3*2, 131/3*2, 3, 1, true, RGB(248, 0, 248));
 
+	ImageManager::GetSingleton()->AddImage("StageOneBoss", "Image/StageOneBoss.bmp", 186 * 30, 186, 30, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageTwoBoss", "Image/StageTwoBoss.bmp", 3152*2, 156*2,16,1, true, RGB(255, 255, 255));
-	ImageManager::GetSingleton()->AddImage("StageOneBoss", "Image/StageOneBoss.bmp", 186*30, 186, 30, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("StageThreeBoss", "Image/StageThreeBoss.bmp", 163 * 24, 121, 24, 1, true, RGB(255, 255, 255));
 	ImageManager::GetSingleton()->AddImage("패배엔딩", "Image/gameover.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(0, 0, 0));
 	ImageManager::GetSingleton()->AddImage("보스폭발", "Image/BossExplosion(16).bmp", 1019*2, 63*2, 16, 1, true, RGB(0, 248, 0));
@@ -83,10 +83,6 @@ HRESULT MainGame::Init()
 	hundredSecondImg = ImageManager::GetSingleton()->FindImage("타이머");
 	tenSecondImg = ImageManager::GetSingleton()->FindImage("타이머");
 	oneSecondImg = ImageManager::GetSingleton()->FindImage("타이머");
-	
-	//탱크
-	tank = new Tank();
-	tank->Init();
 
 	//충돌
 	collisionCheck = new CollisionCheck();
@@ -121,7 +117,7 @@ HRESULT MainGame::Init()
 	hundredSecond=0;
 	tenSecond=0;
 	oneSecond=0;
-	onetimesave = true;
+	oneTimeSave = true;
 
 	return S_OK;
 }
@@ -133,7 +129,7 @@ void MainGame::Release()
 
 	SAFE_RELEASE(backBuffer);
 	SAFE_RELEASE(backGround);
-	SAFE_RELEASE(tank);
+	//SAFE_RELEASE(tank);
 	SAFE_RELEASE(enemyManager);
 	SAFE_RELEASE(playerShip);
 	SAFE_RELEASE(bossManager);
@@ -150,18 +146,12 @@ void MainGame::Update()
 	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
 
 	//배경 이동
-	if (status >= 1)
+	if (status >= SCENE_STATUS::INGAME_SCENE)
 	{
 		backGroundPos.y += elapsedTime * 100.0f;
 		if (backGroundPos.y >= 0)
 		{
 			backGroundPos.y = -1887 + WINSIZE_Y;
-		}
-
-		//탱크(플레이어)
-		if (tank)
-		{
-			tank->Update();
 		}
 
 		//적
@@ -204,11 +194,13 @@ void MainGame::Update()
 void MainGame::Render()
  {
 	HDC hBackDC = backBuffer->GetMemDC();
-	if (status == 0)//오프닝 상태
+	if (status == SCENE_STATUS::OPENING_SCENE)//오프닝 상태
 	{ 
   		if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_SPACE))
 		{
 			status++;
+			if (status >= SCENE_STATUS::END_SCENE_STATUS)
+				status = SCENE_STATUS::OPENING_SCENE;
 			//sceneManagerObserver->OpeningNotify(status);
 			//오프닝 넘기기
 		}
@@ -217,24 +209,22 @@ void MainGame::Render()
 			openingImage->Render(hBackDC);
 		}
 	}
-	else if (status == 1)
+	else if (status == SCENE_STATUS::INGAME_SCENE)
 	{
 	//배경
 		if (backGround)
 		{
 			backGround->Render(hBackDC, backGroundPos.x, backGroundPos.y);
 		}
-		if (backCloud)
-		{
-			//backCloud->AlphaRender(hBackDC, backGroundPos.x, backGroundPos.y);
-
-			//BLENDFUNCTION* blendFunc = backCloud->GetBlendFunc();
-			//blendFunc->SourceConstantAlpha = 100;
-		}
+		//if (backCloud)//구름을 그려준다.
+		//{
+		//	backCloud->AlphaRender(hBackDC, backGroundPos.x, backGroundPos.y);
+		//	BLENDFUNCTION* blendFunc = backCloud->GetBlendFunc();
+		//	blendFunc->SourceConstantAlpha = 100;
+		//}
 		
 		//FPS
 		TimerManager::GetSingleton()->Render(hBackDC);
-
 
 		//collsion
 		if (collisionCheck) 
@@ -252,11 +242,6 @@ void MainGame::Render()
 				//vItemManager[1]->SetIsItem(false);
 			}
 				
-		}
-		//tank
-		if (tank)
-		{
-			//tank->Render(hBackDC);
 		}
 
 		//enemy manager
@@ -279,10 +264,10 @@ void MainGame::Render()
 
 		if (bossManager->GetEnding() == true)
 		{
-			status =2;
+			status = SCENE_STATUS::ENDING_SCENE;
 		}
 	}
-	else if(status == 2)//엔딩 출력
+	else if(status == SCENE_STATUS::ENDING_SCENE)//엔딩 출력
 	{
 		/*endingImage = ImageManager::GetSingleton()->FindImage("보스1엔딩");
 		endingImage = ImageManager::GetSingleton()->FindImage("보스2엔딩");
@@ -315,10 +300,10 @@ void MainGame::Render()
 			endingImage->FrameRender(hBackDC,0,0,currFrame,0,false);
 		}
 
-		if (onetimesave)
+		if (oneTimeSave)
 		{
 			endingTime = TimerManager::GetSingleton()->getGameSecond();
-			onetimesave = false;
+			oneTimeSave = false;
 		}
 		 //한번만 초기화 하려면 스태틱으로?
 

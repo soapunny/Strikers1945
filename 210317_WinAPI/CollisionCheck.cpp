@@ -46,6 +46,10 @@ void CollisionCheck::Update()
 			(*myIt)->SetIsFired(false);
 			myIt = bossMissile.erase(myIt);
 		}
+		else if (!(*myIt)->GetIsFired())
+		{
+			myIt = bossMissile.erase(myIt);
+		}
 		else
 			myIt++;
 	}
@@ -59,6 +63,10 @@ void CollisionCheck::Update()
 			(*myIt)->SetIsFired(false);
 			hitted = true;
 			hitPos = { (float)((*myIt)->GetPlayerMissileRect()->left), (float)((*myIt)->GetPlayerMissileRect()->top) };
+			myIt = playerMissile.erase(myIt);
+		}
+		else if (!(*myIt)->GetIsFired())
+		{
 			myIt = playerMissile.erase(myIt);
 		}
 		else

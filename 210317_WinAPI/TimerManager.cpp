@@ -24,6 +24,7 @@ void TimerManager::Update()
 
 void TimerManager::Render(HDC hdc)
 {
+
 	if (timer)
 	{
 		wsprintf(szText, "FPS: %d", timer->getFPS());
@@ -32,6 +33,7 @@ void TimerManager::Render(HDC hdc)
 		wsprintf(szText, "경과 시간: %d",timer->getGameSecond());
 		TextOut(hdc, WINSIZE_X - 150, 50, szText, strlen(szText));
 	}
+
 }
 
 float TimerManager::getElapsedTime()

@@ -15,15 +15,13 @@ HRESULT BossManager::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
 {
     this->collisionCheck = collisionCheck;
 
-    vBoss.resize(3);
-    vBoss[0] = new StageOneBoss();
-    vBoss[1] = new StageTwoBoss();
-    vBoss[2] = new StageThreeBoss();
+    vBoss.resize(BOSS_TYPE::BOSS_TYPE_END);
+    vBoss[BOSS_TYPE::STAGE_ONE_BOSS] = new StageOneBoss();
+    vBoss[BOSS_TYPE::STAGE_TWO_BOSS] = new StageTwoBoss();
+    vBoss[BOSS_TYPE::STAGE_THREE_BOSS] = new StageThreeBoss();
    
     currBossNumber = 0;
-
     frameTime = 0;
-
     currFrame = 0;
     maxFrame = 16;
     printNumber = 0;
@@ -35,9 +33,9 @@ HRESULT BossManager::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     sceneManagerObserver = new SceneManager;
     RegisterObserver(sceneManagerObserver);
 
-    isBoss1Alive=true;
-    isBoss2Alive=true;
-    isBoss3Alive=true;
+    isBoss1Alive = true;
+    isBoss2Alive = true;
+    isBoss3Alive = true;
     AisBoss1Alive = true;
     AisBoss2Alive = true;
     AisBoss3Alive = true;
@@ -104,7 +102,7 @@ void BossManager::Render(HDC hdc)
 {
     vBoss[sceneManagerObserver->GetNextBoss()]->Render(hdc);
     
-    if ( vBoss[currBossNumber]->GetAlive() == true && vBoss[currBossNumber]->GetLife() <= 0 )
+    if ( vBoss[currBossNumber]->GetAlive() && vBoss[currBossNumber]->GetLife() <= 0 )
     {
         if (img)
         {

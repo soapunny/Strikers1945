@@ -162,20 +162,20 @@ void StageThreeBoss::Attack()
         if (Attackstatus == 1)
         {
            
-                for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 1; i++)
+            {
+
+                if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
                 {
+                    //if(BossHp/4*3>)
 
-                    if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
-                    {
-                        //if(BossHp/4*3>)
-
-                        vBarrels[i]->Attack();
-                        vBarrels[i]->SetMaxFireCount(TornadoFireCount);
-                        vBarrels[i]->SetFireType(FIRETYPE::TornadoFIRE);
+                    vBarrels[i]->Attack();
+                    vBarrels[i]->SetMaxFireCount(TornadoFireCount);
+                    vBarrels[i]->SetFireType(FIRETYPE::TornadoFIRE);
                        
-                        vBarrels[i]->Update();
-                    }
+                    vBarrels[i]->Update();
                 }
+            }
             
         }
         if (Attackstatus == 2)

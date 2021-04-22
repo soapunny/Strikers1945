@@ -4,6 +4,7 @@
 #include "NormalMove.h"
 #include "CollisionCheck.h"
 #include "MoveManager.h"
+
 HRESULT ItemPower::Init(CollisionCheck* collisionCheck)
 {
 	currFrameX = 0;

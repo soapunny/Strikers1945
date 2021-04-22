@@ -10,7 +10,7 @@ void ImageManager::Release()
 {
 	//모든 이미지에 대한  메모리 해제가 이루어 진다
 	map<string, Image*>::iterator myIt;
-	for (myIt = mImageDatas.begin(); myIt != mImageDatas.end(); myIt++)	
+	for (myIt = mImageDatas.begin(); myIt != mImageDatas.end(); myIt++)
 	{
 		if ((myIt->second))
 		{

@@ -99,7 +99,7 @@ void EnemyManager::Update()
     float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
     time += elapsedTime;
     createCycle = (int)time;
-    if (createCycle == 3)
+    if (createCycle == ENEMY_PATTERN::FIRST_ENEMY_PATTERN)
     {
         if (!addEnemyToggle) {
             AddEnemy(ENEMY_TYPE::SMALL_ENEMY, ENEMY_INIT_POS::INIT_LEFT);
@@ -108,14 +108,14 @@ void EnemyManager::Update()
             addEnemyToggle = !addEnemyToggle;
         }
     }
-    else if (createCycle == 13)
+    else if (createCycle == ENEMY_PATTERN::SECOND_ENEMY_PATTERN)
     {
         if (addEnemyToggle) {
             AddEnemy(ENEMY_TYPE::MEDIUM_ENEMY, ENEMY_INIT_POS::INIT_CENTER);
             addEnemyToggle = !addEnemyToggle;
         }
     }
-    else if (createCycle == 23)
+    else if (createCycle == ENEMY_PATTERN::THIRD_ENEMY_PATTERN)
     {
         if (!addEnemyToggle) {
             AddEnemy(ENEMY_TYPE::MEDIUM_ENEMY, ENEMY_INIT_POS::INIT_LEFT);
@@ -123,7 +123,7 @@ void EnemyManager::Update()
             addEnemyToggle = !addEnemyToggle;
         }
     }
-    else if (createCycle == 33)
+    else if (createCycle == ENEMY_PATTERN::FOURTH_ENEMY_PATTERN)
     {
         if (addEnemyToggle) {
             AddEnemy(ENEMY_TYPE::BIG_ENEMY, ENEMY_INIT_POS::INIT_LEFT);
@@ -131,7 +131,7 @@ void EnemyManager::Update()
             addEnemyToggle = !addEnemyToggle;
         }
     }
-    else if (createCycle == 53)
+    else if (createCycle == ENEMY_PATTERN::END_ENEMYPATTERN)
     {
         time = 0.0f;
     }

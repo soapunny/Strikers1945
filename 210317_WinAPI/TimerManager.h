@@ -9,6 +9,7 @@ class TimerManager: public Singleton<TimerManager>
 private:
 	Timer* timer;
 	char szText[128];
+	int oldGameSecond;
 	
 public:
 	HRESULT Init();

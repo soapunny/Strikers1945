@@ -16,7 +16,7 @@ protected:
 	char szText[128];
 	Image* image;
 	int currFrameX;
-	int updateCount;
+	float updateCount;
 	float angle;
 	FPOINT pos;
 	int size;		//보스 크기

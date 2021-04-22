@@ -33,7 +33,7 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
         return E_FAIL;
     }
     currFrameX = 0;
-    updateCount = 0;
+    updateCount = 0.0f;
 
     //보스 
     pos.x = WINSIZE_X/2;          //위치
@@ -132,11 +132,11 @@ void StageOneBoss::Update()
             vBarrels[2]->SetBarrelPos(FPOINT{WINSIZE_X-pos.x, WINSIZE_Y-pos.y});
 
         //애니메이션
-        updateCount++;
-        if (updateCount >= 5)
+        updateCount += TimerManager::GetSingleton()->getElapsedTime();
+        if (updateCount >= 0.1f)
         {
             currFrameX = (currFrameX + 1) % 30;
-            updateCount = 0;
+            updateCount = 0.0f;
         }
 
         Attack();
@@ -230,7 +230,7 @@ void StageOneBoss::Render(HDC hdc)
 {
     if (isAlive)
     {
-        RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
+        //RenderEllipseToCenter(hdc, pos.x, pos.y, size, size);
 
         if (image)
         {

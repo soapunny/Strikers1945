@@ -10,7 +10,7 @@ HRESULT Barrel::Init(CollisionCheck* collisionCheck, int posX, int posY)
     barrelSize = 100;
     barrelStart.x = pos.x;
     barrelStart.y = pos.y;
-    barrelAngle = -3.14f / 2.0f; //지금은 45도 
+    barrelAngle = -3.14f / 2.0f; //지금은 45도
     maxFireCount = 1;
     dir = 1;
     missileSize = 25;
@@ -61,7 +61,7 @@ void Barrel::Attack()
     {
         // 포신 각도에 따른 좌표 계산
         barrelEnd.x = barrelStart.x + cosf(barrelAngle) * barrelSize;
-        barrelEnd.y = barrelStart.y - (sinf(barrelAngle) * barrelSize);
+        barrelEnd.y = barrelStart.y - sinf(barrelAngle) * barrelSize;
         myMissile->SetPos(barrelEnd);
 
         //myMissile->Update();

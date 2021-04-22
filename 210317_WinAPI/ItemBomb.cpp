@@ -28,7 +28,6 @@ HRESULT ItemBomb::Init(CollisionCheck* collisionCheck)
 	dropPos.x = ItemPos.x;*/
 	why = true;
 	return S_OK;
-	
 }
 
 void ItemBomb::Update()
