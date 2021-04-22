@@ -36,7 +36,7 @@ HRESULT StageTwoBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     currMoveInterface = nullptr;
     currFrameX = 0;
     updateCount = 0;
-    life = 1000;
+    life = 100;
     currTime = 0;
     //보스 
     pos.x = WINSIZE_X / 2;          //위치
@@ -125,7 +125,7 @@ void StageTwoBoss::Update()
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('M'))
     {
-        life -= 300;
+        life -= 30;
     }
 
     for (int i = 0; i < vBarrels.size(); i++)
@@ -137,7 +137,10 @@ void StageTwoBoss::Update()
         if (vBarrels[i]->GetFireType() == FIRETYPE::TargetFIRE)   vBarrels[i]->SetMaxFireCount(100);
     }
     
-
+    if (life < 0)
+    {
+       // isAlive = false;
+    }
     
 }
 

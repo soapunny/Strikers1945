@@ -20,7 +20,7 @@ HRESULT StageThreeBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     currMoveInterface = nullptr;
     image = ImageManager::GetSingleton()->FindImage("StageThreeBoss");
     if (image == nullptr)
-    {
+    { 
         MessageBox(g_hWnd, "enemy에 해당하는 이미지가 추가되지 않았음", "경고", MB_OK);
         return E_FAIL;
     }
@@ -33,7 +33,7 @@ HRESULT StageThreeBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     pos.x = WINSIZE_X / 2 ;
     pos.y = -150;
     size = 150;
-    BossHp = 100;
+    life = 100;
     moveSpeed = 100.0f;
     TornadoFireCount = 30;
     isAlive = true;
@@ -106,17 +106,22 @@ void StageThreeBoss::Update()
             //vBarrels[i]->SetPos(pos);
         }
     }
-    if (BossHp <= 75)
-    {
-        isActBarrelCount = 2;
-       // Attackstatus = 1;
-    }
+    //if (life <= 75)
+    //{
+    //    isActBarrelCount = 2;
+    //   // Attackstatus = 1;
+    //}
   
     Move();
     
 
     //미사일 발사
     Attack();
+
+    if (KeyManager::GetSingleton()->IsOnceKeyDown('G'))
+    {
+        life -= 25;
+    }
 }
 
 void StageThreeBoss::Render(HDC hdc)

@@ -55,5 +55,7 @@ public:
 	inline void SetAlive(bool isAlive) { this->isAlive = isAlive; }
 	inline bool GetAlive() { return this->isAlive; }
 
+	inline int GetLife() { return this->life; }
+
 	inline RECT GetBossRect() { return bossRect; }
 };

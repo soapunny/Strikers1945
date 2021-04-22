@@ -220,7 +220,7 @@ void StageOneBoss::Move()
         vBarrels[3]->SetActivated(false);
         vBarrels[4]->SetActivated(false); 
         vBarrels[5]->SetActivated(false);
-        isAlive = false;
+       // isAlive = false;
     }
     moveManager->DoMove(&pos, &angle);
 }
@@ -283,7 +283,7 @@ void StageOneBoss::OnDead()
         }
         else
         {
-            isAlive = false;
+            //isAlive = false;
         }
     }
 }

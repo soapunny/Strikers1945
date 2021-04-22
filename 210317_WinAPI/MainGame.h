@@ -28,12 +28,31 @@ private:
 	
 	Image* openingImage;
 	Image* endingImage;
+	
+	Image* endingTimerImage;
+
+	Image* hundredSecondImg;
+	Image* tenSecondImg;
+	Image* oneSecondImg;
 
 	FPOINT backGroundPos;
 	Image* backCloud;
 
 	Tank* tank;
+
 	bool oneTimeDrop[3];
+
+	 int endingTime;
+
+	int hundredSecond;
+	int tenSecond;
+	int oneSecond;
+
+	int currFrame;
+	float endElaspedTimer;
+	float endTimer;
+	bool onetimesave;
+
 	//int enemyCount;
 	//Enemy* enemy;
 	EnemyManager* enemyManager;

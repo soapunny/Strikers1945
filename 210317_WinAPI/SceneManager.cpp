@@ -13,6 +13,11 @@ void SceneManager::Render(HDC hdc)
 
 void SceneManager::DeadNotify(bool OneBossAlive, bool twoBossAlive, bool threeBossAlive)
 {
+	if (OneBossAlive == true)
+	{
+		SetBossNumber(0);
+	}
+
 	if (OneBossAlive == false)
 	{
 		SetBossNumber(1);
@@ -25,6 +30,7 @@ void SceneManager::DeadNotify(bool OneBossAlive, bool twoBossAlive, bool threeBo
 	
 	if (threeBossAlive == false)
 	{
+		endingTrue = true;
 		//엔딩하라 알려주기
 	}
 	

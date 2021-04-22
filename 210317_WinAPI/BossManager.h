@@ -25,6 +25,14 @@ private:
 	bool AisBoss2Alive;
 	bool AisBoss3Alive;
 	DROPENEMY dropEnemy;
+	//boss 3¸¶¸® rect
+	Image* img;
+	int currFrame;
+	int maxFrame;
+	int frameTime;
+	int currBossNumber;
+	int printNumber;
+
 public:
 
 	HRESULT Init();
@@ -44,6 +52,9 @@ public:
 
 	inline bool GetIsAlive(){return isBossAlive;}
 	inline void SetBossPos(FPOINT bossPos) { this->bossPos = bossPos; }
+	
+	bool GetEnding();
+
 	inline RECT GetBossRect() { return bossRect; }
 	inline FPOINT GetBossPos() { return bossPos; }
 	inline bool  GetisBoss1Alive() { return isBoss1Alive; }

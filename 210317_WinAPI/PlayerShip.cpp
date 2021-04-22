@@ -13,7 +13,10 @@ HRESULT PlayerShip::Init(CollisionCheck* collisionCheck)
 {
 	this->collisionCheck = collisionCheck;
 	
+	explosionimage = ImageManager::GetSingleton()->FindImage("보스폭발");
+	blinkImage = ImageManager::GetSingleton()->FindImage("플레이어 깜빡임 우주선");
 	image = ImageManager::GetSingleton()->FindImage("플레이어 우주선");
+	retryImage = ImageManager::GetSingleton()->FindImage("패배엔딩");
 	if (image == nullptr)
 	{
 		MessageBox(g_hWnd, "플레이어 우주선 이미지 로드 실패", "실패", MB_OK);
@@ -29,12 +32,15 @@ HRESULT PlayerShip::Init(CollisionCheck* collisionCheck)
 	isAlive = true;
 	isDying = false;
 	canMove = false;
-
-	playerLife = 100;
+	reAppear = false;
+	playerLife = 5;
 
 	collisionSize.x = 35;
 	collisionSize.y = 50;
 
+	explosionCurrFrame = 0;
+	blinkCount = 0;
+	explosionCount=0;
 	playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
 	collisionCheck->SetPlayerRect(playerRect);
 
@@ -89,11 +95,25 @@ void PlayerShip::Update()
 			canMove = true;
 	}
 
+	if (playerLife <= 0)
+	{
+		isAlive = false;
+	}
+
 	//알파블랜드
-	if (isAlive && KeyManager::GetSingleton()->IsStayKeyDown(VK_RETURN))
+	if (isAlive && KeyManager::GetSingleton()->IsStayKeyDown(VK_RETURN))//죽고 등장하면 깜빡거림
 	{
 		isAlive = false;
 		isDying = true;
+	}
+
+	if (KeyManager::GetSingleton()->IsStayKeyDown('J'))//충돌처리 플레이어 죽으면 터지면서 다시등장
+	{
+		
+	//	pos.x = WINSIZE_X / 2;
+		//pos.y = WINSIZE_Y + 50;
+		canMove = false;
+		lifeDecrease = true;
 	}
 
 	//이동
@@ -130,6 +150,14 @@ void PlayerShip::Update()
 			Attack(i);
 		}
 	}
+	if (!isAlive)
+	{
+		if (KeyManager::GetSingleton()->IsStayKeyDown('R')) //죽엇을때 다시시작할건지 묻기 R을 누르면 진행되던 스테이지에서 그대로 시작
+		{
+			playerLife = 5;
+			isAlive = true;
+		}
+	}
 }
 
 void PlayerShip::Render(HDC hdc)
@@ -141,10 +169,72 @@ void PlayerShip::Render(HDC hdc)
 	//이미지
 	if (image)
 	{
-		if(!isAlive)
-			image->AlphaRender(hdc, pos.x, pos.y, true);
-		if(isAlive)
-			image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
+		if (reAppear == true)//깜박이며 다시등장하기 AlphaRender는 프레임이 없어서 좀 고쳐야할듯
+		{
+			blinkImage->AlphaRender(hdc, pos.x, pos.y, true);//AlphaRender 고쳐되 괜찮은지 묻기
+
+			BLENDFUNCTION* blendFunc = blinkImage->GetBlendFunc();//하나짜리 프레임의 비행기 이미지띄우는걸로 결정 ㅎㅎ
+			blinkCount++;
+			if (blinkCount % 2 == 0)
+			{
+				blendFunc->SourceConstantAlpha = 0;
+			}
+			else
+			{
+				blendFunc->SourceConstantAlpha = 255;
+			}
+
+			if (blinkCount > 175)
+			{
+				blinkCount = 0;
+				reAppear = false;
+			}
+
+		}
+		else
+		{
+
+			if (isAlive)
+			{
+				image->FrameRender(hdc, pos.x, pos.y, currFrameX, 0, true);
+			}
+			else //죽으면 다시도전할수 있는 화면 띄우기
+			{
+				retryImage->Render(hdc);
+
+			}
+		}
+			//image->AlphaRender(hdc, pos.x, pos.y, true);
+	}
+
+
+
+	if (lifeDecrease == true )//폭발이미지 출력부분
+	{	
+		explosionCount++;
+		if (explosionCount > 3)
+		{
+			explosionCurrFrame++; 
+			explosionCount = 0;
+		}
+		
+		explosionimage->FrameRender(hdc,pos.x, pos.y , explosionCurrFrame, 0, true);
+		//explosionimage->FrameRender(hdc, pos.x, pos.y + 80, explosionCurrFrame, 0, true);
+		if (explosionCurrFrame > 10)
+		{
+			canMove = false;
+			pos.x = WINSIZE_X / 2;
+			pos.y = WINSIZE_Y + 50;
+		}
+		if (explosionCurrFrame > 16)
+		{
+			explosionCurrFrame = 0;
+			lifeDecrease = false;
+			playerLife -= 1;
+			reAppear = true;
+			
+			
+		}
 	}
 
 	// 포신
