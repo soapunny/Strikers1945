@@ -1,0 +1,6 @@
+﻿  MainGame.cpp
+D:\Download\새 폴더 (2)\210317_WinAPI\MainGame.cpp(57,112): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Download\새 폴더 (2)\210317_WinAPI\MainGame.cpp(57,103): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Download\새 폴더 (2)\210317_WinAPI\MainGame.cpp(229,62): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Download\새 폴더 (2)\210317_WinAPI\MainGame.cpp(229,45): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  210317_WinAPI.vcxproj -> D:\Download\새 폴더 (2)\x64\Debug\210317_WinAPI.exe
