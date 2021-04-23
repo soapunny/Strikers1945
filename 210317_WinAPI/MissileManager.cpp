@@ -85,6 +85,7 @@ void MissileManager::Update()
         lpMissile->SetPlayerPower(this->playerPower);
         lpMissile->SetStartPos(this->missilePos);
         lpMissile->Update();
+
         if (lpMissile->GetIsFired())
         {
             lpMissile->SetOwnerType((Missile::OWNERTYPE)ownerType);
@@ -116,18 +117,18 @@ void MissileManager::Update()
         //        }
         //    }
         }
-        else
-        {
-            if (this->fireType == FIRETYPE::PlayerFIRE)
-            {
-                (this->collisionCheck)->DeletePlayerMissile(lpMissile);
-            }
-            else
-            {
-                (this->collisionCheck)->DeleteBossMissile(lpMissile);
-                //lpMissile->SetEnemyMissileRect({ -100, -100, -100, -100 });
-            }
-        }
+        //else
+        //{
+        //    if (this->fireType == FIRETYPE::PlayerFIRE)
+        //    {
+        //        (this->collisionCheck)->DeletePlayerMissile(lpMissile);
+        //    }
+        //    else
+        //    {
+        //        (this->collisionCheck)->DeleteBossMissile(lpMissile);
+        //        //lpMissile->SetEnemyMissileRect({ -100, -100, -100, -100 });
+        //    }
+        //}
     }
 }
 

@@ -50,11 +50,15 @@ void CollisionCheck::Update()
 			(*myIt)->SetIsFired(false);
 			myIt = bossMissile.erase(myIt);
 		}
+		else if (!(*myIt)->GetIsFired())
+		{
+			myIt = bossMissile.erase(myIt);
+		}
 		else
 			myIt++;
 	}
 
-	//"플레이어 미사일"과 "보스" 충돌
+	//"플레이어 미사일"과 "보스"충돌
 	for (myIt = playerMissile.begin(); myIt != playerMissile.end();)
 	{
 		if (IntersectRect(&rcTemp, &RectHit_Boss, (*myIt)->GetPlayerMissileRect()))
@@ -63,6 +67,10 @@ void CollisionCheck::Update()
 			(*myIt)->SetIsFired(false);
 			hitted = true;
 			hitPos = { (float)((*myIt)->GetPlayerMissileRect()->left), (float)((*myIt)->GetPlayerMissileRect()->top) };
+			myIt = playerMissile.erase(myIt);
+		}
+		else if (!(*myIt)->GetIsFired())
+		{
 			myIt = playerMissile.erase(myIt);
 		}
 		else
@@ -89,6 +97,7 @@ void CollisionCheck::Update()
 		}
 	}
 
+
 	//"플레이어"와 "아이템" 충돌
 	for (myIt3 = itemData.begin(); myIt3 != itemData.end();)
 	{
@@ -110,6 +119,10 @@ void CollisionCheck::Update()
 			{
 				lifeIsCollision = true;
 			}
+		}
+		else if( !(*myIt3)->GetIsFired() )
+		{
+			myIt3 = itemData.erase(myIt3);
 		}
 		else
 			myIt3++;
@@ -166,6 +179,7 @@ void CollisionCheck::RendEffect(HDC hdc, FPOINT pos)
 
 void CollisionCheck::Render(HDC hdc)
 {
+
 	////if (KeyManager::GetSingleton()->IsOnceKeyDown('Q'))
 	//{
 	//	//keyCnt++;
@@ -258,5 +272,5 @@ void CollisionCheck::Render(HDC hdc)
 
 void CollisionCheck::DeleteEnemyMissile(Missile* missile)
 {
-	
+
 }

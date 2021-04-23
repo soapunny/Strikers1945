@@ -43,6 +43,7 @@ HRESULT StageTwoBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     pos.x = WINSIZE_X / 2;          //위치
     pos.y = 200;
     size = 200;                     //크기
+
     moveSpeed = 150.0f;               //이동 속도
     angle = 0;
     currElapesdTimer = 0;
@@ -122,17 +123,18 @@ void StageTwoBoss::Update()
     Attack();
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('U'))
+
     {
         life -= 30;
     }
 
     for (int i = 0; i < vBarrels.size(); i++)
     {
-        if (vBarrels[i]->GetFireType() == FIRETYPE::NormalFIRE)   vBarrels[i]->SetMaxFireCount(50);
-        if (vBarrels[i]->GetFireType() == FIRETYPE::TwoFIRE)      vBarrels[i]->SetMaxFireCount(50);
-        if (vBarrels[i]->GetFireType() == FIRETYPE::WormFIRE)     vBarrels[i]->SetMaxFireCount(150);
-        if (vBarrels[i]->GetFireType() == FIRETYPE::MeteorFIRE)   vBarrels[i]->SetMaxFireCount(150);
-        if (vBarrels[i]->GetFireType() == FIRETYPE::TargetFIRE)   vBarrels[i]->SetMaxFireCount(100);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::NormalFIRE)   vBarrels[i]->SetMaxFireCount(2.0f);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::TwoFIRE)      vBarrels[i]->SetMaxFireCount(2.0f);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::WormFIRE)     vBarrels[i]->SetMaxFireCount(3.0f);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::MeteorFIRE)   vBarrels[i]->SetMaxFireCount(3.0f);
+        if (vBarrels[i]->GetFireType() == FIRETYPE::TargetFIRE)   vBarrels[i]->SetMaxFireCount(2.0f);
     }
     
     if (life < 0)
@@ -218,6 +220,7 @@ void StageTwoBoss::Move()
     case StageTwoBoss::Phase0:
         if(currTime%2 == 0&&size<=330)size+=3;
         if (currTime >= 330)
+
         {
             phase = Phase1;
         }
@@ -227,12 +230,14 @@ void StageTwoBoss::Move()
         if (pos.y >= (WINSIZE_Y / 2)-50) backMove();
         else {
             if (currTime <= 350)  StateType(STATE1);
+
             else if (currTime > 500 && currTime <= 1000) StateType(STATE2);
             else if (currTime > 1000 && currTime <= 1500)  StateType(STATE3);
             else StateType(STATENOT);
             if (currTime == 1500)  currTime = 0;
 
             if (life <= 550) { phase = Phase2; changePhase = true; currTime = 0; }
+
         }
        break;
    case StageTwoBoss::Phase2:
@@ -251,6 +256,7 @@ void StageTwoBoss::Move()
                else if (currTime == 2500)  currTime = 0;
                else StateType(STATENOT);
                if (life <= 300) { phase = Phase3; currTime = 0; }
+
            }
        }
        break;
@@ -258,6 +264,7 @@ void StageTwoBoss::Move()
        if (changePhase)
            phaseChangeMove();
        if (pos.y >= 150) changePhase = false;
+
        if (pos.y >= (WINSIZE_Y / 2) - 50) backMove();
        else {
            if (!changePhase)

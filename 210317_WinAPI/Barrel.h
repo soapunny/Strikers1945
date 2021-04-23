@@ -28,7 +28,7 @@ private:
 
 	int dir;
 	FIRETYPE fireType;
-	int maxFireCount;
+	float maxFireCount;
 
 
 	// �̻���
@@ -47,7 +47,7 @@ public:
 	inline void SetActivated(bool isActivated) { this->isActivated = isActivated; }
 	inline void SetBarrelSize(int barrelSize) { this->barrelSize = barrelSize; }
 	inline void SetFireType(FIRETYPE fireType) { this->fireType = fireType; }
-	inline void SetMaxFireCount(int maxFireCount) { this->maxFireCount = maxFireCount; }
+	inline void SetMaxFireCount(float maxFireCount) { this->maxFireCount = maxFireCount; }
 	inline bool GetActivated() { return isActivated; }
 
 	void Move();

@@ -74,6 +74,7 @@ HRESULT PlayerShip::Init(CollisionCheck* collisionCheck)
 	//playerRect = { (LONG)pos.x, (LONG)pos.y, (LONG)(pos.x + collisionSize.x), (LONG)(pos.y + collisionSize.y) };
 	//collisionCheck->SetPlayerRect(playerRect);
 
+
 	//포신
 	barrelSize = 1;
 	
@@ -250,8 +251,8 @@ void PlayerShip::Render(HDC hdc)
 	{
 		bombImg[i]->Render(hdc, 30 + 45 * i, WINSIZE_Y - 40, true);
 	}
-	wsprintf(szText, "bomb: %d", bombNum);
-	TextOut(hdc, WINSIZE_X - 150, 200, szText, strlen(szText));
+	/*wsprintf(szText, "bomb: %d", bombNum);
+	TextOut(hdc, WINSIZE_X - 150, 200, szText, strlen(szText));*/
 
 	//파워 표시
 	wsprintf(szText, "Player Power: %d", playerPower);
@@ -262,8 +263,8 @@ void PlayerShip::Render(HDC hdc)
 	TextOut(hdc, WINSIZE_X - 150, 180, szText, strlen(szText));
 
 	//life 표시
-	wsprintf(szText, "LIFE: %d",playerLife);
-	TextOut(hdc, WINSIZE_X - 150, 80, szText, strlen(szText));
+	/*wsprintf(szText, "LIFE: %d",playerLife);
+	TextOut(hdc, WINSIZE_X - 150, 80, szText, strlen(szText));*/
 
 	//이미지
 	if (image)
@@ -328,7 +329,6 @@ void PlayerShip::Render(HDC hdc)
 			reAppear = false;
 			canMove = true;
 		}
-
 	}
 
 	// 포신

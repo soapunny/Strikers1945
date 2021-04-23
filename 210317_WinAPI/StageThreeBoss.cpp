@@ -25,7 +25,7 @@ HRESULT StageThreeBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
         return E_FAIL;
     }
     isActBarrelCount = 1;
-    zigzagFireCount = 4;
+    zigzagFireCount = 0.2f;
     currFrameX = 0;
     updateCount = 0;
     Attackstatus = 0;
@@ -35,7 +35,7 @@ HRESULT StageThreeBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
     size = 150;
     life = 300;
     moveSpeed = 100.0f;
-    TornadoFireCount = 30;
+    TornadoFireCount = 0.2f;
     isAlive = true;
    
     //이동방향설정
@@ -87,6 +87,7 @@ void StageThreeBoss::Update()
     bossRect = { (LONG)(pos.x - size / 2), (LONG)(pos.y - size / 2), (LONG)(pos.x + size / 2), (LONG)(pos.y + size / 2) };
     (this->collisionCheck)->SetBossRect(bossRect);
     (this->collisionCheck)->GetBossAlive(isAlive);
+
 
     for (int i = 0; i < vBarrels.size(); i++)
     {
@@ -161,21 +162,21 @@ void StageThreeBoss::Attack()
         //미사일 발사
         if (Attackstatus == 1)
         {
-           
-                for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 1; i++)
+            {
+
+                if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
                 {
+                    //if(BossHp/4*3>)
 
-                    if (vBarrels[i]) //포신 설정도 여기서 해줘야할거같은데
-                    {
-                        //if(BossHp/4*3>)
-
-                        vBarrels[i]->Attack();
-                        vBarrels[i]->SetMaxFireCount(TornadoFireCount);
-                        vBarrels[i]->SetFireType(FIRETYPE::TornadoFIRE);
+                    vBarrels[i]->Attack();
+                    vBarrels[i]->SetMaxFireCount(TornadoFireCount);
+                    vBarrels[i]->SetFireType(FIRETYPE::TornadoFIRE);
                        
-                        vBarrels[i]->Update();
-                    }
+                    vBarrels[i]->Update();
                 }
+            }
+
             
         }
         if (Attackstatus == 2)

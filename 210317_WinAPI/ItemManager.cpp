@@ -68,6 +68,7 @@ void ItemManager::Update()
 					vItem[ITEMTABLE::LIFEITEM]->SetIsFired(true);
 					//IsItemDrop = false;
 					boss1Item = true;
+
 					break;
 				}
 			}
@@ -82,6 +83,7 @@ void ItemManager::Update()
 					break;
 				}
 			}		
+
 		}
 	}
 
@@ -110,6 +112,7 @@ void ItemManager::Render(HDC hdc)
 			else if (randomItem == ITEMTABLE::POWERITEM)
 			{
 				if (dropEnemy == ENEMYDROP && IsItemDrop)
+
 				{
 					vItem[ITEMTABLE::POWERITEM]->Render(hdc);
 					break;

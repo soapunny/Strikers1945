@@ -50,6 +50,7 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->AddImage("폭탄띄어주기", "Image/bombUI.bmp", 30, 55, true, RGB(0, 128, 128));
 	ImageManager::GetSingleton()->AddImage("라이프띄어주기", "Image/Life.bmp", 820 / 20, 793 / 20, true, RGB(246, 246, 246));
 	ImageManager::GetSingleton()->AddImage("라이프아이템", "Image/Life.bmp", 820 / 10, 793 / 10, true, RGB(246, 246, 246));
+
 	ImageManager::GetSingleton()->AddImage("폭탄아이템", "Image/bombItem.bmp", 216, 32, 4, 1, true, RGB(0, 128, 128));
 	ImageManager::GetSingleton()->AddImage("파워아이템", "Image/powerItem.bmp", 150, 18, 6, 1, true, RGB(0, 128, 128));
 	//ImageManager::GetSingleton()->AddImage("엔딩", "Image/표지.bmp", WINSIZE_X, WINSIZE_Y, 1, 1, true, RGB(255, 255, 255));
@@ -77,6 +78,7 @@ HRESULT MainGame::Init()
 	backGround->Init("Image/Stage_2.bmp", WINSIZE_X, 9700);
 	backGroundPos.x = 0;
 	backGroundPos.y = -9700 + WINSIZE_Y;
+
 	backCloud = new Image();
 	backCloud = ImageManager::GetSingleton()->FindImage("구름");
 	openingImage = ImageManager::GetSingleton()->FindImage("오프닝");
@@ -88,9 +90,6 @@ HRESULT MainGame::Init()
 	//
 	retryImage = new Image();
 	
-	//탱크
-	tank = new Tank();
-	tank->Init();
 
 	//충돌
 	collisionCheck = new CollisionCheck();
@@ -110,6 +109,7 @@ HRESULT MainGame::Init()
 
 	////아이템
 	vItemManager.resize(1);
+
 	for (int i = 0; i < vItemManager.size(); i++)
 	{
 		vItemManager[i] = new ItemManager;
@@ -125,7 +125,7 @@ HRESULT MainGame::Init()
 	hundredSecond=0;
 	tenSecond=0;
 	oneSecond=0;
-	onetimesave = true;
+	oneTimeSave = true;
 
 	return S_OK;
 }
@@ -137,7 +137,6 @@ void MainGame::Release()
 
 	SAFE_RELEASE(backBuffer);
 	SAFE_RELEASE(backGround);
-	SAFE_RELEASE(tank);
 	SAFE_RELEASE(enemyManager);
 	SAFE_RELEASE(playerShip);
 	SAFE_RELEASE(bossManager);
@@ -154,18 +153,12 @@ void MainGame::Update()
 	float elapsedTime = TimerManager::GetSingleton()->getElapsedTime();
 
 	//배경 이동
-	if (status >= 1)
+	if (status >= SCENE_STATUS::INGAME_SCENE)
 	{
 		backGroundPos.y += elapsedTime * 100.0f;
 		if (backGroundPos.y >= 0)
 		{
 			backGroundPos.y = -9700 + WINSIZE_Y;
-		}
-
-		//탱크(플레이어)
-		if (tank)
-		{
-			tank->Update();
 		}
 
 		//적
@@ -179,6 +172,7 @@ void MainGame::Update()
 		if (playerShip)
 		{
 			//playerShip->SetPlayerAttackValue(collisionCheck->GetPlayerAttackValue());
+
 			playerShip->Update();
 		}
 
@@ -200,6 +194,7 @@ void MainGame::Update()
 		for (int i = 0; i < vItemManager.size(); i++)
 		{
 			vItemManager[i]->Update();
+
 		}
 	} 
 		//status = sceneManagerObserver->GetNextStatus();	
@@ -208,11 +203,12 @@ void MainGame::Update()
 void MainGame::Render()
  {
 	HDC hBackDC = backBuffer->GetMemDC();
-	if (status == 0)//오프닝 상태
+	if (status == SCENE_STATUS::OPENING_SCENE)//오프닝 상태
 	{ 
   		if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_SPACE))
 		{
 			status++;
+
 			//sceneManagerObserver->OpeningNotify(status);
 			//오프닝 넘기기
 		}
@@ -221,7 +217,7 @@ void MainGame::Render()
 			openingImage->Render(hBackDC);
 		}
 	}
-	else if (status == 1)
+	else if (status == SCENE_STATUS::INGAME_SCENE)
 	{
 	//배경
 		if (backGround)
@@ -239,12 +235,11 @@ void MainGame::Render()
 		//FPS
 		TimerManager::GetSingleton()->Render(hBackDC);
 
-			//vItemManager[0]->SetDropEnemy(ENEMYDROP);
-			//vItemManager[0]->SetIsItem(true);
+		//vItemManager[0]->SetDropEnemy(ENEMYDROP);
+		//vItemManager[0]->SetIsItem(true);
 
-			//vItemManager[0]->SetRandItem(2);
-			//oneTimeDrop[0] = true;
-
+		//vItemManager[0]->SetRandItem(2);
+		//oneTimeDrop[0] = true;
 
 		//collsion
 		if (collisionCheck) 
@@ -260,11 +255,6 @@ void MainGame::Render()
 				vItemManager[i]->Render(hBackDC);
 				//vItemManager[1]->SetIsItem(false);
 			}
-		}
-		//tank
-		if (tank)
-		{
-			//tank->Render(hBackDC);
 		}
 
 		//enemy manager
@@ -287,7 +277,7 @@ void MainGame::Render()
 
 		if (bossManager->GetEnding() == true)
 		{
-			status =2;
+			status = SCENE_STATUS::END_SCENE_STATUS;
 		}
 
 		if (!playerShip->GetPlayerAlive())
@@ -296,7 +286,7 @@ void MainGame::Render()
 			retryImage->Render(hBackDC);
 		}
 	}
-	else if(status == 2)//엔딩 출력
+	else if(status == SCENE_STATUS::END_SCENE_STATUS)//엔딩 출력
 	{
 		/*endingImage = ImageManager::GetSingleton()->FindImage("보스1엔딩");
 		endingImage = ImageManager::GetSingleton()->FindImage("보스2엔딩");
@@ -328,10 +318,10 @@ void MainGame::Render()
 			endingImage->FrameRender(hBackDC,0,0,currFrame,0,false);
 		}
 
-		if (onetimesave)
+		if (oneTimeSave)
 		{
 			endingTime = TimerManager::GetSingleton()->getGameSecond();
-			onetimesave = false;
+			oneTimeSave = false;
 		}
 		 //한번만 초기화 하려면 스태틱으로?
 
@@ -342,6 +332,7 @@ void MainGame::Render()
 		hundredSecondImg->FrameRender(hBackDC, 400, 565, hundredSecond, 0, true);
 		tenSecondImg->FrameRender(hBackDC, 450, 565, tenSecond, 0, true);
 		oneSecondImg->FrameRender(hBackDC, 500, 565, oneSecond, 0, true);
+
 	}
 	
 
@@ -413,6 +404,7 @@ void MainGame::CheckCollision()
 
 void MainGame::ItemMake()
 {
+
 	if (!bossManager->GetisBoss1Alive() && !oneTimeDrop[0])
 	{
 		vItemManager[0]->SetDropEnemy(ENEMYDROP);
@@ -431,8 +423,6 @@ void MainGame::ItemMake()
 	//	oneTimeDrop[1] = true;
 	//	//vItemManager[1]->SetIsItem(false);
 	//}
-
-
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)

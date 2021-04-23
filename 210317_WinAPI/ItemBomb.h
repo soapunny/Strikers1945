@@ -5,7 +5,6 @@ class ItemBomb :
     public Item
 {
 private:
-
 public:
 	virtual HRESULT Init() { return S_OK; };
 	virtual HRESULT Init(CollisionCheck* collisionCheck);

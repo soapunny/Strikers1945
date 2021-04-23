@@ -33,7 +33,7 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
         return E_FAIL;
     }
     currFrameX = 0;
-    updateCount = 0;
+    updateCount = 0.0f;
 
     //보스 
     pos.x = WINSIZE_X/2;          //위치
@@ -79,7 +79,7 @@ HRESULT StageOneBoss::Init(CollisionCheck* collisionCheck, FPOINT* playerPos)
         vBarrels[i]->SetBarrelPos(pos);
         vBarrels[i]->SetActivated(false);
         vBarrels[i]->SetFireType(FIRETYPE::FallingKnivesFIRE);
-        vBarrels[i]->SetMaxFireCount(100);
+        vBarrels[i]->SetMaxFireCount(2.0f);
 
         //TODO 플레이어 위치 저장
     }
@@ -115,7 +115,7 @@ void StageOneBoss::Update()
         //보스 이동 업데이트
 
         if (KeyManager::GetSingleton()->IsOnceKeyDown('U')) {
-            life -= 250;
+            life -= 50;
         }
 
         Move();
@@ -132,11 +132,11 @@ void StageOneBoss::Update()
             vBarrels[2]->SetBarrelPos(FPOINT{WINSIZE_X-pos.x, WINSIZE_Y-pos.y});
 
         //애니메이션
-        updateCount++;
-        if (updateCount >= 5)
+        updateCount += TimerManager::GetSingleton()->getElapsedTime();
+        if (updateCount >= 0.1f)
         {
             currFrameX = (currFrameX + 1) % 30;
-            updateCount = 0;
+            updateCount = 0.0f;
         }
 
         Attack();
@@ -177,8 +177,8 @@ void StageOneBoss::Move()
             vBarrels[4]->SetActivated(true);
             vBarrels[3]->SetFireType(FIRETYPE::FallingKnivesFIRE);
             vBarrels[4]->SetFireType(FIRETYPE::FallingKnivesFIRE);
-            vBarrels[3]->SetMaxFireCount(50);
-            vBarrels[4]->SetMaxFireCount(50);
+            vBarrels[3]->SetMaxFireCount(1.5f);
+            vBarrels[4]->SetMaxFireCount(1.5f);
         }
     }
     else if (life > 100) {
@@ -186,12 +186,12 @@ void StageOneBoss::Move()
             currMoveInterface = vMoveInterfaces[MOVETYPE::BILLIARDS_MOVE];
             moveManager->ChangeMove(currMoveInterface);
             vBarrels[3]->SetFireType(FIRETYPE::FIREWORKFIRE);
-            vBarrels[3]->SetMaxFireCount(100);
+            vBarrels[3]->SetMaxFireCount(2.0f);
             //vBarrels[4]->SetFireType(FIRETYPE::FIREWORKFIRE);
             vBarrels[4]->SetActivated(false);
             
 
-            vBarrels[2]->SetMaxFireCount(100);
+            vBarrels[2]->SetMaxFireCount(2.0f);
             vBarrels[2]->SetActivated(true);
             vBarrels[2]->SetFireType(FIRETYPE::FIREWORKFIRE);
         }

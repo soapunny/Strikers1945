@@ -35,6 +35,10 @@ void BilliardsMove::DoMove(FPOINT* pos, float* angle)
 				*angle = (PI - *angle);
 			}
 		}
+		else if (pos->y <= 0)
+		{
+			*angle = PI*3 / 2;
+		}
 		else if (pos->y <= (bossSize / 2.0f))
 		{
 			if (*angle == PI/2)
@@ -43,6 +47,10 @@ void BilliardsMove::DoMove(FPOINT* pos, float* angle)
 			{
 				*angle = (*angle) >= 0.0f ? -(*angle): *angle;
 			}
+		}
+		else if (pos->y >= WINSIZE_Y)
+		{
+			*angle = PI / 2;
 		}
 		else if (pos->y >= WINSIZE_Y - (bossSize / 2.0f))
 		{

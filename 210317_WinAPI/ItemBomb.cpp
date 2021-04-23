@@ -15,6 +15,7 @@ HRESULT ItemBomb::Init(CollisionCheck* collisionCheck)
 	}
 	ItemPos.x = dropPos.x;
 	ItemPos.y = dropPos.y;
+
 	size = 50;
 	isFired = false;/*
 	dropPos.x = ItemPos.x;

@@ -50,6 +50,7 @@ void ItemPower::Update()
 
 	if (ItemPos.x < 0 || ItemPos.y < 0 || ItemPos.x > WINSIZE_X || ItemPos.y > WINSIZE_Y)
 	{
+
 		isFired = false;
 		why = false;
 		//this->collisionCheck->DeletePlayerMissile();
@@ -68,6 +69,7 @@ void ItemPower::Render(HDC hdc)
 	if (isFired)
 	{
 		//Rectangle(hdc, ItemPos.x-size / 2, ItemPos.y - size / 2, ItemPos.x + size/2, ItemPos.y + size/2);
+
 		img->FrameRender(hdc, ItemPos.x, ItemPos.y, currFrameX, 0, true);
 	}
 
@@ -76,7 +78,6 @@ void ItemPower::Render(HDC hdc)
 
 void ItemPower::Release()
 {
-
 }
 
 void ItemPower::RRRR()

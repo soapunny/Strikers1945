@@ -5,10 +5,11 @@
 class Boss;
 class CollisionCheck;
 
-
 class BossManager : public GameNode
 {
 private:
+	enum BOSS_TYPE{STAGE_ONE_BOSS, STAGE_TWO_BOSS, STAGE_THREE_BOSS, BOSS_TYPE_END};
+
 	CollisionCheck* collisionCheck;
 
 	vector<Boss*> vBoss;	//3¸¶¸®

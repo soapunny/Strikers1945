@@ -41,6 +41,7 @@ void ItemLife::Update()
 		moveManager->DoMove(&ItemPos, &angle);*/
 
 		ItemPos.y++;
+
 	}
 
 	if (ItemPos.x < 0 || ItemPos.y < 0 || ItemPos.x > WINSIZE_X || ItemPos.y > WINSIZE_Y)
@@ -71,6 +72,7 @@ void ItemLife::Render(HDC hdc)
 
 void ItemLife::Release()
 {
+
 
 }
 

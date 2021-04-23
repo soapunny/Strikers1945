@@ -16,6 +16,7 @@ protected:
 	bool isFired;
 	Image* img;
 	FPOINT ItemPos;
+
 	int size;	
 	bool why;
 	int updateCount;
@@ -27,6 +28,7 @@ public:
 	virtual void Render(HDC hdc) = 0;
 	virtual void Release() = 0;
 	inline void SetIsFired(bool isFired) { this->isFired = isFired; }
+
 	inline bool GetIsFired() { return this->isFired; }
 	inline void SetDropPos(FPOINT dropPos) { this->dropPos = dropPos; }
 	inline bool GetWhy() { return this->why; }

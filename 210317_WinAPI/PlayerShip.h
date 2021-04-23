@@ -59,7 +59,6 @@ private:
 	int tempSize;
 
 	int bombNum;
-
 public:
 	HRESULT Init();
 	HRESULT Init(CollisionCheck* collisionCheck);

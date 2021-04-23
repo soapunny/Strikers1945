@@ -19,6 +19,7 @@ HRESULT MediumEnemy::Init(CollisionCheck* collisionCheck, int posX, int posY)
     pos.y = posY;
     size = 120;
     name = "MediumEnemy";
+
     moveSpeed = 50.0f;
     isAlive = true;
     angle = -PI / 2;
