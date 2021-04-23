@@ -128,6 +128,7 @@ void CollisionCheck::Update()
 			myIt3++;
 	}
 
+	bool isEnemyErased = false;
 	//"플레이어 미사일"과 "잡몹/에너미" 충돌
 	for (myIt2 = enemyData.begin(); myIt2 != enemyData.end();)
 	{
@@ -144,11 +145,18 @@ void CollisionCheck::Update()
 				hitPos = { (float)((*myIt)->GetPlayerMissileRect()->left), (float)((*myIt)->GetPlayerMissileRect()->top) };
 				myIt = playerMissile.erase(myIt);
 				myIt2 = enemyData.erase(myIt2);
+				isEnemyErased = true;
+				if (myIt2 == enemyData.end())
+				{
+					break;
+				}
 			}
 			else
 				myIt++;
 		}
-		myIt2 ++;
+		if(!isEnemyErased)
+			myIt2 ++;
+		isEnemyErased = false;
 	}
 
 	//파워 확인/////////////////////////////
